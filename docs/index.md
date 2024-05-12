@@ -12,10 +12,20 @@ For full documentation visit [mkdocs.org](https://www.mkdocs.org).
 ## Project layout
 
 ```text
-flake/              # flakeModules configurations
-flake-modules/      # flakeModules options
+flake/              # flakeModule configurations
+flake-modules/      # flakeModule options
 lib/                # data & function
 nixos/              # nixosConfigurations
+  hosts/            # definition of hosts
+  modules/          # nixosModule options
+  profiles/         # nixosModule configuration
 templates/          # templates
 terraform/          # *.tf
+```
+
+## Data flow
+
+```mermaid
+Terraform outputs + lib/data/config.toml -> lib/data/data.json
+data.json + *.nix -> nixosConfigurations
 ```

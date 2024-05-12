@@ -1,0 +1,19 @@
+version: "3"
+
+tasks:
+  default:
+    cmds:
+      - task: update-data
+  update-data:
+    dir: lib/data
+    sources:
+      - config.toml
+    cmds:
+      - yq -oj -I0 config.toml > data.json
+  fmt:
+    cmds:
+      - treefmt {{.CLI_ARGS}}
+  pkgs:update:
+    dir: pkgs
+    cmds:
+      - nvfetcher

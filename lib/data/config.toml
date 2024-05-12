@@ -1,0 +1,6 @@
+"$schema" = "./config.schema.json"
+
+[[nodes]]
+hostname = "aliyun-hz2"
+ssh-host = "172.16.0.78"
+ssh-options = ["-J", "root@aliyun-hz0"]

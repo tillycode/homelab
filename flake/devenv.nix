@@ -3,10 +3,23 @@
   imports = [ inputs.devenv.flakeModule ];
 
   perSystem =
-    { config, ... }:
+    { config, pkgs, ... }:
     {
       devenv.shells.default = {
-        packages = [ config.treefmt.build.wrapper ];
+        packages = with pkgs; [
+          config.treefmt.build.wrapper
+
+          # scripts
+          go-task
+          nushell
+          yq-go
+
+          # deployment
+          nixos-anywhere
+
+          # packaging
+          nvfetcher
+        ];
 
         pre-commit.hooks.treefmt = {
           enable = true;

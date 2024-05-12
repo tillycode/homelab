@@ -6,6 +6,7 @@
 
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
+    # flake modules
     devenv.url = "github:cachix/devenv";
     devenv.inputs.nixpkgs.follows = "nixpkgs";
 
@@ -15,11 +16,14 @@
   outputs =
     inputs@{ flake-parts, ... }:
     flake-parts.lib.mkFlake { inherit inputs; } {
-      imports = [ ./flake ];
-      systems = [
-        "x86_64-linux"
-        "aarch64-linux"
+      imports = [
+        ./flake/flake-module.nix
+        ./lib/flake-module.nix
+        ./pkgs/flake-module.nix
       ];
-      flake = { };
+      systems = [
+        "aarch64-linux"
+        "x86_64-linux"
+      ];
     };
 }

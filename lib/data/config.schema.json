@@ -1,0 +1,44 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "definitions": {
+    "node": {
+      "type": "object",
+      "properties": {
+        "hostname": {
+          "type": "string",
+          "description": "The name of the machine. Should be a valid DNS label."
+        },
+        "ssh-user": {
+          "type": "string",
+          "description": "The user to use when connecting to the machine via SSH."
+        },
+        "ssh-host": {
+          "type": "string",
+          "description": "The hostname or IP address of the machine."
+        },
+        "ssh-port": {
+          "type": "integer",
+          "description": "The port to use when connecting to the machine via SSH."
+        },
+        "ssh-options": {
+          "type": "array",
+          "description": "Additional options to pass to the SSH command.",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": ["hostname"],
+      "additionalProperties": false
+    }
+  },
+  "properties": {
+    "nodes": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/node"
+      }
+    }
+  }
+}
