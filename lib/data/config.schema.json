@@ -9,6 +9,11 @@
           "type": "string",
           "description": "The name of the machine. Should be a valid DNS label."
         },
+        "system": {
+          "type": "string",
+          "enum": ["x86_64-linux", "aarch64-linux"],
+          "description": "The system type of the machine."
+        },
         "ssh-user": {
           "type": "string",
           "description": "The user to use when connecting to the machine via SSH."
@@ -27,9 +32,21 @@
           "items": {
             "type": "string"
           }
+        },
+        "enable-remote-build": {
+          "type": "boolean",
+          "description": "Whether to build the configuration on the remote machine."
+        },
+        "enable-substituter": {
+          "type": "boolean",
+          "description": "Whether to use substituter on the remote machine."
+        },
+        "requires-infection": {
+          "type": "boolean",
+          "description": "Whether to infect the remote machine first."
         }
       },
-      "required": ["hostname"],
+      "required": ["hostname", "system"],
       "additionalProperties": false
     }
   },

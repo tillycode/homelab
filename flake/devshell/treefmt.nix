@@ -14,7 +14,6 @@
         };
         settings.formatter = {
           nixfmt-rfc-style.excludes = [ "generated.nix" ];
-          prettier.excludes = [ "generated.json" ];
         };
       };
     };

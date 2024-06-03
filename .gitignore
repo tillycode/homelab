@@ -1,11 +1,15 @@
 # direnv
 .direnv/
 
-# devenv
+# devshell
 result
 result-*
+.data/
 .pre-commit-config.yaml
-.devenv/
 
 # taskfile
 .task/
+
+
+# nixago: ignore-linked-files
+/.sops.yaml

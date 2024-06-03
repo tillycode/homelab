@@ -1,9 +1,1 @@
-[kexec-installer-nixos-unstable-noninteractive-aarch64-linux]
-src.github_tag = "nix-community/nixos-images"
-src.include_regex = "nixos-.*"
-fetch.url = "https://github.com/nix-community/nixos-images/releases/download/$ver/nixos-kexec-installer-noninteractive-aarch64-linux.tar.gz"
 
-[kexec-installer-nixos-unstable-noninteractive-x86_64-linux]
-src.github_tag = "nix-community/nixos-images"
-src.include_regex = "nixos-.*"
-fetch.url = "https://github.com/nix-community/nixos-images/releases/download/$ver/nixos-kexec-installer-noninteractive-x86_64-linux.tar.gz"

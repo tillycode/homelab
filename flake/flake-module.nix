@@ -1,8 +1,8 @@
 { ... }:
 {
   imports = [
-    ./treefmt.nix
-    ./devenv.nix
+    ./devshell
     ./legacy-packages.nix
+    ./nixpkgs.nix
   ];
 }

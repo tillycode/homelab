@@ -2,5 +2,8 @@
 
 [[nodes]]
 hostname = "aliyun-hz2"
+system = "x86_64-linux"
 ssh-host = "172.16.0.78"
-ssh-options = ["-J", "root@aliyun-hz0"]
+ssh-options = ["ProxyJump=root@aliyun-hz0"]
+
+requires-infection = true

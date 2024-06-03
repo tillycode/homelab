@@ -1,4 +1,8 @@
-{ lib, ... }:
+{ self, ... }:
 {
-  flake.lib.data = lib.importJSON ./data/data.json;
+  perSystem =
+    { ... }:
+    {
+      _module.args.flake-lib = self.lib;
+    };
 }
