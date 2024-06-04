@@ -25,6 +25,11 @@
     git-hooks-nix.inputs.nixpkgs-stable.follows = "nixpkgs";
     git-hooks-nix.inputs.gitignore.follows = "gitignore-nix";
 
+    deploy-rs.url = "github:serokell/deploy-rs";
+    deploy-rs.inputs.flake-compat.follows = "flake-compat";
+    deploy-rs.inputs.nixpkgs.follows = "nixpkgs";
+    deploy-rs.inputs.utils.follows = "flake-utils";
+
     # libraries
 
     nixago.url = "github:jmgilman/nixago";

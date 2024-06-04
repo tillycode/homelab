@@ -1,13 +1,13 @@
 { inputs, self, ... }:
 {
   perSystem =
-    { system, inputs', ... }:
+    { system, ... }:
     {
       _module.args.pkgs = import inputs.nixpkgs {
         inherit system;
         overlays = [
+          inputs.deploy-rs.overlays.default
           self.overlays.default
-          (_: _: { nixos-anywhere = inputs'.nixos-anywhere.packages.nixos-anywhere; })
         ];
         config = {
           allowUnfree = true;
