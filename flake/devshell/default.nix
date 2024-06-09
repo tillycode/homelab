@@ -7,11 +7,17 @@
     ./deploy.nix
     ./treefmt.nix
     ./pre-commit.nix
+    ./tofu-encryption.nix
   ];
   perSystem =
-    { config, ... }:
+    { config, pkgs, ... }:
     {
       devshells.default = {
+        devshell.packages = with pkgs; [
+          opentofu
+          aws-vault
+          sops
+        ];
         devshell.startup = {
           nixago.text = config.nixago.shellHook;
           pre-commit-hook.text = config.pre-commit.installationScript;

@@ -3,7 +3,7 @@
   imports = [ inputs.treefmt-nix.flakeModule ];
 
   perSystem =
-    { ... }:
+    { pkgs, ... }:
     {
       treefmt = {
         projectRootFile = ".git/config";
@@ -11,9 +11,8 @@
           nixfmt-rfc-style.enable = true;
           prettier.enable = true;
           taplo.enable = true;
-        };
-        settings.formatter = {
-          nixfmt-rfc-style.excludes = [ "generated.nix" ];
+          terraform.enable = true;
+          terraform.package = pkgs.opentofu;
         };
       };
     };
