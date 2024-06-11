@@ -14,6 +14,19 @@
           terraform.enable = true;
           terraform.package = pkgs.opentofu;
         };
+
+        settings.formatter.terragrunt = {
+          command = pkgs.bash;
+          options = [
+            "-euc"
+            ''
+              for f in "$@"; do
+                ${pkgs.terragrunt}/bin/terragrunt hclfmt --terragrunt-hclfmt-file "$f"
+              done
+            ''
+          ];
+          includes = [ "terragrunt.hcl" ];
+        };
       };
     };
 }

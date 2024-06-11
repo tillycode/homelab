@@ -1,16 +1,16 @@
-# Local .terraform directories
-**/.terraform/*
-
-# .tfstate files
+# Terraform
+.terraform
 *.tfstate
-*.tfstate.*
+*.tfstate.backup
 
-# include encrypted tfstate files
+# Encrypted tfstate files
 !bootstrap/terraform.tfstate
 
-# Crash log files
-crash.log
-crash.*.log
-
-# Ignore transient lock info files created by terraform apply
+# Transient lock info files
 .terraform.tfstate.lock.info
+
+# Terragrunt
+.terragrunt-cache
+
+# auto-generated
+backend.tf

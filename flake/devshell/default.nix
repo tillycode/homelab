@@ -17,6 +17,7 @@
           opentofu
           aws-vault
           sops
+          terragrunt
         ];
         devshell.startup = {
           nixago.text = config.nixago.shellHook;
