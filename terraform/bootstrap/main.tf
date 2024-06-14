@@ -25,6 +25,11 @@ provider "aws" {
   region = "ap-east-1"
 }
 
+## -----------------------------------------------------------------------------
+## REMOTE STATE BACKEND
+## ap-east-1 is the primary region, and ap-southeast-1 is the replica region.
+## -----------------------------------------------------------------------------
+
 module "remote_state" {
   source = "nozaq/remote-state-s3-backend/aws"
 
@@ -33,6 +38,11 @@ module "remote_state" {
     aws.replica = aws
   }
 }
+
+## -----------------------------------------------------------------------------
+## GRANT ACCESS TO THE ADMIN TEAM
+## This enables the team members to manage Terraform states on local machines.
+## -----------------------------------------------------------------------------
 
 data "aws_caller_identity" "current" {}
 
@@ -63,11 +73,6 @@ resource "aws_ssoadmin_customer_managed_policy_attachment" "terraform_user" {
   }
 }
 
-moved {
-  from = aws_ssoadmin_customer_managed_policy_attachment.example
-  to   = aws_ssoadmin_customer_managed_policy_attachment.terraform_user
-}
-
 resource "aws_ssoadmin_account_assignment" "terraform_user_admin_team" {
   instance_arn       = tolist(data.aws_ssoadmin_instances.this.arns)[0]
   permission_set_arn = aws_ssoadmin_permission_set.terraform_user.arn
@@ -77,4 +82,20 @@ resource "aws_ssoadmin_account_assignment" "terraform_user_admin_team" {
 
   target_id   = data.aws_caller_identity.current.account_id
   target_type = "AWS_ACCOUNT"
+}
+
+## -----------------------------------------------------------------------------
+## GRANT ACCESS TO GITHUB ACTIONS
+## This enables GitHub Actions to assume the OIDC role.
+## -----------------------------------------------------------------------------
+
+module "github-oidc" {
+  source  = "terraform-module/github-oidc-provider/aws"
+  version = "~> 1"
+
+  create_oidc_provider = true
+  create_oidc_role     = true
+
+  repositories              = ["sunziping2016/homelab"]
+  oidc_role_attach_policies = [module.remote_state.terraform_iam_policy.arn]
 }
