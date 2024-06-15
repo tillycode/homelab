@@ -1,7 +1,7 @@
 { ... }:
 {
   perSystem =
-    { pkgs, ... }:
+    { pkgs, config, ... }:
     let
       _ = pkgs.callPackages (import ./_sources/generated.nix) { };
     in

@@ -1,6 +1,11 @@
 {
   description = "Ziping Sun's NixOS configuration";
 
+  nixConfig.extra-substituters = [ "https://sunziping2016.cachix.org" ];
+  nixConfig.extra-trusted-public-keys = [
+    "sunziping2016.cachix.org-1:7g2G+myu9428IcIKO83W9efXq+uGR1u4C3LR//yVpUc="
+  ];
+
   inputs = {
     # nixpkgs
 
