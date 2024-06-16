@@ -1,0 +1,23 @@
+name: "Update flake.lock"
+on:
+  workflow_dispatch:
+  schedule:
+    # every day 00:00 +08:00
+    - cron: "0 16 * * *"
+
+jobs:
+  lockfile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: DeterminateSystems/nix-installer-action@main
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          extra-conf: |
+            accept-flake-config = true
+      - name: Update flake.lock
+        uses: DeterminateSystems/update-flake-lock@main
+        with:
+          pr-title: "Update flake.lock"
+          pr-labels: dependencies
+            automated
