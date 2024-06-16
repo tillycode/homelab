@@ -15,9 +15,12 @@
       devshells.default = {
         devshell.packages = with pkgs; [
           opentofu
+          cachix
+          awscli2
           aws-vault
           sops
           terragrunt
+          gh
         ];
         devshell.startup = {
           nixago.text = config.nixago.shellHook;

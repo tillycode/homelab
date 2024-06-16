@@ -19,5 +19,12 @@ jobs:
         uses: DeterminateSystems/update-flake-lock@main
         with:
           pr-title: "Update flake.lock"
-          pr-labels: dependencies
+          pr-labels: |
+            dependencies
             automated
+          # NOTE: need to manually provision the secret
+          #   Create a token from https://github.com/settings/tokens?type=beta,
+          #   (permission: contents/write, pull-requests/write), and run the
+          #   following command:
+          #     gh secret set GH_TOKEN_FOR_UPDATES  # paste the token
+          token: ${{ secrets.GH_TOKEN_FOR_UPDATES }}

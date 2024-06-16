@@ -22,8 +22,9 @@ jobs:
       - uses: cachix/cachix-action@master
         with:
           name: sunziping2016
-          # Create a personal auth token from https://app.cachix.org/personal-auth-tokens,
-          # login to cachix, and then generate a signing key and provision it.
+          # NOTE: need to manually provision the signing key.
+          #   Create a token from https://app.cachix.org/personal-auth-tokens,
+          #   and run the following commands:
           #     cachix authtoken --stdin  # paste personal auth token
           #     cachix generate-keypair sunziping2016
           #     gh secret set CACHIX_SIGNING_KEY  # paste signing key
