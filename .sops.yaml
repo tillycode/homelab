@@ -1,7 +1,13 @@
 keys:
   - &user_sun 8CC5C91F72DB57DA20BD848C6523836CF4992251
 creation_rules:
-  - path_regex: ^secrets/terraform/
+  - path_regex: ^secrets/terraform/tofu-encryption\.json$
     key_groups:
       - pgp:
           - *user_sun
+  - path_regex: ^secrets/terraform
+    key_groups:
+      - pgp:
+          - *user_sun
+        kms:
+          - arn: arn:aws:kms:ap-southeast-1:137927498482:alias/sops-key

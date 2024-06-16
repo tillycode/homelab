@@ -11,6 +11,6 @@ remote_state {
     encrypt               = true
     bucket                = "tf-remote-state20240609191010533500000002"
     dynamodb_table        = "tf-remote-state-lock"
-    kms_key_id            = "2b1c687d-00e3-4934-aa0e-9eb361ebca8c"
+    kms_key_id            = "alias/tf-remote-state-key"
   }
 }

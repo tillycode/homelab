@@ -46,16 +46,8 @@ sso_account_id = 123456789011
 sso_role_name = AdministratorAccess
 region = ap-southeast-1
 
-[profile terraform]
-sso_session = szpio
-sso_account_id = 137927498482
-sso_role_name = TerraformUser
-region = ap-east-1
-
 [sso-session szpio]
 sso_start_url = https://szpio.awsapps.com/start
 sso_region = ap-southeast-1
 sso_registration_scopes = sso:account:access
 ```
-
-The `terraform` profile will be valid after this module is applied.

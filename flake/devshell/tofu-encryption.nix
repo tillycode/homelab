@@ -119,6 +119,10 @@ let
         EOF
 
         export TF_ENCRYPTION
+        if [[ $# -eq 0 ]]; then
+          echo "$TF_ENCRYPTION"
+          exit 0
+        fi
         exec "$@"
       '';
     };
@@ -465,54 +469,50 @@ in
               text = ''
 
                 print_usage() {
-                  echo "Usage: $(basename "$0") {exec,edit,rotate} [ARGS...]"
+                  echo "Usage: $(basename "$0") [COMMAND] [ARGS...]"
                   echo
                   echo "Description:"
                   echo "  ${help}"
                   echo
-                  echo "Examples:"
-                  echo "  $(basename "$0") --help"
-                  echo "  $(basename "$0") edit --help"
-                  echo "  $(basename "$0") rotate --help"
-                  echo "  $(basename "$0") exec --help"
+                  echo "Available Commands:"
+                  echo "  exec    Execute a command with the key provider from a profile (default)"
+                  echo "  add     Add a profile to the secrets file"
+                  echo "  remove  Remove a profile from the secrets file"
+                  echo "  list    List profiles in the secrets file"
+                  echo "  rotate  Rotate the key provider passphrase for a profile"
                   echo
                   echo "Options:"
                   echo "  -h, --help  Print this help message"
                   echo
                 }
 
-                while [[ $# -gt 0 ]]; do
-                  case "$1" in
-                    -h|--help)
-                      print_usage
-                      exit 0
-                      ;;
-                    *)
-                      break
-                      ;;
-                  esac
-                done
-
-                if [[ $# -eq 0 ]]; then
-                  echo "error: missing command. Please provide one of: exec, edit, rotate" >&2
-                  exit 1
-                fi
-
-                command="$1"
-                shift
-                case "$command" in
+                case "''${1-}" in
                   exec)
+                    shift
                     exec tofu-encryption-exec "$@"
                     ;;
-                  edit)
-                    exec tofu-encryption-edit "$@"
+                  add)
+                    shift
+                    exec tofu-encryption-edit add "$@"
+                    ;;
+                  remove)
+                    shift
+                    exec tofu-encryption-edit remove "$@"
+                    ;;
+                  list)
+                    shift
+                    exec tofu-encryption-edit list "$@"
                     ;;
                   rotate)
+                    shift
                     exec tofu-encryption-rotate "$@"
                     ;;
+                  -h|--help)
+                    print_usage
+                    exit 0
+                    ;;
                   *)
-                    echo "error: invalid command: \"$command\"" >&2
-                    exit 1
+                    exec tofu-encryption-exec "$@"
                     ;;
                 esac
               '';

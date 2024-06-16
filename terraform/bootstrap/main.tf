@@ -40,51 +40,6 @@ module "remote_state" {
 }
 
 ## -----------------------------------------------------------------------------
-## GRANT ACCESS TO THE ADMIN TEAM
-## This enables the team members to manage Terraform states on local machines.
-## -----------------------------------------------------------------------------
-
-data "aws_caller_identity" "current" {}
-
-data "aws_ssoadmin_instances" "this" {}
-
-data "aws_identitystore_group" "admin_team" {
-  identity_store_id = tolist(data.aws_ssoadmin_instances.this.identity_store_ids)[0]
-
-  alternate_identifier {
-    unique_attribute {
-      attribute_path  = "DisplayName"
-      attribute_value = "Admin team"
-    }
-  }
-}
-
-resource "aws_ssoadmin_permission_set" "terraform_user" {
-  name         = "TerraformUser"
-  instance_arn = tolist(data.aws_ssoadmin_instances.this.arns)[0]
-}
-
-resource "aws_ssoadmin_customer_managed_policy_attachment" "terraform_user" {
-  instance_arn       = aws_ssoadmin_permission_set.terraform_user.instance_arn
-  permission_set_arn = aws_ssoadmin_permission_set.terraform_user.arn
-  customer_managed_policy_reference {
-    name = module.remote_state.terraform_iam_policy.name
-    path = "/"
-  }
-}
-
-resource "aws_ssoadmin_account_assignment" "terraform_user_admin_team" {
-  instance_arn       = tolist(data.aws_ssoadmin_instances.this.arns)[0]
-  permission_set_arn = aws_ssoadmin_permission_set.terraform_user.arn
-
-  principal_id   = data.aws_identitystore_group.admin_team.group_id
-  principal_type = "GROUP"
-
-  target_id   = data.aws_caller_identity.current.account_id
-  target_type = "AWS_ACCOUNT"
-}
-
-## -----------------------------------------------------------------------------
 ## GRANT ACCESS TO GITHUB ACTIONS
 ## This enables GitHub Actions to assume the OIDC role.
 ## -----------------------------------------------------------------------------
@@ -98,4 +53,21 @@ module "github-oidc" {
 
   repositories              = ["sunziping2016/homelab"]
   oidc_role_attach_policies = [module.remote_state.terraform_iam_policy.arn]
+}
+
+## -----------------------------------------------------------------------------
+## SOPS encryption key
+## -----------------------------------------------------------------------------
+
+module "kms" {
+  source = "terraform-aws-modules/kms/aws"
+
+  description = "The key used to encrypt the SOPS secrets."
+  key_usage   = "ENCRYPT_DECRYPT"
+  key_users   = [module.github-oidc.oidc_role]
+  aliases     = ["sops-key"]
+
+  tags = {
+    Terraform = "true"
+  }
 }

@@ -21,6 +21,7 @@
           sops
           terragrunt
           gh
+          aliyun-cli
         ];
         devshell.startup = {
           nixago.text = config.nixago.shellHook;
