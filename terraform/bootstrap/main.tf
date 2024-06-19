@@ -31,7 +31,8 @@ provider "aws" {
 ## -----------------------------------------------------------------------------
 
 module "remote_state" {
-  source = "nozaq/remote-state-s3-backend/aws"
+  source             = "nozaq/remote-state-s3-backend/aws"
+  enable_replication = false # for lower cost
 
   providers = {
     aws         = aws.ap-east-1

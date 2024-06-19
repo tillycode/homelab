@@ -1,6 +1,6 @@
 output "kms_key" {
   description = "The KMS customer master key to encrypt state buckets."
-  value       = module.remote_state.kms_key_alias.arn
+  value       = module.remote_state.kms_key_alias.name
 }
 
 output "state_bucket" {

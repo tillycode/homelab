@@ -458,9 +458,9 @@ in
           rec {
             category = "terraform";
             name = "tofu-encryption";
-            help = "Mange OpenTofu encryption profiles";
+            help = "Mange OpenTofu state encryption profiles";
             package = pkgs.writeShellApplication {
-              name = "tofu-encryption";
+              inherit name;
               runtimeInputs = [
                 (tofu-encryption-exec pkgs)
                 (tofu-encryption-edit pkgs)

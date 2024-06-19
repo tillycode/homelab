@@ -1,6 +1,25 @@
 # This file is maintained automatically by "tofu init".
 # Manual edits may be lost in future updates.
 
+provider "registry.opentofu.org/aliyun/alicloud" {
+  version     = "1.225.0"
+  constraints = "~> 1.0"
+  hashes = [
+    "h1:6zoM+ys5n2hYd/dheJpQidTY/eDJaqVXy01mmuwjBhA=",
+    "zh:026faf74ed3062785f53e4ceb4cc92cd179e10b680bf2e104a616e43dd19d8f0",
+    "zh:09387e3e449cd13dd28689473738ef68cc530d50bea3d5641a086e1043edadbc",
+    "zh:37bc4235b3df00f82f568284a3586297c9c4c258f1f97a7ee92e49948bddfcf2",
+    "zh:741de66d169b261fcf3cf3b32e10e040b9bd9a7e7ea4bae2f1fab43be65b94a7",
+    "zh:74e3c0e9070381e6748aa366126956e2912fdd10c352be467ad2de563ac56b1e",
+    "zh:8a0f30805b689993f45b1894457969741d45061aa1c00c7647c190abbd69d462",
+    "zh:9d7ce687921a1d52cfdb07fe40c7ca9279f938a6325fdeb5a38e53dc38d4e897",
+    "zh:d083d65c2669c76839167bb2d69cd41d8e9e70dda834d663da1a69163648b8c7",
+    "zh:d289877ddbf121e4802f62e7d8c534273e582ed095dafe3729fe08cad36c10d4",
+    "zh:e406d001df807668fbb4e24290b66538ce94ef5f73d962b635e373fdacdfed9d",
+    "zh:f98dd1eead981be624768884fd734e6eb16d83ed78cb349b7040fe14fb91d746",
+  ]
+}
+
 provider "registry.opentofu.org/hashicorp/random" {
   version = "3.6.2"
   hashes = [

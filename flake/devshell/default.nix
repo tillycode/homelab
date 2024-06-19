@@ -7,6 +7,8 @@
     ./deploy.nix
     ./treefmt.nix
     ./pre-commit.nix
+
+    ## commands
     ./tofu-encryption.nix
   ];
   perSystem =
@@ -20,6 +22,7 @@
           aws-vault
           sops
           terragrunt
+          terraform-ls
           gh
           aliyun-cli
         ];

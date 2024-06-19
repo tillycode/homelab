@@ -51,3 +51,29 @@ sso_start_url = https://szpio.awsapps.com/start
 sso_region = ap-southeast-1
 sso_registration_scopes = sso:account:access
 ```
+
+### Apply
+
+Firstly, apply the bootstrap module.
+
+```shell
+aws-vault exec admin -- terragrunt apply
+```
+
+Then, update `.sops.yaml` to include the key, and re-encrypt the credentials.
+
+```diff
+@@ -1,11 +1,7 @@
+ keys:
++  - &github_action
++    arn: arn:aws:kms:ap-southeast-1:123456789011:key/alias/sops-key
+ creation_rules:
+   - path_regex: ^secrets/terraform/
+     key_groups:
++      - kms:
++          - *github_action
+```
+
+```shell
+aws-vault exec admin -- sops updatekeys secrets/terraform/tofu-encryption.json
+```
