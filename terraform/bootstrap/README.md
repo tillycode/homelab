@@ -6,13 +6,17 @@ Note: this module use local backend and state encryption provided by OpenTofu,
 which lead to the following restrictions.
 
 1. It's incompatible with Terraform.
-2. It cannot be run concurrently or managed by CD.
+2. It cannot be run concurrently.
+
+It is managed by Admin, and read-only for other users.
 
 ## Prerequisites
 
 - OpenTofu ~> 1.7
 - sops
 - AWS configured with aws-vault
+
+## Guide
 
 ### Workflow
 
@@ -22,8 +26,6 @@ flowchart LR
     sops -- key provider --> OpenTofu
     OpenTofu -- encrypted state --> terraform.tfstate
 ```
-
-## Guide
 
 ### Configure AWS
 
@@ -54,26 +56,6 @@ sso_registration_scopes = sso:account:access
 
 ### Apply
 
-Firstly, apply the bootstrap module.
-
 ```shell
 aws-vault exec admin -- terragrunt apply
-```
-
-Then, update `.sops.yaml` to include the key, and re-encrypt the credentials.
-
-```diff
-@@ -1,11 +1,7 @@
- keys:
-+  - &github_action
-+    arn: arn:aws:kms:ap-southeast-1:123456789011:key/alias/sops-key
- creation_rules:
-   - path_regex: ^secrets/terraform/
-     key_groups:
-+      - kms:
-+          - *github_action
-```
-
-```shell
-aws-vault exec admin -- sops updatekeys secrets/terraform/tofu-encryption.json
 ```

@@ -13,7 +13,7 @@ output "dynamodb_table" {
   value       = module.remote_state.dynamodb_table.id
 }
 
-output "sops_key" {
-  description = "The KMS key to encrypt SOPS secrets."
-  value       = module.kms.aliases["sops-key"].arn
+output "terraform_iam_policy" {
+  description = "The IAM Policy to access remote state environment."
+  value       = module.remote_state.terraform_iam_policy.arn
 }

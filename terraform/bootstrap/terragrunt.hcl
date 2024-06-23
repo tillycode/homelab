@@ -15,3 +15,8 @@ terraform {
     }
   }
 }
+
+
+inputs = {
+  aws_terraform_region = "ap-east-1"
+}
