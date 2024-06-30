@@ -1,6 +1,10 @@
 ## -----------------------------------------------------------------------------
 ## GRANT REMOTE STATE ACCESS TO GITHUB ACTIONS
 ## -----------------------------------------------------------------------------
+data "aws_iam_policy" "terraform" {
+  name = var.aws_terraform_iam_policy_name
+}
+
 module "github-oidc" {
   source  = "terraform-module/github-oidc-provider/aws"
   version = "~> 1"
@@ -9,7 +13,7 @@ module "github-oidc" {
   create_oidc_role     = true
 
   repositories              = ["${var.github_repository_owner}/${var.github_repository_name}"]
-  oidc_role_attach_policies = [var.aws_terraform_iam_policy_arn]
+  oidc_role_attach_policies = [data.aws_iam_policy.terraform.arn]
 
   tags = {
     Terraform = "true"

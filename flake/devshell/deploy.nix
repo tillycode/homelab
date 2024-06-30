@@ -13,18 +13,18 @@
               name = "nixos-image";
               runtimeInputs = with pkgs; [ util-linux ];
               text = ''
-                BRANCH=nixos-23.11
+                BRANCH=nixos-24.05
                 allowed_ARCH=(x86_64 aarch64)
 
                 print_usage() {
                   echo "Usage: nixos-image [--branch BRANCH] ARCH"
                   echo
-                  echo "  --branch BRANCH  NixOS release branch to download from (default: nixos-23.11)"
+                  echo "  --branch BRANCH  NixOS release branch to download from (default: $BRANCH)"
                   echo
                   echo "Supported architectures: ''${allowed_ARCH[*]}"
                 }
 
-                declare -a positionals
+                positionals=()
 
                 while [[ $# -gt 0 ]]; do
                   case $1 in

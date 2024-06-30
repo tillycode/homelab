@@ -28,6 +28,9 @@ module "remote_state" {
   source             = "nozaq/remote-state-s3-backend/aws"
   enable_replication = false # for lower cost
 
+  override_terraform_iam_policy_name = true
+  terraform_iam_policy_name          = var.aws_terraform_iam_policy_name
+
   providers = {
     aws = aws
     # actually this won't be used by the module, because replication is disabled

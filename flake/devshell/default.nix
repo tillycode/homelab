@@ -18,7 +18,6 @@
         devshell.packages = with pkgs; [
           opentofu
           cachix
-          awscli2
           aws-vault
           sops
           terragrunt

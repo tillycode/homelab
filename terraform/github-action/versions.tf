@@ -14,3 +14,11 @@ terraform {
     }
   }
 }
+
+provider "aws" {
+  region = var.aws_default_region
+}
+
+provider "alicloud" {
+  region = var.aliyun_default_region
+}

@@ -1,5 +1,5 @@
-dependency "bootstrap" {
-  config_path = "${get_repo_root()}/terraform/bootstrap"
+locals {
+  bootstrap = jsondecode(file("bootstrap/output.json"))
 }
 
 remote_state {
@@ -10,16 +10,11 @@ remote_state {
   }
   config = {
     disable_bucket_update = true
-    region                = "ap-east-1"
+    region                = local.bootstrap.region
     key                   = "homelab/${path_relative_to_include()}/terraform.tfstate"
     encrypt               = true
-    bucket                = dependency.bootstrap.outputs.state_bucket
-    dynamodb_table        = dependency.bootstrap.outputs.dynamodb_table
-    kms_key_id            = dependency.bootstrap.outputs.kms_key
+    bucket                = local.bootstrap.state_bucket
+    dynamodb_table        = local.bootstrap.dynamodb_table
+    kms_key_id            = local.bootstrap.kms_key
   }
-}
-
-locals {
-  aws_default_region    = "ap-southeast-1"
-  aliyun_default_region = "ch-hangzhou"
 }

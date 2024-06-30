@@ -13,7 +13,13 @@ output "dynamodb_table" {
   value       = module.remote_state.dynamodb_table.id
 }
 
-output "terraform_iam_policy" {
-  description = "The IAM Policy to access remote state environment."
-  value       = module.remote_state.terraform_iam_policy.arn
+resource "local_file" "backend" {
+  filename = "${path.module}/output.json"
+  content = jsonencode({
+    region          = var.aws_terraform_region,
+    state_bucket    = module.remote_state.state_bucket.bucket,
+    dynamodb_table  = module.remote_state.dynamodb_table.id,
+    kms_key         = module.remote_state.kms_key_alias.name,
+    iam_policy_name = var.aws_terraform_iam_policy_name,
+  })
 }

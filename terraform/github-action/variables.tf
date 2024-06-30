@@ -8,13 +8,18 @@ variable "github_repository_name" {
   type        = string
 }
 
-variable "aws_terraform_region" {
-  description = "The AWS region to access the remote state environment."
+variable "aliyun_default_region" {
+  description = "The default AliCloud region to use."
   type        = string
 }
 
-variable "aws_terraform_iam_policy_arn" {
-  description = "The ARN of the IAM policy to access the remote state environment."
+variable "aws_default_region" {
+  description = "The default AWS region to use."
+  type        = string
+}
+
+variable "aws_terraform_iam_policy_name" {
+  description = "The name of the IAM policy to access the remote state environment."
   type        = string
 }
 

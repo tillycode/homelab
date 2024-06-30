@@ -1,0 +1,1 @@
+{"dynamodb_table":"tf-remote-state-lock","iam_policy_name":"terraform-access","kms_key":"alias/tf-remote-state-key","region":"ap-east-1","state_bucket":"tf-remote-state20240609191010533500000002"}

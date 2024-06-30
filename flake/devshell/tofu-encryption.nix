@@ -518,6 +518,36 @@ in
               '';
             };
           }
+          {
+            category = "terraform";
+            name = "tf";
+            help = "Terragrunt wrapper";
+            package = pkgs.writeShellApplication {
+              name = "tf";
+              runtimeInputs = with pkgs; [
+                terragrunt
+                aws-vault
+              ];
+              text = ''
+                exec env ALICLOUD_PROFILE=default aws-vault exec admin -- terragrunt "$@"
+              '';
+            };
+          }
+          {
+            category = "terraform";
+            name = "aws";
+            help = "AWS CLI wrapper";
+            package = pkgs.writeShellApplication {
+              name = "aws";
+              runtimeInputs = with pkgs; [
+                awscli2
+                aws-vault
+              ];
+              text = ''
+                exec aws-vault exec admin -- aws "$@"
+              '';
+            };
+          }
         ];
       };
     };
