@@ -57,7 +57,7 @@ locals {
   alicloud_ims_oidc_provider_arn = "acs:ram::${data.alicloud_account.current.id}:oidc-provider/${alicloud_ims_oidc_provider.github.oidc_provider_name}"
 }
 
-data "alicloud_ram_policy_document" "github" {
+data "alicloud_ram_policy_document" "assume_role" {
   version = "1"
   statement {
     effect = "Allow"
@@ -91,7 +91,33 @@ data "alicloud_ram_policy_document" "github" {
 resource "alicloud_ram_role" "github" {
   name        = "github-oidc-provider-aliyun"
   description = "Role assumed by the GitHub OIDC provider."
-  document    = data.alicloud_ram_policy_document.github.document
+  document    = data.alicloud_ram_policy_document.assume_role.document
+}
+
+data "alicloud_ram_policy_document" "github" {
+  version = "1"
+  statement {
+    effect = "Allow"
+    action = [
+      "ecs:Describe*",
+      "ecs:List*",
+      "vpc:Describe*",
+      "vpc:Get*",
+    ]
+    resource = ["*"]
+  }
+}
+
+resource "alicloud_ram_policy" "github" {
+  policy_name     = "github-oidc-provider-aliyun"
+  policy_document = data.alicloud_ram_policy_document.github.document
+  description     = "Policy for the GitHub OIDC provider."
+}
+
+resource "alicloud_ram_role_policy_attachment" "github_policy" {
+  policy_name = alicloud_ram_policy.github.policy_name
+  policy_type = "Custom"
+  role_name   = alicloud_ram_role.github.name
 }
 
 ## -----------------------------------------------------------------------------
