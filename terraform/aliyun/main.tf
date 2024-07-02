@@ -80,7 +80,7 @@ module "hgh2_install" {
   }
   working_directory = var.project_root
 
-  flake       = "git+file:.#aliyun-hz2"
+  flake       = "git+file:.#hgh2"
   ssh_host    = "root@${alicloud_instance.hgh2.private_ip}"
   ssh_options = ["ProxyJump=root@hz0.szp15.com"]
 

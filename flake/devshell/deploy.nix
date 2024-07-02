@@ -84,6 +84,11 @@
               '';
             };
           }
+          {
+            category = "deployment";
+            name = "deploy";
+            package = pkgs.deploy-rs.deploy-rs;
+          }
         ];
       };
     };

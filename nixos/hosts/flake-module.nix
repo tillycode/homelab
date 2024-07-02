@@ -5,8 +5,8 @@
   ...
 }:
 {
-  flake.nixosConfigurations.aliyun-hz2 = inputs.nixpkgs.lib.nixosSystem {
-    modules = [ ./aliyun-hz2 ];
+  flake.nixosConfigurations.hgh2 = inputs.nixpkgs.lib.nixosSystem {
+    modules = [ ./hgh2 ];
     specialArgs = {
       inherit inputs;
     };
