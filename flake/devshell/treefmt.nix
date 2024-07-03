@@ -3,26 +3,31 @@
   imports = [ inputs.treefmt-nix.flakeModule ];
 
   perSystem =
-    { pkgs, ... }:
+    { pkgs, lib, ... }:
     {
       treefmt = {
         projectRootFile = ".git/config";
 
-        # FIXME: GitHub workflows are not formatted (numtide/treefmt#273)
-        # treefmt v0.6.1 doesn't scan hidden files, so directory like `.github`
-        # will be ignored. They added `--hidden` flag in the main branch, but
-        # it's not released yet.
-        # json, yaml, markdown
-        programs.prettier.enable = true;
-        settings.formatter.prettier.excludes = [
+        # global
+        settings.global.excludes = lib.mkAfter [
+          # unsupported extensions
+          "*.gitignore"
+
+          # state file or lock file managed by tools
+          "*.{tfstate,lock,lock.hcl}"
+
+          # generated files
           "terraform/bootstrap/output.json"
           "secrets/*"
           "pkgs/_sources/*"
         ];
 
+        # json, yaml, markdown
+        programs.prettier.enable = true;
+
         # nix
-        programs.nixfmt-rfc-style.enable = true;
-        settings.formatter.nixfmt-rfc-style.excludes = [ "pkgs/_sources/*" ];
+        programs.nixfmt.enable = true;
+        settings.formatter.nixfmt.excludes = [ "pkgs/_sources/*" ];
 
         # toml
         programs.taplo.enable = true;
@@ -48,6 +53,8 @@
         # sh
         programs.shfmt.enable = true;
         programs.shellcheck.enable = true;
+        settings.formatter.shfmt.includes = [ ".envrc" ];
+        settings.formatter.shellcheck.includes = [ ".envrc" ];
       };
     };
 }
