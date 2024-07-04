@@ -12,7 +12,7 @@ module "github-oidc" {
   create_oidc_provider = true
   create_oidc_role     = true
 
-  repositories              = ["${var.github_repository_owner}/${var.github_repository_name}"]
+  repositories              = ["${var.github_organization}/${var.github_repository_name}"]
   oidc_role_attach_policies = [data.aws_iam_policy.terraform.arn]
 
   tags = {
@@ -83,7 +83,7 @@ data "alicloud_ram_policy_document" "assume_role" {
     condition {
       operator = "StringLike"
       variable = "oidc:sub"
-      values   = ["repo:${var.github_repository_owner}/${var.github_repository_name}:*"]
+      values   = ["repo:${var.github_organization}/${var.github_repository_name}:*"]
     }
   }
 }
@@ -141,15 +141,15 @@ resource "github_repository" "this" {
   has_wiki               = true
 }
 
-data "github_user" "current" {
-  username = var.github_repository_owner
+data "github_user" "admin" {
+  username = var.github_admin
 }
 
 resource "github_repository_environment" "prod" {
   environment = "prod"
   repository  = github_repository.this.name
   reviewers {
-    users = [data.github_user.current.id]
+    users = [data.github_user.admin.id]
   }
 }
 resource "github_actions_variable" "aws_role_to_asume" {

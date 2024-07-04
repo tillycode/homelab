@@ -1,10 +1,15 @@
-variable "github_repository_owner" {
-  description = "The owner of the GitHub repository to create."
+variable "github_admin" {
+  description = "The admin of the GitHub repository."
+  type        = string
+}
+
+variable "github_organization" {
+  description = "The organization of the GitHub repository."
   type        = string
 }
 
 variable "github_repository_name" {
-  description = "The name of the GitHub repository to create."
+  description = "The name of the GitHub repository."
   type        = string
 }
 

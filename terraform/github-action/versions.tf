@@ -22,3 +22,8 @@ provider "aws" {
 provider "alicloud" {
   region = var.aliyun_default_region
 }
+
+
+provider "github" {
+  owner = var.github_organization
+}
