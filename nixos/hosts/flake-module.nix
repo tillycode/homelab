@@ -13,6 +13,34 @@
     system = "x86_64-linux";
   };
 
+  flake.deploy =
+    let
+      cfg = self.nixosConfigurations.hgh2;
+      system = cfg.pkgs.stdenv.hostPlatform.system;
+      deployLib = inputs.deploy-rs.lib.${system};
+    in
+    {
+      autoRollback = true;
+      magicRollback = true;
+
+      nodes = {
+        hgh2 = {
+          hostname = "172.16.0.78";
+          sshUser = "root";
+          sshOpts = [
+            "-o"
+            "ProxyJump=root@hz0.szp15.com"
+          ];
+          fastConnection = true;
+          remoteBuild = false;
+
+          profiles.system = {
+            path = deployLib.activate.nixos cfg;
+          };
+        };
+      };
+    };
+
   flake.checks =
     let
       getSystem = cfg: cfg.pkgs.stdenv.hostPlatform.system;
