@@ -18,3 +18,7 @@ remote_state {
     kms_key_id            = local.bootstrap.kms_key
   }
 }
+
+dependencies {
+  paths = ["${get_repo_root()}/terraform/bootstrap"]
+}

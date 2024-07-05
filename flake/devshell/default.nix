@@ -19,11 +19,14 @@
           opentofu
           cachix
           aws-vault
-          sops
           terragrunt
           terraform-ls
           gh
           aliyun-cli
+          # TODO: use a different devshell for GitHub Actions
+          # used in Github Actions
+          jq
+          sops
         ];
         devshell.startup = {
           nixago.text = config.nixago.shellHook;
@@ -31,5 +34,7 @@
         };
       };
       nixago.configs = [ ];
+
+      checks.devshell = config.devShells.default;
     };
 }

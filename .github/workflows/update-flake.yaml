@@ -22,6 +22,9 @@ jobs:
           pr-labels: |
             dependencies
             automated
+          # PRs created using the default GITHUB_TOKEN won't trigger other GitHub actions.
+          # Check https://github.com/peter-evans/create-pull-request/blob/main/docs/concepts-guidelines.md#triggering-further-workflow-runs
+          # for various workarounds. We use a PAT here to trigger further workflows.
           # NOTE: need to manually provision the secret
           #   Create a token from https://github.com/settings/tokens?type=beta,
           #   (permission: contents/write, pull-requests/write), and run the
