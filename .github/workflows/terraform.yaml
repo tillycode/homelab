@@ -1,23 +1,18 @@
-name: "Terragrunt GitHub Actions"
+name: "CI/CD"
 
 on:
   push:
     branches:
       - "master"
-    paths:
-      - secrets/terraform/**
-      - terraform/**
   pull_request:
     branches:
       - "master"
-    paths:
-      - secrets/terraform/**
-      - terraform/**
   workflow_dispatch:
 
 permissions:
   id-token: write
   contents: read
+  pull-requests: write
 
 env:
   TERRAGRUNT_NON_INTERACTIVE: "true"
@@ -35,6 +30,16 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           extra-conf: |
             accept-flake-config = true
+      - uses: cachix/cachix-action@master
+        with:
+          name: sunziping2016
+          # NOTE: need to manually provision the signing key.
+          #   Create a token from https://app.cachix.org/personal-auth-tokens,
+          #   and run the following commands:
+          #     cachix authtoken --stdin  # paste personal auth token
+          #     cachix generate-keypair sunziping2016
+          #     gh secret set CACHIX_SIGNING_KEY  # paste signing key
+          signingKey: "${{ secrets.CACHIX_SIGNING_KEY }}"
       - uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-region: ap-southeast-1
@@ -43,19 +48,22 @@ jobs:
         with:
           role-to-assume: ${{ vars.ALIYUN_ROLE_TO_ASSUME }}
           oidc-provider-arn: ${{ vars.ALIYUN_OIDC_PROVIDER_ARN  }}
+      # TODO: a different devShell
       - uses: nicknovitski/nix-develop@v1
-      - name: "Run Terragrunt Validate"
-        run: terragrunt run-all validate
+      - run: nix flake show --all-systems
+      - run: nix flake check --all-systems
+      - run: terragrunt run-all validate
         env:
           TERRAGRUNT_WORKING_DIR: terraform
-      - name: "Run Terragrunt Plan"
+      - name: Run terragrunt plan
         id: plan
         shell: bash
         run: |
           echo "plan<<EOF" >> "$GITHUB_OUTPUT"
-          terragrunt run-all plan -concise | tee \
+          terragrunt run-all plan -concise |& tee \
             >(sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g' >> "$GITHUB_OUTPUT")
           echo "EOF" >> "$GITHUB_OUTPUT"
+
           diff="$(terragrunt run-all show -json | jq -s \
             '[.[].resource_changes.[].change.actions[]] | any(. != "no-op")')"
           echo "diff=$diff" >> "$GITHUB_OUTPUT"
@@ -65,18 +73,53 @@ jobs:
           TERRAGRUNT_OUT_DIR: ${{ github.workspace }}/.data/tfplans
           TERRAGRUNT_WORKING_DIR: terraform
           TERRAGRUNT_EXCLUDE_DIR: bootstrap,github-action
+      - name: Summarize plan
+        run: |
+          cat <<'EOF' >> "$GITHUB_STEP_SUMMARY"
+          ### Terragrunt Plan :memo:
+
+          ```text
+          ${{ steps.plan.outputs.plan }}
+          ```
+
+          **Status**: ${{ steps.plan.outputs.diff == 'true' && 'out of sync :warning:' || 'no changes :ok_hand:' }}
+          EOF
       - uses: actions/upload-artifact@v4
         if: steps.plan.outputs.diff == 'true'
         with:
           name: tfplans
           path: .data/tfplans.tar.gz.enc
+      - uses: peter-evans/find-comment@v3
+        if: github.event_name == 'pull_request'
+        id: find-comment
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: "github-actions[bot]"
+          body-includes: "### Terragrunt Plan"
+      - uses: peter-evans/create-or-update-comment@v4
+        if: github.event_name == 'pull_request'
+        with:
+          comment-id: ${{ steps.find-comment.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            ### Terragrunt Plan :memo:
+
+            ```text
+            ${{ steps.plan.outputs.plan }}
+            ```
+
+            **Status**: ${{ steps.plan.outputs.diff == 'true' && 'out of sync :warning:' || 'no changes :ok_hand:' }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          edit-mode: replace
 
   apply:
     runs-on: ubuntu-latest
     environment: prod
+    concurrency: prod
     needs: plan
     if: |
       needs.plan.outputs.diff == 'true' &&
+      github.event_name == 'push' &&
       github.ref == 'refs/heads/master'
     steps:
       - uses: actions/checkout@v4
@@ -117,3 +160,5 @@ jobs:
           TERRAGRUNT_OUT_DIR: ${{ github.workspace }}/.data/tfplans
           TERRAGRUNT_WORKING_DIR: terraform
           TERRAGRUNT_EXCLUDE_DIR: bootstrap,github-action
+      # TODO: create PR if git modified
+      - run: git status
