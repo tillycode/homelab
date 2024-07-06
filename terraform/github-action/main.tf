@@ -145,13 +145,14 @@ data "github_user" "admin" {
   username = var.github_admin
 }
 
-resource "github_repository_environment" "prod" {
-  environment = "prod"
+resource "github_repository_environment" "infrastructure" {
+  environment = "infrastructure"
   repository  = github_repository.this.name
   reviewers {
     users = [data.github_user.admin.id]
   }
 }
+
 resource "github_actions_variable" "aws_role_to_asume" {
   repository    = github_repository.this.name
   variable_name = "AWS_ROLE_TO_ASSUME"

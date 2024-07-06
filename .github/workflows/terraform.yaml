@@ -114,8 +114,8 @@ jobs:
 
   apply:
     runs-on: ubuntu-latest
-    environment: prod
-    concurrency: prod
+    environment: infrastructure
+    concurrency: infrastructure
     needs: plan
     if: |
       needs.plan.outputs.diff == 'true' &&
