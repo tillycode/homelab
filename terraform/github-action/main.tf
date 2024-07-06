@@ -133,12 +133,15 @@ resource "tls_private_key" "github" {
 ##     aws-vault exec admin -- terragrunt import github_repository.this $name
 ## -----------------------------------------------------------------------------
 resource "github_repository" "this" {
-  name                   = var.github_repository_name
+  name             = var.github_repository_name
+  has_downloads    = true
+  has_issues       = true
+  has_projects     = true
+  has_wiki         = true
+  allow_auto_merge = true
+  # Small PRs can use squash merging, whereas large PRs should use merge commits.
+  allow_rebase_merge     = false
   delete_branch_on_merge = true
-  has_downloads          = true
-  has_issues             = true
-  has_projects           = true
-  has_wiki               = true
 }
 
 data "github_user" "admin" {
@@ -151,7 +154,45 @@ resource "github_repository_environment" "infrastructure" {
   reviewers {
     users = [data.github_user.admin.id]
   }
+  deployment_branch_policy {
+    protected_branches     = false
+    custom_branch_policies = true
+  }
 }
+
+resource "github_repository_environment_deployment_policy" "infrastructure" {
+  repository     = github_repository.this.name
+  environment    = github_repository_environment.infrastructure.environment
+  branch_pattern = "master"
+}
+
+resource "github_repository_ruleset" "master" {
+  enforcement = "active"
+  name        = "master"
+  repository  = github_repository.this.name
+  target      = "branch"
+  conditions {
+    ref_name {
+      exclude = []
+      include = [
+        "~DEFAULT_BRANCH",
+      ]
+    }
+  }
+  rules {
+    deletion         = true
+    non_fast_forward = true
+    pull_request {}
+    required_status_checks {
+      strict_required_status_checks_policy = true
+      required_check {
+        context        = "plan"
+        integration_id = 15368 # Github Actions
+      }
+    }
+  }
+}
+
 
 resource "github_actions_variable" "aws_role_to_asume" {
   repository    = github_repository.this.name
