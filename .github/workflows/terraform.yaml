@@ -48,6 +48,16 @@ jobs:
         with:
           role-to-assume: ${{ vars.ALIYUN_ROLE_TO_ASSUME }}
           oidc-provider-arn: ${{ vars.ALIYUN_OIDC_PROVIDER_ARN  }}
+      - uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      - name: "Setup SSH known_hosts"
+        run: |
+          mkdir -p -m 0700 ~/.ssh
+          cat <<EOF > ~/.ssh/known_hosts
+          hz0.szp15.com ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDgh7ENo69W+Zcd+N9O5tJKDrhmp7T+149b7nOSUXRi8pr2N3V8LGDZGAXcWFKIDhcH46+x5IWM/PiCOlOitcBpyWRhZULBUgEkVRUK2aW6oTYQPIMZjfJykHdR8g/VJ7+DCg/R3M5oIw2+SMuyC8SN1V/FODLwSedIAbV8eNYUIzkKkAWHi5PoPL0fJwe8Qv/HTxPsq1xJ0Mo/NCEq5RosE05vaM4UUyqQInFqWsrZuCrGn0bKOLhonk7oU1lAVYFTRWDNy44yp02lYdTPC6GzKA9UWxQWokla1uAOyMf+cge2YtBUkr1uCMdrysMR40Q4EB1b6Y5iUgq1TX2YGaToqNLMbp4No+7zO+p14Ut3dwJnPsXoPVRKpBDOQYxRCUDedDeN7BRlNVJtQRFp8B3o9S/vRxb+wli77BTCsBq3M+owQGEUq6ajcYbJt3yX6/6TuCZwVM01SaXZxrMYOYvlj+/kVs605KkBVPlHYP9syNjKQCGt7X8VPkM8dm4rlmtoce5/98qLT5IBNWkCBj+OQse2i7d1Q1xd8FqOG976dwY3eD/bRQRXxV3gh40jDucVF95zt2NTc7luwscEDwR+WW+ppHvg0BaB/T7D2M58sTYYmn4cfSX3pAMNHqKA5sN5U3fQiySDIRsoTopO97iwN49TOVLomHMvhgQtd9Y/EQ==
+          hz0.szp15.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOK8v/RP6Lnwn79IDQXFuSWnJTigBDSED+2MaHorWUj0
+          EOF
       # TODO: a different devShell
       - uses: nicknovitski/nix-develop@v1
       - run: nix flake show --all-systems
@@ -139,6 +149,13 @@ jobs:
       - uses: webfactory/ssh-agent@v0.9.0
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      - name: "Setup SSH known_hosts"
+        run: |
+          mkdir -p -m 0700 ~/.ssh
+          cat <<EOF > ~/.ssh/known_hosts
+          hz0.szp15.com ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDgh7ENo69W+Zcd+N9O5tJKDrhmp7T+149b7nOSUXRi8pr2N3V8LGDZGAXcWFKIDhcH46+x5IWM/PiCOlOitcBpyWRhZULBUgEkVRUK2aW6oTYQPIMZjfJykHdR8g/VJ7+DCg/R3M5oIw2+SMuyC8SN1V/FODLwSedIAbV8eNYUIzkKkAWHi5PoPL0fJwe8Qv/HTxPsq1xJ0Mo/NCEq5RosE05vaM4UUyqQInFqWsrZuCrGn0bKOLhonk7oU1lAVYFTRWDNy44yp02lYdTPC6GzKA9UWxQWokla1uAOyMf+cge2YtBUkr1uCMdrysMR40Q4EB1b6Y5iUgq1TX2YGaToqNLMbp4No+7zO+p14Ut3dwJnPsXoPVRKpBDOQYxRCUDedDeN7BRlNVJtQRFp8B3o9S/vRxb+wli77BTCsBq3M+owQGEUq6ajcYbJt3yX6/6TuCZwVM01SaXZxrMYOYvlj+/kVs605KkBVPlHYP9syNjKQCGt7X8VPkM8dm4rlmtoce5/98qLT5IBNWkCBj+OQse2i7d1Q1xd8FqOG976dwY3eD/bRQRXxV3gh40jDucVF95zt2NTc7luwscEDwR+WW+ppHvg0BaB/T7D2M58sTYYmn4cfSX3pAMNHqKA5sN5U3fQiySDIRsoTopO97iwN49TOVLomHMvhgQtd9Y/EQ==
+          hz0.szp15.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOK8v/RP6Lnwn79IDQXFuSWnJTigBDSED+2MaHorWUj0
+          EOF
       - uses: nicknovitski/nix-develop@v1
       - uses: actions/download-artifact@v4
         with:
@@ -147,13 +164,6 @@ jobs:
       - name: "Unpack tfplans"
         run: sops -d .data/tfplans.tar.gz.enc | tar -xz -C .data
       # TODO: use a command to setup known_hosts
-      - name: "Setup SSH known_hosts"
-        run: |
-          mkdir -p -m 0700 ~/.ssh
-          cat <<EOF > ~/.ssh/known_hosts
-          hz0.szp15.com ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDgh7ENo69W+Zcd+N9O5tJKDrhmp7T+149b7nOSUXRi8pr2N3V8LGDZGAXcWFKIDhcH46+x5IWM/PiCOlOitcBpyWRhZULBUgEkVRUK2aW6oTYQPIMZjfJykHdR8g/VJ7+DCg/R3M5oIw2+SMuyC8SN1V/FODLwSedIAbV8eNYUIzkKkAWHi5PoPL0fJwe8Qv/HTxPsq1xJ0Mo/NCEq5RosE05vaM4UUyqQInFqWsrZuCrGn0bKOLhonk7oU1lAVYFTRWDNy44yp02lYdTPC6GzKA9UWxQWokla1uAOyMf+cge2YtBUkr1uCMdrysMR40Q4EB1b6Y5iUgq1TX2YGaToqNLMbp4No+7zO+p14Ut3dwJnPsXoPVRKpBDOQYxRCUDedDeN7BRlNVJtQRFp8B3o9S/vRxb+wli77BTCsBq3M+owQGEUq6ajcYbJt3yX6/6TuCZwVM01SaXZxrMYOYvlj+/kVs605KkBVPlHYP9syNjKQCGt7X8VPkM8dm4rlmtoce5/98qLT5IBNWkCBj+OQse2i7d1Q1xd8FqOG976dwY3eD/bRQRXxV3gh40jDucVF95zt2NTc7luwscEDwR+WW+ppHvg0BaB/T7D2M58sTYYmn4cfSX3pAMNHqKA5sN5U3fQiySDIRsoTopO97iwN49TOVLomHMvhgQtd9Y/EQ==
-          hz0.szp15.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOK8v/RP6Lnwn79IDQXFuSWnJTigBDSED+2MaHorWUj0
-          EOF
       - name: "Run Terragrunt Apply"
         run: terragrunt run-all apply -auto-approve
         env:
