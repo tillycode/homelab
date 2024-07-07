@@ -8,8 +8,10 @@ variable "working_directory" {
 }
 
 variable "flake" {
-  type    = string
-  default = "git+file:.?shallow=1"
+  type = string
+  # FIXME: git+file:. broken in nix 2.19 (NixOS/nix#9708)
+  # default = "git+file:.?shallow=1"
+  default = ".?shallow=1"
 }
 
 variable "attribute" {
