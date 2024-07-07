@@ -1,4 +1,9 @@
-{ inputs, modulesPath, ... }:
+{
+  inputs,
+  modulesPath,
+  pkgs,
+  ...
+}:
 {
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
@@ -29,6 +34,8 @@
       "/var/log"
     ];
   };
+
+  environment.systemPackages = with pkgs; [ hello ];
 
   system.stateVersion = "23.11";
 }
