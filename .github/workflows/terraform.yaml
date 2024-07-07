@@ -133,10 +133,10 @@ jobs:
       github.ref == 'refs/heads/master'
     steps:
       - uses: actions/checkout@v4
-      - uses: DeterminateSystems/nix-installer-action@main
+      - uses: cachix/install-nix-action@v27
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          extra-conf: |
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+          extra_nix_config: |
             accept-flake-config = true
       - uses: aws-actions/configure-aws-credentials@v4
         with:
