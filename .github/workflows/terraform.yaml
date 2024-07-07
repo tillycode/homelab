@@ -25,10 +25,10 @@ jobs:
       diff: ${{ steps.plan.outputs.diff }}
     steps:
       - uses: actions/checkout@v4
-      - uses: DeterminateSystems/nix-installer-action@main
+      - uses: cachix/install-nix-action@v27
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          extra-conf: |
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+          extra_nix_config: |
             accept-flake-config = true
       - uses: cachix/cachix-action@master
         with:
