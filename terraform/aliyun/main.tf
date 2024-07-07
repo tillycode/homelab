@@ -73,17 +73,17 @@ resource "alicloud_instance" "hgh2" {
   }
 }
 
-module "hgh2_install" {
-  source = "../modules/nixos_install"
-  triggers = {
+# TODO: provision github action ssh key to alicloud key pair
+
+module "nixos_hgh2" {
+  source = "../modules/nixos"
+  reinstall_triggers = {
     instance_id = alicloud_instance.hgh2.id
   }
+
   working_directory = var.project_root
-
-  flake       = "git+file:.?shallow=1#hgh2"
-  ssh_host    = "root@${alicloud_instance.hgh2.private_ip}"
-  ssh_options = ["ProxyJump=root@hz0.szp15.com"]
-
-  substitute_on_remote = false
-  upload_kexec_image   = true
+  attribute         = "hgh2"
+  ssh_host          = alicloud_instance.hgh2.private_ip
+  bastion_host      = "hz0.szp15.com"
+  push_to_remote    = true
 }
