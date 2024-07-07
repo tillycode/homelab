@@ -26,4 +26,4 @@ export -n flake attribute ssh_user ssh_host ssh_port known_hosts \
   bastion_user bastion_host bastion_port push_to_remote build_on_remote
 
 set -x
-deploy "${args[@]}" "${flake:?}#${attribute:?}" --print-build-log
+deploy "${args[@]}" "${flake:?}#${attribute:?}" -- --print-build-logs
