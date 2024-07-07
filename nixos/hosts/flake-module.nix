@@ -25,15 +25,7 @@
 
       nodes = {
         hgh2 = {
-          hostname = "172.16.0.78";
-          sshUser = "root";
-          sshOpts = [
-            "-o"
-            "ProxyJump=root@hz0.szp15.com"
-          ];
-          fastConnection = true;
-          remoteBuild = false;
-
+          hostname = "hgh2";
           profiles.system = {
             path = deployLib.activate.nixos cfg;
           };

@@ -27,6 +27,7 @@
           # used in Github Actions
           jq
           sops
+          ssh-to-age
         ];
         devshell.startup = {
           nixago.text = config.nixago.shellHook;
