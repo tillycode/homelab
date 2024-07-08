@@ -4,7 +4,28 @@
   lib,
   ...
 }:
+let
+  mkNode =
+    name: cfg:
+    let
+      inherit (cfg.pkgs.stdenv.hostPlatform) system;
+    in
+    {
+      hostname = name;
+      profiles.system = {
+        path = inputs.deploy-rs.lib.${system}.activate.nixos cfg;
+      };
+    };
+in
 {
+  flake.nixosConfigurations.hgh1 = inputs.nixpkgs.lib.nixosSystem {
+    modules = [ ./hgh1 ];
+    specialArgs = {
+      inherit inputs;
+    };
+    system = "x86_64-linux";
+  };
+
   flake.nixosConfigurations.hgh2 = inputs.nixpkgs.lib.nixosSystem {
     modules = [ ./hgh2 ];
     specialArgs = {
@@ -13,25 +34,12 @@
     system = "x86_64-linux";
   };
 
-  flake.deploy =
-    let
-      cfg = self.nixosConfigurations.hgh2;
-      system = cfg.pkgs.stdenv.hostPlatform.system;
-      deployLib = inputs.deploy-rs.lib.${system};
-    in
-    {
-      autoRollback = true;
-      magicRollback = true;
+  flake.deploy = {
+    autoRollback = true;
+    magicRollback = true;
 
-      nodes = {
-        hgh2 = {
-          hostname = "hgh2";
-          profiles.system = {
-            path = deployLib.activate.nixos cfg;
-          };
-        };
-      };
-    };
+    nodes = lib.mapAttrs mkNode self.nixosConfigurations;
+  };
 
   flake.checks =
     let

@@ -55,6 +55,25 @@ module "sg" {
   ]
 }
 
+resource "alicloud_instance" "hgh1" {
+  instance_name = "hgh1"
+
+  instance_type     = "ecs.e-c1m1.large"
+  image_id          = "ubuntu_22_04_uefi_x64_20G_alibase_20230515.vhd"
+  security_groups   = [module.sg.security_group_id]
+  vswitch_id        = module.vpc.vswitch_ids[0]
+  renewal_status    = "AutoRenewal"
+  auto_renew_period = 12
+
+  tags = {
+    Terraform = "true"
+  }
+
+  lifecycle {
+    prevent_destroy = true
+  }
+
+}
 
 resource "alicloud_instance" "hgh2" {
   instance_name = "hgh2"
@@ -74,6 +93,18 @@ resource "alicloud_instance" "hgh2" {
 }
 
 # TODO: provision github action ssh key to alicloud key pair
+
+module "nixos_hgh1" {
+  source = "../modules/nixos"
+  reinstall_triggers = {
+    instance_id = alicloud_instance.hgh1.id
+  }
+
+  working_directory = var.project_root
+  attribute         = "hgh1"
+  ssh_host          = alicloud_instance.hgh1.public_ip
+  push_to_remote    = true
+}
 
 module "nixos_hgh2" {
   source = "../modules/nixos"
