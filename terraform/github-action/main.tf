@@ -189,6 +189,10 @@ resource "github_repository_ruleset" "master" {
         context        = "plan"
         integration_id = 15368 # Github Actions
       }
+      required_check {
+        context        = "build"
+        integration_id = 15368 # Github Actions
+      }
     }
   }
 }

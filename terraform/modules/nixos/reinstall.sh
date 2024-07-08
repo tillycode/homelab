@@ -20,7 +20,10 @@ if [[ ${push_to_remote:-} == "true" ]]; then
   arch="$(ssh_ uname -m)"
   case "${arch}" in
   x86_64 | aarch64)
-    nixos_image="$(nixos-image --branch "${nixos_images_version:?}" "${arch}")"
+    nixos_image="$(mktemp -d)"
+    trap 'rm -rf "${nixos_image}"' EXIT
+    curl -fsSL -o "${nixos_image}/nixos-kexec-installer.tar.gz" \
+      "https://github.com/nix-community/nixos-images/releases/download/$nixos_images_version/nixos-kexec-installer-noninteractive-$arch-linux.tar.gz"
     args+=(--kexec "${nixos_image}")
     ;;
   *)
