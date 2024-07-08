@@ -1,0 +1,112 @@
+name: "Build and Plan"
+
+on:
+  pull_request:
+    branches:
+      - "master"
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+  pull-requests: write
+
+env:
+  TERRAGRUNT_NON_INTERACTIVE: "true"
+  TF_IN_AUTOMATION: "true"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v27
+        with:
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+          extra_nix_config: |
+            accept-flake-config = true
+      - uses: cachix/cachix-action@master
+        with:
+          name: sunziping2016
+          signingKey: "${{ secrets.CACHIX_SIGNING_KEY }}"
+      - uses: nicknovitski/nix-develop@v1
+        with:
+          arguments: ".#deploy"
+      - run: nix flake show --all-systems
+      - run: nix flake check --all-systems
+
+  plan:
+    runs-on: ubuntu-latest
+    outputs:
+      diff: ${{ steps.plan.outputs.diff }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v27
+        with:
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+          extra_nix_config: |
+            accept-flake-config = true
+      - uses: cachix/cachix-action@master
+        with:
+          name: sunziping2016
+          signingKey: "${{ secrets.CACHIX_SIGNING_KEY }}"
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: ap-southeast-1
+          role-to-assume: ${{ vars.AWS_ROLE_TO_ASSUME }}
+      - uses: aliyun/configure-aliyun-credentials-action@v1
+        with:
+          role-to-assume: ${{ vars.ALIYUN_ROLE_TO_ASSUME }}
+          oidc-provider-arn: ${{ vars.ALIYUN_OIDC_PROVIDER_ARN  }}
+      - uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      - name: "Setup SSH known_hosts"
+        run: |
+          mkdir -p -m 0700 ~/.ssh
+          cat <<EOF > ~/.ssh/known_hosts
+          hz0.szp15.com ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDgh7ENo69W+Zcd+N9O5tJKDrhmp7T+149b7nOSUXRi8pr2N3V8LGDZGAXcWFKIDhcH46+x5IWM/PiCOlOitcBpyWRhZULBUgEkVRUK2aW6oTYQPIMZjfJykHdR8g/VJ7+DCg/R3M5oIw2+SMuyC8SN1V/FODLwSedIAbV8eNYUIzkKkAWHi5PoPL0fJwe8Qv/HTxPsq1xJ0Mo/NCEq5RosE05vaM4UUyqQInFqWsrZuCrGn0bKOLhonk7oU1lAVYFTRWDNy44yp02lYdTPC6GzKA9UWxQWokla1uAOyMf+cge2YtBUkr1uCMdrysMR40Q4EB1b6Y5iUgq1TX2YGaToqNLMbp4No+7zO+p14Ut3dwJnPsXoPVRKpBDOQYxRCUDedDeN7BRlNVJtQRFp8B3o9S/vRxb+wli77BTCsBq3M+owQGEUq6ajcYbJt3yX6/6TuCZwVM01SaXZxrMYOYvlj+/kVs605KkBVPlHYP9syNjKQCGt7X8VPkM8dm4rlmtoce5/98qLT5IBNWkCBj+OQse2i7d1Q1xd8FqOG976dwY3eD/bRQRXxV3gh40jDucVF95zt2NTc7luwscEDwR+WW+ppHvg0BaB/T7D2M58sTYYmn4cfSX3pAMNHqKA5sN5U3fQiySDIRsoTopO97iwN49TOVLomHMvhgQtd9Y/EQ==
+          hz0.szp15.com ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOK8v/RP6Lnwn79IDQXFuSWnJTigBDSED+2MaHorWUj0
+          EOF
+      - uses: nicknovitski/nix-develop@v1
+        with:
+          arguments: ".#deploy"
+      - run: terragrunt run-all validate
+        env:
+          TERRAGRUNT_WORKING_DIR: terraform
+      - name: Run terragrunt plan
+        id: plan
+        shell: bash
+        run: |
+          echo "plan<<EOF" >> "$GITHUB_OUTPUT"
+          terragrunt run-all plan -concise |& tee \
+            >(sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g' >> "$GITHUB_OUTPUT")
+          echo "EOF" >> "$GITHUB_OUTPUT"
+
+          diff="$(terragrunt run-all show -json | jq -s \
+            '[.[].resource_changes.[].change.actions[]] | any(. != "no-op")')"
+          echo "diff=$diff" >> "$GITHUB_OUTPUT"
+        env:
+          TERRAGRUNT_OUT_DIR: ${{ github.workspace }}/.data/tfplans
+          TERRAGRUNT_WORKING_DIR: terraform
+          TERRAGRUNT_EXCLUDE_DIR: bootstrap,github-action
+      - uses: peter-evans/find-comment@v3
+        id: find-comment
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: "github-actions[bot]"
+          body-includes: "### Terragrunt Plan"
+      - uses: peter-evans/create-or-update-comment@v4
+        with:
+          comment-id: ${{ steps.find-comment.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            ### Terragrunt Plan :memo:
+
+            ```text
+            ${{ steps.plan.outputs.plan }}
+            ```
+
+            **Status**: ${{ steps.plan.outputs.diff == 'true' && 'out of sync :warning:' || 'no changes :ok_hand:' }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          edit-mode: replace

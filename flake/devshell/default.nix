@@ -23,8 +23,6 @@
           terraform-ls
           gh
           aliyun-cli
-          # TODO: use a different devshell for GitHub Actions
-          # used in Github Actions
           jq
           sops
           ssh-to-age
@@ -36,6 +34,19 @@
       };
       nixago.configs = [ ];
 
-      checks.devshell = config.devShells.default;
+      devshells.deploy = {
+        devshell.motd = "Welcome to CI/CD shell";
+        devshell.packages = with pkgs; [
+          opentofu
+          terragrunt
+          jq
+          sops
+          ssh-to-age
+          deploy-rs.deploy-rs
+        ];
+      };
+
+      checks."devshell-default" = config.devShells.default;
+      checks."devshell-deploy" = config.devShells.deploy;
     };
 }
