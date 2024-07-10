@@ -102,7 +102,8 @@ module "nixos_hgh1" {
 
   working_directory = var.project_root
   attribute         = "hgh1"
-  ssh_host          = alicloud_instance.hgh1.public_ip
+  ssh_host          = alicloud_instance.hgh1.private_ip
+  bastion_host      = "hz0.szp15.com"
   push_to_remote    = true
 }
 
