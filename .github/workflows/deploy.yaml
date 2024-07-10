@@ -139,5 +139,16 @@ jobs:
           TERRAGRUNT_OUT_DIR: ${{ github.workspace }}/.data/tfplans
           TERRAGRUNT_WORKING_DIR: terraform
           TERRAGRUNT_EXCLUDE_DIR: bootstrap,github-action
-      # TODO: create PR if git modified
-      - run: git status
+      - run: nix fmt
+        if: always()
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        if: always()
+        with:
+          commit-message: "chore(deploy): update generated files"
+          title: Update generated files
+          labels: |
+            deployment
+            automated
+          token: ${{ secrets.GH_TOKEN_FOR_UPDATES }}
+          branch: chore/generated-files

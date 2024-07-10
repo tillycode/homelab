@@ -11,7 +11,7 @@ if [ -n "${bastion_host:-}" ]; then
 fi
 
 set +x
-known_hosts="$("${cmd[@]}" 2>/dev/null)"
+known_hosts="$("${cmd[@]}" 2>/dev/null | sort)"
 age_public_key="$(ssh-to-age <<<"$known_hosts" | head -n 1)"
 jq -n --arg known_hosts "$known_hosts" --arg age_public_key "$age_public_key" \
   '{known_hosts: $known_hosts, age_public_key: $age_public_key}'

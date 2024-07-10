@@ -18,7 +18,8 @@ jobs:
       - name: Update flake.lock
         uses: DeterminateSystems/update-flake-lock@main
         with:
-          pr-title: "chore(deps): update flake.lock"
+          commit-msg: "chore(deps): update flake.lock"
+          pr-title: "Update flake.lock"
           pr-labels: |
             dependencies
             automated
@@ -31,3 +32,4 @@ jobs:
           #   following command:
           #     gh secret set GH_TOKEN_FOR_UPDATES  # paste the token
           token: ${{ secrets.GH_TOKEN_FOR_UPDATES }}
+          branch: chore/update-flake-lock
