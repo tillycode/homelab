@@ -22,8 +22,13 @@ if [[ ${build_on_remote:-} == "true" ]]; then
   args+=(--remote-build)
 fi
 
+if [[ -n ${working_dir:-} ]]; then
+  cd "${working_dir}"
+fi
+
 export -n flake attribute ssh_user ssh_host ssh_port known_hosts \
-  bastion_user bastion_host bastion_port push_to_remote build_on_remote
+  bastion_user bastion_host bastion_port push_to_remote build_on_remote \
+  working_dir
 
 set -x
 deploy "${args[@]}" "${flake:?}#${attribute:?}" -- --print-build-logs

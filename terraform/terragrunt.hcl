@@ -20,5 +20,5 @@ remote_state {
 }
 
 dependencies {
-  paths = ["${get_repo_root()}/terraform/bootstrap"]
+  paths = ["${path_relative_from_include()}/bootstrap"]
 }
