@@ -14,7 +14,7 @@ output "dynamodb_table" {
 }
 
 resource "local_file" "backend" {
-  filename = "${path.module}/output.json"
+  filename = var.output_file
   content = jsonencode({
     region          = var.aws_terraform_region,
     state_bucket    = module.remote_state.state_bucket.bucket,
