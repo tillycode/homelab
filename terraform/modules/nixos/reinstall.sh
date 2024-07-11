@@ -37,9 +37,13 @@ if [[ ${build_on_remote:-} == "true" ]]; then
   args+=(--build-on-remote)
 fi
 
+if [[ -n ${working_dir:-} ]]; then
+  cd "${working_dir}"
+fi
+
 export -n flake attribute ssh_user ssh_host ssh_port \
   bastion_user bastion_host bastion_port push_to_remote build_on_remote \
-  nixos_anywhere_version nixos_images_version
+  nixos_anywhere_version nixos_images_version working_dir
 
 set -x
 nix run "github:nix-community/nixos-anywhere/${nixos_anywhere_version:?}#nixos-anywhere" \
