@@ -36,4 +36,5 @@ terraform {
 inputs = {
   aws_terraform_region          = "ap-east-1"
   aws_terraform_iam_policy_name = "terraform-access"
+  output_file                   = "${get_repo_root()}/generated/terraform-bootstrap.json"
 }

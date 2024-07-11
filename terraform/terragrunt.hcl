@@ -1,5 +1,5 @@
 locals {
-  bootstrap = jsondecode(file("bootstrap/output.json"))
+  bootstrap = jsondecode(file("${get_repo_root()}/generated/terraform-bootstrap.json"))
 }
 
 remote_state {

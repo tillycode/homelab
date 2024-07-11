@@ -17,7 +17,7 @@
           "*.{tfstate,lock,lock.hcl}"
 
           # generated files
-          "terraform/bootstrap/output.json"
+          "generated/*"
           "secrets/*"
           "pkgs/_sources/*"
         ];
