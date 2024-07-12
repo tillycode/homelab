@@ -1,0 +1,38 @@
+keys:
+  - &user_sun 8CC5C91F72DB57DA20BD848C6523836CF4992251
+  - &github_action
+    arn: ${github_action}
+%{ for host, key in hosts ~}
+  - &host_${host} ${key}
+%{ endfor ~}
+creation_rules:
+  - path_regex: ^secrets/all_hosts\.yaml$
+    key_groups:
+      - pgp:
+          - *user_sun
+        kms:
+          - *github_action
+        age:
+%{ for host, key in hosts ~}
+          - *host_${host}
+%{ endfor ~}
+%{ for host, key in hosts ~}
+  - path_regex: ^secrets/hosts/${host}\.yaml$
+    key_groups:
+      - pgp:
+          - *user_sun
+        kms:
+          - *github_action
+        age:
+          - *host_${host}
+%{ endfor ~}
+  - path_regex: ^secrets/terraform/tofu-encryption\.json$
+    key_groups:
+      - pgp:
+          - *user_sun
+        kms:
+          - *github_action
+  - path_regex: ^.data/tfplans.tar.gz
+    key_groups:
+      - kms:
+          - *github_action
