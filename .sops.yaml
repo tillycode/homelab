@@ -1,15 +1,1 @@
-keys:
-  - &user_sun 8CC5C91F72DB57DA20BD848C6523836CF4992251
-  - &github_action
-    arn: arn:aws:kms:ap-southeast-1:137927498482:alias/sops-key
-creation_rules:
-  - path_regex: ^secrets/terraform/tofu-encryption\.json$
-    key_groups:
-      - pgp:
-          - *user_sun
-        kms:
-          - *github_action
-  - path_regex: ^.data/tfplans.tar.gz
-    key_groups:
-      - kms:
-          - *github_action
+generated/sops.yaml

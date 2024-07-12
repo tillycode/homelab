@@ -55,6 +55,11 @@ module "sg" {
   ]
 }
 
+resource "alicloud_key_pair" "github_action" {
+  key_pair_name = "github-action"
+  public_key    = var.github_action_ssh_public_key
+}
+
 resource "alicloud_instance" "hgh1" {
   instance_name = "hgh1"
 
@@ -91,8 +96,6 @@ resource "alicloud_instance" "hgh2" {
     prevent_destroy = true
   }
 }
-
-# TODO: provision github action ssh key to alicloud key pair
 
 module "nixos_hgh1" {
   source = "../modules/nixos"

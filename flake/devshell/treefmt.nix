@@ -11,10 +11,7 @@
         # global
         settings.global.excludes = lib.mkAfter [
           # unsupported extensions
-          "*.gitignore"
-
-          # state file or lock file managed by tools
-          "*.{tfstate,lock,lock.hcl}"
+          "*.{gitignore,tfstate,lock,lock.hcl,tftpl}"
 
           # generated files
           "generated/*"

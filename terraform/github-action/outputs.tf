@@ -5,5 +5,5 @@ output "github_ssh_public_key" {
 
 output "aws_sops_key_arn" {
   description = "The ARN of the KMS key for SOPS secrets."
-  value       = module.kms.aliases[var.aws_sops_key_alias].target_key_arn
+  value       = module.kms.aliases[var.aws_sops_key_alias].arn
 }
