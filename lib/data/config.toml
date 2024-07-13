@@ -1,9 +1,0 @@
-"$schema" = "./config.schema.json"
-
-[[nodes]]
-hostname = "aliyun-hz2"
-system = "x86_64-linux"
-ssh-host = "172.16.0.78"
-ssh-options = ["ProxyJump=root@aliyun-hz0"]
-
-requires-infection = true

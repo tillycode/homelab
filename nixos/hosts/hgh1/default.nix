@@ -1,5 +1,11 @@
-{ ... }:
+{ profiles, modulesPath, ... }:
 {
-  # TODO: refactor hosts
-  imports = [ ../hgh2 ];
+  imports =
+    [ (modulesPath + "/profiles/qemu-guest.nix") ]
+    ++ (with profiles; [
+      system.aliyun
+      services.openssh
+    ]);
+
+  system.stateVersion = "23.11";
 }

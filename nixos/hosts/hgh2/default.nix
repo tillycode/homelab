@@ -1,7 +1,11 @@
-{ ... }:
+{ profiles, modulesPath, ... }:
 {
-  imports = [
-    ./disko.nix
-    ./configuration.nix
-  ];
+  imports =
+    [ (modulesPath + "/profiles/qemu-guest.nix") ]
+    ++ (with profiles; [
+      system.aliyun
+      services.openssh
+    ]);
+
+  system.stateVersion = "23.11";
 }
