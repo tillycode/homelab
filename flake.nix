@@ -70,6 +70,9 @@
     flake-compat.url = "github:edolstra/flake-compat";
     flake-compat.flake = false;
 
+    haumea.url = "github:nix-community/haumea";
+    haumea.inputs.nixpkgs.follows = "nixpkgs";
+
     gitignore-nix.url = "github:hercules-ci/gitignore.nix";
     gitignore-nix.inputs.nixpkgs.follows = "nixpkgs";
   };
@@ -84,7 +87,6 @@
         ./flake/flake-module.nix
         ./lib/flake-module.nix
         ./pkgs/flake-module.nix
-        ./nixos/hosts/flake-module.nix
       ];
       systems = [
         "aarch64-linux"
