@@ -5,7 +5,7 @@ keys:
   - &host_hgh1 age1w9jxjempv57weclcf9pgc2j5qs0f89uup2cmpws7y56g5jfrldqqqwwwf9
   - &host_hgh2 age1lawg2fw8nfmh4nuz9k76znqu96f786e3uk6hdccxkrae06qj9ugspyt5cg
 creation_rules:
-  - path_regex: ^secrets/all_hosts\.yaml$
+  - path_regex: ^secrets/all-hosts\.yaml$
     key_groups:
       - pgp:
           - *user_sun
