@@ -22,7 +22,10 @@ let
       nix.settings
     ];
 
-    base = nixSettings ++ [ services.openssh ];
+    base = nixSettings ++ [
+      networking.systemd
+      services.openssh
+    ];
 
     aliyunServer = base ++ [ system.aliyun ];
   };
@@ -44,7 +47,7 @@ let
       inherit system specialArgs;
       modules = nixosModules ++ [
         ../nixos/hosts/${name}
-        # { networking.hostName = "${name}"; }
+        { networking.hostName = "${name}"; }
       ];
     };
 

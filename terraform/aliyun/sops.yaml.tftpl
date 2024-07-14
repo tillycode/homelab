@@ -6,7 +6,7 @@ keys:
   - &host_${host} ${key}
 %{ endfor ~}
 creation_rules:
-  - path_regex: ^secrets/all_hosts\.yaml$
+  - path_regex: ^secrets/all-hosts\.yaml$
     key_groups:
       - pgp:
           - *user_sun
