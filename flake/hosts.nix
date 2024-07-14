@@ -14,10 +14,23 @@ let
     src = ../nixos/profiles;
     loader = inputs.haumea.lib.loaders.path;
   };
+  nixosSuites = with nixosProfiles; rec {
+    nixSettings = [
+      nix.gc
+      nix.optimise
+      nix.registry
+      nix.settings
+    ];
+
+    base = nixSettings ++ [ services.openssh ];
+
+    aliyunServer = base ++ [ system.aliyun ];
+  };
 
   nixosSpecialArgs = {
-    inherit inputs;
+    inherit inputs self;
     profiles = nixosProfiles;
+    suites = nixosSuites;
   };
 
   mkHost =

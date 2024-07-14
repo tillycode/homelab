@@ -1,11 +1,6 @@
-{ profiles, modulesPath, ... }:
+{ suites, modulesPath, ... }:
 {
-  imports =
-    [ (modulesPath + "/profiles/qemu-guest.nix") ]
-    ++ (with profiles; [
-      system.aliyun
-      services.openssh
-    ]);
+  imports = [ (modulesPath + "/profiles/qemu-guest.nix") ] ++ suites.aliyunServer;
 
   system.stateVersion = "23.11";
 }
