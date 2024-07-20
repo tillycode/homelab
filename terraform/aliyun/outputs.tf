@@ -14,8 +14,8 @@ resource "local_file" "sops_config" {
     github_action = var.github_action_sops_key_arn,
     hosts = {
       desktop = "age1v6lnkm7prm0dpmcdpvn44v50rpfkzsed5uv3znxt4grsd5y6sv5qjru9qq"
-      hgh1 = module.nixos_hgh1.age_public_key,
-      hgh2 = module.nixos_hgh2.age_public_key,
+      hgh1    = module.nixos_hgh1.age_public_key,
+      hgh2    = module.nixos_hgh2.age_public_key,
     }
   })
 }
