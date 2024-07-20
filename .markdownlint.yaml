@@ -1,0 +1,3 @@
+MD013:
+  # allow tables to exceed the line length limit
+  tables: false

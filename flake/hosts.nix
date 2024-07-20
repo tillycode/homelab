@@ -1,11 +1,14 @@
-{
-  inputs,
-  lib,
-  self,
-  ...
+{ inputs
+, lib
+, self
+, ...
 }:
 let
-  nixosModules = [
+  selfNixosModules = lib.collect lib.isPath (inputs.haumea.lib.load {
+    src = ../nixos/modules;
+    loader = inputs.haumea.lib.loaders.path;
+  });
+  nixosModules = selfNixosModules ++ [
     inputs.sops-nix.nixosModules.sops
     inputs.impermanence.nixosModules.impermanence
     inputs.disko.nixosModules.disko
@@ -38,10 +41,10 @@ let
 
   mkHost =
     name:
-    {
-      system,
-      nixpkgs ? inputs.nixpkgs,
-      specialArgs ? nixosSpecialArgs,
+    { system
+    , nixpkgs ? inputs.nixpkgs
+    , specialArgs ? nixosSpecialArgs
+    ,
     }:
     nixpkgs.lib.nixosSystem {
       inherit system specialArgs;
