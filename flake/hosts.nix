@@ -5,9 +5,17 @@
   ...
 }:
 let
-  nixosModules = [
+  selfNixosModules = lib.collect lib.isPath (
+    inputs.haumea.lib.load {
+      src = ../nixos/modules;
+      loader = inputs.haumea.lib.loaders.path;
+    }
+  );
+
+  nixosModules = selfNixosModules ++ [
     inputs.sops-nix.nixosModules.sops
     inputs.impermanence.nixosModules.impermanence
+    inputs.home-manager.nixosModules.home-manager
     inputs.disko.nixosModules.disko
   ];
   nixosProfiles = inputs.haumea.lib.load {
@@ -15,19 +23,30 @@ let
     loader = inputs.haumea.lib.loaders.path;
   };
   nixosSuites = with nixosProfiles; rec {
-    nixSettings = [
+    base = [
+      boot.systemd
+      networking.systemd
       nix.gc
       nix.optimise
       nix.registry
       nix.settings
-    ];
-
-    base = nixSettings ++ [
-      networking.systemd
       services.openssh
+      system.common
     ];
 
-    aliyunServer = base ++ [ system.aliyun ];
+    aliyun = base ++ [ system.aliyun ];
+
+    desktop = base ++ [
+      i18n.fcitx
+      graphical.applications
+      graphical.fonts
+      graphical.xfce
+      networking.iwd
+      services.bluetooth
+      services.pipewire
+      system.nvidia
+      users.sun
+    ];
   };
 
   nixosSpecialArgs = {
@@ -75,6 +94,9 @@ let
 in
 {
   flake.nixosConfigurations = lib.mapAttrs mkHost {
+    desktop = {
+      system = "x86_64-linux";
+    };
     hgh1 = {
       system = "x86_64-linux";
     };
