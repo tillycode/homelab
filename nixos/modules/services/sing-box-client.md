@@ -6,12 +6,12 @@
 
 There are 4 DNS handlers, they are:
 
-| DNS Handler             | Description                           | Use case                                  |
-| ----------------------- | ------------------------------------- | ----------------------------------------- |
-| :house: `local`         | Using domestic DNS server             | domestic domains                          |
-| :zap: `remote`          | Return FakeIP                         | `A` and `AAAA` record for foreign domains |
-| :airplane: `google`     | Using Google DNS server through proxy | other DNS records for foreign domains     |
-| :no_entry_sign: `block` | Return empty response                 | Ads and tracking domains                  |
+| DNS Handler         | Description                           | Use case                                  |
+| ------------------- | ------------------------------------- | ----------------------------------------- |
+| :house: `local`     | Using domestic DNS server             | domestic domains                          |
+| :zap: `remote`      | Return FakeIP                         | `A` and `AAAA` record for foreign domains |
+| :airplane: `google` | Using Google DNS server through proxy | other DNS records for foreign domains     |
+| :x: `block`         | Return empty response                 | Ads and tracking domains                  |
 
 Only packets with FakeIp destination are routed to the sing-box TUN interface.
 Other packets are routed as usual.
@@ -23,7 +23,7 @@ This can greatly increase the performance.
 2. :house: if clash mode is `Direct`
 3. :zap: if clash mode is `Global` and type is `A` or `AAAA`
 4. :airplane: if clash mode is `Global`
-5. :no_entry_sign: if matches _custom block rules_
+5. :x: if matches _custom block rules_
 6. :house: if matches _custom local rules_
 7. :zap: if if type is `A` or `AAAA`
 8. :airplane: otherwise

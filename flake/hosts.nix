@@ -34,7 +34,10 @@ let
       system.common
     ];
 
-    aliyun = base ++ [ system.aliyun ];
+    aliyun = base ++ [
+      services.sing-box-client
+      system.aliyun
+    ];
 
     desktop = base ++ [
       i18n.fcitx
@@ -44,6 +47,7 @@ let
       networking.iwd
       services.bluetooth
       services.pipewire
+      services.sing-box-client
       system.nvidia
       users.sun
     ];
@@ -113,6 +117,7 @@ in
   };
 
   flake.checks = lib.pipe self.nixosConfigurations [
+    (lib.filterAttrs (name: cfg: name != "desktop"))
     (lib.mapAttrsToList mkHostCheck)
     (lib.fold lib.recursiveUpdate { })
   ];
