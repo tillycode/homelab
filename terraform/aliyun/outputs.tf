@@ -13,8 +13,9 @@ resource "local_file" "sops_config" {
   content = templatefile("${path.module}/sops.yaml.tftpl", {
     github_action = var.github_action_sops_key_arn,
     hosts = {
-      hgh1 = module.nixos_hgh1.age_public_key,
-      hgh2 = module.nixos_hgh2.age_public_key,
+      desktop = "age1v6lnkm7prm0dpmcdpvn44v50rpfkzsed5uv3znxt4grsd5y6sv5qjru9qq"
+      hgh1    = module.nixos_hgh1.age_public_key,
+      hgh2    = module.nixos_hgh2.age_public_key,
     }
   })
 }

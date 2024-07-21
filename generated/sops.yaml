@@ -2,6 +2,7 @@ keys:
   - &user_sun 8CC5C91F72DB57DA20BD848C6523836CF4992251
   - &github_action
     arn: arn:aws:kms:ap-southeast-1:137927498482:alias/sops-key
+  - &host_desktop age1v6lnkm7prm0dpmcdpvn44v50rpfkzsed5uv3znxt4grsd5y6sv5qjru9qq
   - &host_hgh1 age1w9jxjempv57weclcf9pgc2j5qs0f89uup2cmpws7y56g5jfrldqqqwwwf9
   - &host_hgh2 age1lawg2fw8nfmh4nuz9k76znqu96f786e3uk6hdccxkrae06qj9ugspyt5cg
 creation_rules:
@@ -12,8 +13,17 @@ creation_rules:
         kms:
           - *github_action
         age:
+          - *host_desktop
           - *host_hgh1
           - *host_hgh2
+  - path_regex: ^secrets/hosts/desktop\.yaml$
+    key_groups:
+      - pgp:
+          - *user_sun
+        kms:
+          - *github_action
+        age:
+          - *host_desktop
   - path_regex: ^secrets/hosts/hgh1\.yaml$
     key_groups:
       - pgp:
