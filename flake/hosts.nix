@@ -101,6 +101,9 @@ in
     desktop = {
       system = "x86_64-linux";
     };
+    hgh0 = {
+      system = "x86_64-linux";
+    };
     hgh1 = {
       system = "x86_64-linux";
     };

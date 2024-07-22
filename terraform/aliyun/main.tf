@@ -60,6 +60,24 @@ resource "alicloud_key_pair" "github_action" {
   public_key    = var.github_action_ssh_public_key
 }
 
+
+resource "alicloud_instance" "hgh0" {
+  instance_name = "hgh0"
+
+  instance_type   = "ecs.e-c1m4.large"
+  image_id        = "ubuntu_22_04_uefi_x64_20G_alibase_20230515.vhd"
+  security_groups = [module.sg.security_group_id]
+  vswitch_id      = module.vpc.vswitch_ids[0]
+
+  tags = {
+    Terraform = "true"
+  }
+
+  lifecycle {
+    prevent_destroy = true
+  }
+}
+
 resource "alicloud_instance" "hgh1" {
   instance_name = "hgh1"
 
@@ -77,7 +95,6 @@ resource "alicloud_instance" "hgh1" {
   lifecycle {
     prevent_destroy = true
   }
-
 }
 
 resource "alicloud_instance" "hgh2" {
@@ -97,6 +114,22 @@ resource "alicloud_instance" "hgh2" {
   }
 }
 
+locals {
+  hgh0_public_ip = "47.96.145.133"
+}
+
+module "nixos_hgh0" {
+  source = "../modules/nixos"
+  reinstall_triggers = {
+    instance_id = alicloud_instance.hgh0.id
+  }
+
+  working_directory = var.project_root
+  attribute         = "hgh0"
+  ssh_host          = local.hgh0_public_ip
+  push_to_remote    = true
+}
+
 module "nixos_hgh1" {
   source = "../modules/nixos"
   reinstall_triggers = {
@@ -106,7 +139,7 @@ module "nixos_hgh1" {
   working_directory = var.project_root
   attribute         = "hgh1"
   ssh_host          = alicloud_instance.hgh1.private_ip
-  bastion_host      = "hz0.szp15.com"
+  bastion_host      = local.hgh0_public_ip
   push_to_remote    = true
 }
 
@@ -119,6 +152,6 @@ module "nixos_hgh2" {
   working_directory = var.project_root
   attribute         = "hgh2"
   ssh_host          = alicloud_instance.hgh2.private_ip
-  bastion_host      = "hz0.szp15.com"
+  bastion_host      = local.hgh0_public_ip
   push_to_remote    = true
 }

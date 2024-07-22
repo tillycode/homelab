@@ -12,7 +12,7 @@ if [[ -n ${bastion_host:-} ]]; then
 fi
 
 ssh_() {
-  ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "${ssh_args[@]}" "$ssh_connection" "$@"
+  ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no "${ssh_args[@]}" "$ssh_connection" "${*@Q}"
 }
 
 if [[ ${push_to_remote:-} == "true" ]]; then
