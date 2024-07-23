@@ -39,9 +39,13 @@ module "kms" {
 ## -----------------------------------------------------------------------------
 ## GRANT ACCESS TO ALIYUN
 ## -----------------------------------------------------------------------------A
+data "tls_certificate" "github" {
+  url = "https://token.actions.githubusercontent.com/.well-known/openid-configuration"
+}
+
 resource "alicloud_ims_oidc_provider" "github" {
   issuer_url          = "https://token.actions.githubusercontent.com"
-  fingerprints        = ["1b511abead59c6ce207077c0bf0e0043b1382612"]
+  fingerprints        = [data.tls_certificate.github.certificates[0].sha1_fingerprint]
   issuance_limit_time = "12"
   oidc_provider_name  = "GitHub"
   client_ids          = ["sts.aliyuncs.com"]
