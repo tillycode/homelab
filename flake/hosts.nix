@@ -33,11 +33,23 @@ let
       services.openssh
       system.common
     ];
+    base2 = [
+      boot.grub
+      networking.systemd
+      nix.gc
+      nix.optimise
+      nix.registry
+      nix.settings
+      services.openssh
+      system.common
+    ];
 
     aliyun = base ++ [
       services.sing-box-client
       system.aliyun
     ];
+
+    misaka = base2 ++ [ system.misaka ];
 
     desktop = base ++ [
       i18n.fcitx
@@ -108,6 +120,9 @@ in
       system = "x86_64-linux";
     };
     hgh2 = {
+      system = "x86_64-linux";
+    };
+    sin0 = {
       system = "x86_64-linux";
     };
   };

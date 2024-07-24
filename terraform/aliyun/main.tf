@@ -116,6 +116,7 @@ resource "alicloud_instance" "hgh2" {
 
 locals {
   hgh0_public_ip = "47.96.145.133"
+  sin0_public_ip = "194.114.138.186"
 }
 
 module "nixos_hgh0" {
@@ -153,5 +154,15 @@ module "nixos_hgh2" {
   attribute         = "hgh2"
   ssh_host          = alicloud_instance.hgh2.private_ip
   bastion_host      = local.hgh0_public_ip
+  push_to_remote    = true
+}
+
+
+module "nixos_sin0" {
+  source = "../modules/nixos"
+
+  working_directory = var.project_root
+  attribute         = "sin0"
+  ssh_host          = local.sin0_public_ip
   push_to_remote    = true
 }
