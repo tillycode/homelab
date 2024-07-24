@@ -6,6 +6,7 @@ keys:
   - &host_hgh0 age1u69tnm577ep887ry5fg6nh725gwwrp5l0uwzwsf70knht7pgnq3ssdk346
   - &host_hgh1 age1s0sdahf03yxpfx5y5q07m30wygw8da3np0sz2nzj0sqrnhvj94kqsl2mhh
   - &host_hgh2 age1lawg2fw8nfmh4nuz9k76znqu96f786e3uk6hdccxkrae06qj9ugspyt5cg
+  - &host_sin0 age1pt6c4tesq0fk92rwzk9px76fluun7yzzcu84np8lmwqwytut7q8sk8n34m
 creation_rules:
   - path_regex: ^secrets/all-hosts\.yaml$
     key_groups:
@@ -18,6 +19,7 @@ creation_rules:
           - *host_hgh0
           - *host_hgh1
           - *host_hgh2
+          - *host_sin0
   - path_regex: ^secrets/hosts/desktop\.yaml$
     key_groups:
       - pgp:
@@ -50,6 +52,14 @@ creation_rules:
           - *github_action
         age:
           - *host_hgh2
+  - path_regex: ^secrets/hosts/sin0\.yaml$
+    key_groups:
+      - pgp:
+          - *user_sun
+        kms:
+          - *github_action
+        age:
+          - *host_sin0
   - path_regex: ^secrets/terraform/tofu-encryption\.json$
     key_groups:
       - pgp:

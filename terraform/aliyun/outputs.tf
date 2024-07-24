@@ -5,6 +5,7 @@ resource "local_file" "known_hosts" {
       module.nixos_hgh0.known_hosts,
       module.nixos_hgh1.known_hosts,
       module.nixos_hgh2.known_hosts,
+      module.nixos_sin0.known_hosts,
     ]
   })
 }
@@ -18,6 +19,7 @@ resource "local_file" "sops_config" {
       hgh0    = module.nixos_hgh0.age_public_key,
       hgh1    = module.nixos_hgh1.age_public_key,
       hgh2    = module.nixos_hgh2.age_public_key,
+      sin0    = module.nixos_sin0.age_public_key,
     }
   })
 }
