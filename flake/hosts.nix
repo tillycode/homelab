@@ -24,43 +24,41 @@ let
   };
   nixosSuites = with nixosProfiles; rec {
     base = [
-      boot.systemd
-      networking.systemd
-      nix.gc
-      nix.optimise
-      nix.registry
-      nix.settings
-      services.openssh
-      system.common
-    ];
-    base2 = [
-      boot.grub
-      networking.systemd
-      nix.gc
-      nix.optimise
-      nix.registry
-      nix.settings
-      services.openssh
-      system.common
+      config.home-manager
+      config.i18n
+      config.locale
+      config.nix
+      misc.nixpkgs
+      programs.cli-tools
+      security.sudo
+      services.misc.nix-gc
+      services.misc.nix-optimise
+      services.networking.networkd
+      services.networking.sshd
+      system.boot.loader
+      system.persist.common
     ];
 
-    aliyun = base ++ [
-      services.sing-box-client
-      system.aliyun
+    domestic = base ++ [ services.networking.sing-box-client ];
+
+    aliyun = domestic ++ [
+      system.boot.efi
+      system.disk.aliyun
     ];
 
-    misaka = base2 ++ [ system.misaka ];
+    misaka = base ++ [ system.disk.misaka ];
 
-    desktop = base ++ [
-      i18n.fcitx
-      graphical.applications
-      graphical.fonts
-      graphical.xfce
-      networking.iwd
-      services.bluetooth
-      services.pipewire
-      services.sing-box-client
-      system.nvidia
+    desktop = domestic ++ [
+      config.fonts
+      hardware.nvidia
+      i18n.input-method.fcitx
+      programs.desktop
+      programs.nix-dev
+      services.desktop.pipewire
+      services.desktop.xfce
+      services.hardware.bluetooth
+      services.networking.iwd
+      system.boot.efi
       users.sun
     ];
   };

@@ -1,0 +1,1 @@
+{ nix.optimise.automatic = true; }

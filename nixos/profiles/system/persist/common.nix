@@ -1,14 +1,4 @@
 {
-  time.timeZone = "Asia/Shanghai";
-  i18n.defaultLocale = "C.UTF-8";
-
-  security.sudo = {
-    extraConfig = ''
-      Defaults lecture="never"
-    '';
-    wheelNeedsPassword = false;
-  };
-
   environment.persistence."/persist" = {
     files = [
       "/etc/machine-id"
@@ -22,7 +12,4 @@
       "/var/log"
     ];
   };
-
-  home-manager.useGlobalPkgs = true;
-  home-manager.useUserPackages = true;
 }
