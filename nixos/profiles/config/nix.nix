@@ -1,5 +1,9 @@
+{ self, inputs, ... }:
 {
   nix.settings = {
+    min-free = 1024 * 1024 * 1024; # bytes
+    auto-optimise-store = true;
+
     experimental-features = [
       "nix-command"
       "flakes"
@@ -22,6 +26,4 @@
 
     use-xdg-base-directories = true;
   };
-
-  nixpkgs.config.allowUnfree = true;
 }

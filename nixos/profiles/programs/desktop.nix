@@ -30,8 +30,6 @@
     xfce.xfce4-dict
     xorg.xkill
     vlc
-    # CLI application
-    htop
     # xfce plugins
     xfce.xfce4-pulseaudio-plugin
     xfce.xfce4-systemload-plugin
@@ -45,6 +43,8 @@
   ];
 
   programs._1password.enable = true;
+  programs._1password-gui.enable = true;
+
   services.pcscd.enable = true;
   services.gnome.gnome-keyring.enable = true;
   programs.steam.enable = true;

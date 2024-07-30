@@ -9,6 +9,7 @@
     # See microsoft/vscode#23991 to make VS Code follow the keyboard mappings.
     xkb.options = "caps:escape";
   };
+
   xdg.portal = {
     enable = true;
     extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
