@@ -26,8 +26,7 @@
           jq
           sops
           ssh-to-age
-          nixd
-          nixpkgs-fmt
+          nvfetcher
         ];
         devshell.startup = {
           nixago.text = config.nixago.shellHook;
