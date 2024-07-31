@@ -3,12 +3,14 @@
   perSystem =
     { pkgs, config, ... }:
     let
-      _ = pkgs.callPackages (import ./_sources/generated.nix) { };
+      sources = pkgs.callPackages (import ./_sources/generated.nix) { };
     in
     {
       overlayAttrs = {
-        inherit (config.packages);
+        inherit (config.packages) headscale-beta;
       };
-      packages = { };
+      packages = {
+        headscale-beta = pkgs.callPackage (import ./headscale-beta) { inherit sources; };
+      };
     };
 }

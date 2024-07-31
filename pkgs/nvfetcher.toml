@@ -1,1 +1,3 @@
-
+[headscale]
+src.github_tag = "juanfont/headscale"
+fetch.github = "juanfont/headscale"
