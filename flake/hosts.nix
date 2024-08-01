@@ -60,6 +60,7 @@ let
       services.networking.iwd
       system.boot.efi
       users.sun
+      virtualisation.podman
     ];
   };
 

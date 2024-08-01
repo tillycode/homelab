@@ -2,7 +2,7 @@
 {
   environment.systemPackages = with pkgs; [
     graphviz
-    nix-du
+    # nix-du
     nix-melt
     nix-output-monitor
     nix-tree
