@@ -2,6 +2,7 @@
   inputs,
   lib,
   self,
+  getSystem,
   ...
 }:
 let
@@ -28,7 +29,6 @@ let
       config.i18n
       config.locale
       config.nix
-      misc.nixpkgs
       programs.cli-tools
       security.sudo
       services.misc.nix-gc
@@ -78,10 +78,16 @@ let
       specialArgs ? nixosSpecialArgs,
     }:
     nixpkgs.lib.nixosSystem {
-      inherit system specialArgs;
+      inherit specialArgs;
       modules = nixosModules ++ [
         ../nixos/hosts/${name}
         { networking.hostName = "${name}"; }
+        {
+          imports = [ nixpkgs.nixosModules.readOnlyPkgs ];
+          nixpkgs = {
+            pkgs = (getSystem system).allModuleArgs.pkgs;
+          };
+        }
       ];
     };
 

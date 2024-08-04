@@ -10,6 +10,7 @@
     file
     htop
     jq
+    lsof
     openssl
     p7zip
     pciutils
