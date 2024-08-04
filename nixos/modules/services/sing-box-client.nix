@@ -5,11 +5,12 @@
   ...
 }:
 let
-  json = pkgs.formats.json { };
   cfg = config.services.sing-box-client;
   tunCfg = lib.findFirst (cfg: cfg.type == "tun") (throw "no tun inbound") cfg.settings.inbounds;
   fakeipCfg = cfg.settings.dns.fakeip;
-  settingsFile = json.generate "sing-box.json" cfg.settings;
+
+  settingsFormat = pkgs.formats.json { };
+  settingsFile = settingsFormat.generate "sing-box.json" cfg.settings;
 
   mkGeoipRuleSet = name: {
     tag = name;
@@ -40,7 +41,7 @@ in
         default = 12311;
       };
       outbounds = lib.mkOption {
-        type = lib.types.listOf json.type;
+        type = lib.types.listOf settingsFormat.type;
         default = [ ];
       };
       outboundsFile = lib.mkOption {
@@ -52,15 +53,15 @@ in
         default = null;
       };
       dnsRules = lib.mkOption {
-        type = lib.types.listOf json.type;
+        type = lib.types.listOf settingsFormat.type;
         default = [ ];
       };
       routeRules = lib.mkOption {
-        type = lib.types.listOf json.type;
+        type = lib.types.listOf settingsFormat.type;
         default = [ ];
       };
       ruleSet = lib.mkOption {
-        type = lib.types.listOf json.type;
+        type = lib.types.listOf settingsFormat.type;
         default = [ ];
       };
       geoipRuleSet = lib.mkOption {
@@ -72,7 +73,7 @@ in
         default = [ ];
       };
       settings = lib.mkOption {
-        type = json.type;
+        type = settingsFormat.type;
         internal = true;
         default = { };
       };
@@ -225,7 +226,7 @@ in
     systemd.network.networks."10-sing0" = {
       name = "sing0";
       linkConfig = {
-        RequiredForOnline = "no";
+        RequiredForOnline = false;
       };
       # this should match the tun inbound and fake IP in sing-box.json
       networkConfig = {
@@ -238,8 +239,8 @@ in
         ];
         # FIXME: this should be computed
         DNS = "172.19.0.2";
-        DNSDefaultRoute = "no";
-        ConfigureWithoutCarrier = "yes";
+        DNSDefaultRoute = false;
+        ConfigureWithoutCarrier = true;
         Domains = "~.";
       };
     };
@@ -247,11 +248,13 @@ in
     systemd.services.sing-box-client = {
       enable = true;
       description = "Sing-box proxy client";
-      after = [ "network.target" ];
+      wants = [ "network-online.target" ];
+      after = [ "network-online.target" ];
       wantedBy = [ "multi-user.target" ];
+      restartTriggers = [ settingsFile ];
+
       preStart =
         ''
-          umask 0077
           rm -f "$STATE_DIRECTORY/config.json"
         ''
         + (
@@ -271,14 +274,43 @@ in
           (lib.lists.optional (cfg.outboundsFile != null) [ "outbounds.json:${cfg.outboundsFile}" ])
           ++ [ "sing-box.json:${settingsFile}" ];
         ExecStart = "${cfg.package}/bin/sing-box run -c \"\${STATE_DIRECTORY}/config.json\"";
-        AmbientCapabilities = "CAP_NET_BIND_SERVICE";
-        WorkingDirectory = "/tmp";
-        Restart = "on-failure";
-        DynamicUser = "yes";
+        DynamicUser = true;
         User = "sing-box";
         Group = "sing-box";
+        Restart = "always";
+        WorkingDirectory = "/tmp";
         StateDirectory = "sing-box";
-        ConfigurationDirectory = "sing-box";
+
+        AmbientCapabilities = "";
+        BindPaths = "/dev/net/tun";
+        CapabilityBoundingSet = "";
+        DeviceAllow = "/dev/net/tun rw";
+        DevicePolicy = "closed";
+        LockPersonality = true;
+        MemoryDenyWriteExecute = true;
+        NoNewPrivileges = true;
+        PrivateDevices = true;
+        PrivateMounts = true;
+        PrivateTmp = true;
+        PrivateUsers = true;
+        ProcSubset = "pid";
+        ProtectClock = true;
+        ProtectControlGroups = true;
+        ProtectHome = true;
+        ProtectHostname = true;
+        ProtectKernelLogs = true;
+        ProtectKernelModules = true;
+        ProtectKernelTunables = true;
+        ProtectProc = "invisible";
+        ProtectSystem = "strict";
+        RemoveIPC = true;
+        RestrictAddressFamilies = "AF_INET AF_INET6 AF_UNIX AF_NETLINK";
+        RestrictNamespaces = true;
+        RestrictRealtime = true;
+        RestrictSUIDSGID = true;
+        SystemCallArchitectures = "native";
+        SystemCallFilter = [ "@system-service" ];
+        UMask = "0077";
       };
     };
   };
