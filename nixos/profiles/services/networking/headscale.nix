@@ -4,15 +4,15 @@
     enable = true;
     settings = lib.mkForce {
       # external domain
-      server_url = "http://127.0.0.1:8080";
+      server_url = "https://headscale.szp15.com";
       listen_addr = "127.0.0.1:8080";
       metrics_listen_addr = "127.0.0.1:9090";
       noise = {
         private_key_path = "/var/lib/headscale/noise_private.key";
       };
       prefixes = {
-        v4 = "100.64.0.0/10";
-        v6 = "fd7a:115c:a1e0::/48";
+        v4 = "100.64.0.0/16";
+        v6 = "fd7a:115c:a1e0::/64";
       };
       derp = {
         server = {
@@ -23,7 +23,9 @@
           stun_listen_addr = "0.0.0.0:3478";
           private_key_path = "/var/lib/headscale/derp_server_private.key";
           automatically_add_embedded_derp_region = true;
-          # TODO: add public IPv4 and IPv6 addresses
+          # TODO: ip from terraform
+          ipv4 = "47.96.145.133";
+          ipv6 = "2408:4005:3cd:1440:87e:2da4:1f5d:d760";
         };
         urls = [ ];
         paths = [ ];
@@ -45,7 +47,10 @@
       };
       dns_config = {
         override_local_dns = false;
-        nameservers = [ "1.1.1.1" ];
+        # Add this when we have multiple tailnets
+        # restricted_nameservers = {
+        #   "nodes-global.szp.io" = [ "8.8.4.4" ];
+        # };
         domains = [ ];
         magic_dns = true;
         base_domain = "nodes.szp.io";

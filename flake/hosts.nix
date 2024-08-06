@@ -44,6 +44,7 @@ let
     aliyun = domestic ++ [
       system.boot.efi
       system.disk.aliyun
+      services.networking.tailscale
     ];
 
     misaka = base ++ [ system.disk.misaka ];
@@ -58,6 +59,7 @@ let
       services.desktop.xfce
       services.hardware.bluetooth
       services.networking.iwd
+      services.networking.tailscale
       system.boot.efi
       users.sun
       virtualisation.podman
