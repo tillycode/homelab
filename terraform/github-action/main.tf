@@ -107,6 +107,7 @@ data "alicloud_ram_policy_document" "github" {
       "ecs:List*",
       "vpc:Describe*",
       "vpc:Get*",
+      "vpc:List*",
     ]
     resource = ["*"]
   }
