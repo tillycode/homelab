@@ -55,5 +55,9 @@
     userDirs.enable = true;
   };
 
+  home.sessionVariables = {
+    KUBECONFIG = "$HOME/.kube/config";
+  };
+
   home.stateVersion = "23.11";
 }

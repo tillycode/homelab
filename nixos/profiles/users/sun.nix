@@ -24,6 +24,7 @@
       ".vscode"
       ".aws"
       ".aliyun"
+      ".kube"
       "Documents"
       "Downloads"
       "Projects"
