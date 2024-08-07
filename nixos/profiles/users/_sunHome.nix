@@ -59,5 +59,7 @@
     KUBECONFIG = "$HOME/.kube/config";
   };
 
+  home.packages = with pkgs; [ k3s ];
+
   home.stateVersion = "23.11";
 }
