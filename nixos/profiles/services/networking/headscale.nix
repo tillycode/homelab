@@ -47,11 +47,10 @@
       };
       dns_config = {
         override_local_dns = false;
-        # Add this when we have multiple tailnets
-        # restricted_nameservers = {
-        #   "nodes-global.szp.io" = [ "8.8.4.4" ];
-        # };
-        domains = [ ];
+        restricted_nameservers = {
+          "k8s.szp.io" = [ "100.64.0.4" ];
+        };
+        domains = [ "k8s.szp.io" ];
         magic_dns = true;
         base_domain = "nodes.szp.io";
       };

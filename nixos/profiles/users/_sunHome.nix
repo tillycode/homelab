@@ -59,7 +59,11 @@
     KUBECONFIG = "$HOME/.kube/config";
   };
 
-  home.packages = with pkgs; [ k3s ];
+  home.packages = with pkgs; [
+    k3s
+    kubernetes-helm
+    zed-editor
+  ];
 
   home.stateVersion = "23.11";
 }
