@@ -11,4 +11,8 @@
   sops.secrets."k3s/bootstrap-token" = {
     sopsFile = config.sops-file.common;
   };
+
+  environment.persistence."/persist" = {
+    directories = [ "/etc/rancher" ];
+  };
 }

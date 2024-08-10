@@ -18,17 +18,11 @@ module "vpc" {
   ]
 }
 
-resource "alicloud_nat_gateway" "hgh" {
-  vpc_id           = module.vpc.vpc_id
-  nat_gateway_name = "hgh-nat"
-  vswitch_id       = module.vpc.vswitch_ids[0]
-}
-
 resource "alicloud_route_entry" "hgh" {
   route_table_id        = module.vpc.route_table_id
   destination_cidrblock = "0.0.0.0/0"
-  nexthop_type          = "NatGateway"
-  nexthop_id            = alicloud_nat_gateway.hgh.id
+  nexthop_type          = "Instance"
+  nexthop_id            = alicloud_instance.hgh0.id
 }
 
 module "sg" {

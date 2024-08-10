@@ -1,0 +1,40 @@
+From a3027f992d10b7be3148b04fbe685198445f1b6d Mon Sep 17 00:00:00 2001
+From: Ziping Sun <me@szp.io>
+Date: Sun, 11 Aug 2024 03:28:30 +0800
+Subject: [PATCH] net/tsaddr: add TS_CGNAT_RANGE to customize CGNAT address
+ range
+
+---
+ net/tsaddr/tsaddr.go | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/net/tsaddr/tsaddr.go b/net/tsaddr/tsaddr.go
+index b75a2662d..4abb4c483 100644
+--- a/net/tsaddr/tsaddr.go
++++ b/net/tsaddr/tsaddr.go
+@@ -8,6 +8,7 @@
+ 	"encoding/binary"
+ 	"errors"
+ 	"net/netip"
++	"os"
+ 	"slices"
+ 	"sync"
+ 
+@@ -31,7 +32,13 @@ func ChromeOSVMRange() netip.Prefix {
+ // See https://tailscale.com/s/cgnat
+ // Note that Tailscale does not assign out of the ChromeOSVMRange.
+ func CGNATRange() netip.Prefix {
+-	cgnatRange.Do(func() { mustPrefix(&cgnatRange.v, "100.64.0.0/10") })
++	cgnatRange.Do(func() {
++		prefix := "100.64.0.0/10"
++		if v := os.Getenv("TS_CGNAT_RANGE"); v != "" {
++			prefix = v
++		}
++		mustPrefix(&cgnatRange.v, prefix)
++	})
+ 	return cgnatRange.v
+ }
+ 
+-- 
+2.45.2
+

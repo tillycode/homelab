@@ -45,6 +45,7 @@ let
       system.boot.efi
       system.disk.aliyun
       services.networking.tailscale
+      services.networking.tailscale-patched
     ];
 
     misaka = base ++ [ system.disk.misaka ];
@@ -60,6 +61,7 @@ let
       services.hardware.bluetooth
       services.networking.iwd
       services.networking.tailscale
+      services.networking.tailscale-patched
       system.boot.efi
       users.sun
       virtualisation.podman
