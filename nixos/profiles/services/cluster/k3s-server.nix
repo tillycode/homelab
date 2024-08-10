@@ -4,7 +4,6 @@
     enable = true;
     role = "server";
     tokenFile = config.sops.secrets."k3s/bootstrap-token".path;
-    # clusterInit = true;
     gracefulNodeShutdown.enable = true;
     extraFlags = [
       "--node-label"
@@ -14,5 +13,9 @@
 
   sops.secrets."k3s/bootstrap-token" = {
     sopsFile = config.sops-file.common;
+  };
+
+  environment.persistence."/persist" = {
+    directories = [ "/etc/rancher" ];
   };
 }

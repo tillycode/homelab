@@ -15,5 +15,11 @@
       services.networking.headscale-caddy
     ]);
 
+  networking.nat = {
+    enable = true;
+    internalInterfaces = [ "ens5" ];
+    externalInterface = "ens5";
+  };
+
   system.stateVersion = "23.11";
 }

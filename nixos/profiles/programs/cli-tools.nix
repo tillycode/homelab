@@ -1,24 +1,27 @@
 { pkgs, ... }:
 {
   environment.systemPackages = with pkgs; [
-    bat
     binutils
     coreutils
+    dig
     dust
-    eza
     fd
     file
     htop
+    iptables
     jq
     lsof
+    nettools
+    nftables
     openssl
     p7zip
     pciutils
     ripgrep
+    strace
+    tcpdump
     unzip
     usbutils
     util-linux
     yq-go
-    zoxide
   ];
 }
