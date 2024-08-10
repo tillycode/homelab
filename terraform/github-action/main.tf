@@ -90,6 +90,18 @@ data "alicloud_ram_policy_document" "assume_role" {
       values   = ["repo:${var.github_organization}/${var.github_repository_name}:*"]
     }
   }
+
+  statement {
+    effect = "Allow"
+    action = ["sts:AssumeRole"]
+
+    principal {
+      entity = "RAM"
+      identifiers = [
+        "acs:ram::${data.alicloud_account.current.id}:root"
+      ]
+    }
+  }
 }
 
 resource "alicloud_ram_role" "github" {
@@ -103,11 +115,23 @@ data "alicloud_ram_policy_document" "github" {
   statement {
     effect = "Allow"
     action = [
-      "ecs:Describe*",
-      "ecs:List*",
-      "vpc:Describe*",
-      "vpc:Get*",
-      "vpc:List*",
+      "ecs:DescribeInstanceAttribute",
+      "ecs:DescribeInstanceAutoRenewAttribute",
+      "ecs:DescribeInstanceMaintenanceAttributes",
+      "ecs:DescribeInstanceRamRole",
+      "ecs:DescribeInstances",
+      "ecs:DescribeKeyPairs",
+      "ecs:DescribeNetworkInterfaces",
+      "ecs:DescribeSecurityGroupAttribute",
+      "ecs:DescribeSecurityGroups",
+      "ecs:DescribeUserData",
+      "ecs:ListTagResources",
+      "vpc:DescribeNatGateways",
+      "vpc:DescribeRouteTableList",
+      "vpc:DescribeRouteTables",
+      "vpc:DescribeVpcAttribute",
+      "vpc:DescribeVSwitchAttributes",
+      "vpc:ListTagResources",
     ]
     resource = ["*"]
   }
@@ -117,6 +141,7 @@ resource "alicloud_ram_policy" "github" {
   policy_name     = "github-oidc-provider-aliyun"
   policy_document = data.alicloud_ram_policy_document.github.document
   description     = "Policy for the GitHub OIDC provider."
+  rotate_strategy = "DeleteOldestNonDefaultVersionWhenLimitExceeded"
 }
 
 resource "alicloud_ram_role_policy_attachment" "github_policy" {
