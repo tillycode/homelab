@@ -126,6 +126,7 @@ data "alicloud_ram_policy_document" "github" {
       "ecs:DescribeSecurityGroups",
       "ecs:DescribeUserData",
       "ecs:ListTagResources",
+      "vpc:DescribeEipAddresses",
       "vpc:DescribeNatGateways",
       "vpc:DescribeRouteTableList",
       "vpc:DescribeRouteTables",

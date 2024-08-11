@@ -60,11 +60,13 @@ jobs:
           diff="$(terragrunt run-all show -json | jq -s \
             '[.[].resource_changes.[].change.actions[]] | any(. != "no-op")')"
           echo "diff=$diff" >> "$GITHUB_OUTPUT"
-          tar -czf .data/tfplans.tar.gz -C .data tfplans
+
+          cd "${{ github.workspace }}"
+          tar -czf .data/tfplans.tar.gz -C .data tfplansa
           sops --output .data/tfplans.tar.gz.enc -e .data/tfplans.tar.gz
+        working-directory: terraform
         env:
           TERRAGRUNT_OUT_DIR: ${{ github.workspace }}/.data/tfplans
-          TERRAGRUNT_WORKING_DIR: terraform
           TERRAGRUNT_EXCLUDE_DIR: bootstrap,github-action
       - name: Summarize plan
         run: |
@@ -116,9 +118,9 @@ jobs:
         run: sops -d .data/tfplans.tar.gz.enc | tar -xz -C .data
       - name: "Run Terragrunt Apply"
         run: terragrunt run-all apply -auto-approve
+        working-directory: terraform
         env:
           TERRAGRUNT_OUT_DIR: ${{ github.workspace }}/.data/tfplans
-          TERRAGRUNT_WORKING_DIR: terraform
           TERRAGRUNT_EXCLUDE_DIR: bootstrap,github-action
       - run: nix fmt
         if: always()

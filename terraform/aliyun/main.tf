@@ -1,4 +1,6 @@
-
+## -----------------------------------------------------------------------------
+## NETWORK
+## -----------------------------------------------------------------------------
 module "vpc" {
   source          = "../modules/aliyun_vpc"
   vpc_name        = "hgh-vpc"
@@ -25,6 +27,19 @@ resource "alicloud_route_entry" "hgh" {
   nexthop_id            = alicloud_instance.hgh0.id
 }
 
+
+## -----------------------------------------------------------------------------
+## SSH KEY PAIR
+## -----------------------------------------------------------------------------
+resource "alicloud_key_pair" "github_action" {
+  key_pair_name = "github-action"
+  public_key    = var.github_action_ssh_public_key
+}
+
+
+## -----------------------------------------------------------------------------
+## Instances
+## -----------------------------------------------------------------------------
 module "sg" {
   source = "../modules/aliyun_security_group"
 
@@ -51,11 +66,15 @@ module "sg" {
   ]
 }
 
-resource "alicloud_key_pair" "github_action" {
-  key_pair_name = "github-action"
-  public_key    = var.github_action_ssh_public_key
+
+resource "alicloud_eip_address" "hgh0" {
 }
 
+resource "alicloud_eip_association" "hgh0" {
+  allocation_id = alicloud_eip_address.hgh0.id
+  instance_type = "EcsInstance"
+  instance_id   = alicloud_instance.hgh0.id
+}
 
 resource "alicloud_instance" "hgh0" {
   instance_name = "hgh0"
@@ -110,55 +129,74 @@ resource "alicloud_instance" "hgh2" {
   }
 }
 
+## -----------------------------------------------------------------------------
+## Metadata
+## -----------------------------------------------------------------------------
 locals {
-  hgh0_public_ip = "47.96.145.133"
-  sin0_public_ip = "194.114.138.186"
+  hgh0_public_ip = alicloud_eip_address.hgh0.ip_address
 }
 
-module "nixos_hgh0" {
-  source = "../modules/nixos"
+module "host_hgh0" {
+  source = "../modules/host_metadata"
+
+  boot   = "UEFI"
+  region = "cn"
   reinstall_triggers = {
     instance_id = alicloud_instance.hgh0.id
   }
-
-  working_directory = var.project_root
-  attribute         = "hgh0"
-  ssh_host          = local.hgh0_public_ip
-  push_to_remote    = true
+  public_ipv4  = local.hgh0_public_ip
+  private_ipv4 = alicloud_instance.hgh0.private_ip
+  public_ipv6  = tolist(alicloud_instance.hgh0.ipv6_addresses)[0]
+  cpu          = alicloud_instance.hgh0.cpu
+  memory       = alicloud_instance.hgh0.memory
+  disks = [
+    {
+      name = "vda"
+      size = alicloud_instance.hgh0.system_disk_size
+    }
+  ]
 }
 
-module "nixos_hgh1" {
-  source = "../modules/nixos"
+
+module "host_hgh1" {
+  source = "../modules/host_metadata"
+
+  boot   = "UEFI"
+  region = "cn"
   reinstall_triggers = {
     instance_id = alicloud_instance.hgh1.id
   }
-
-  working_directory = var.project_root
-  attribute         = "hgh1"
-  ssh_host          = alicloud_instance.hgh1.private_ip
-  bastion_host      = local.hgh0_public_ip
-  push_to_remote    = true
+  bastion_host = local.hgh0_public_ip
+  public_ipv4  = alicloud_instance.hgh1.public_ip
+  private_ipv4 = alicloud_instance.hgh1.private_ip
+  public_ipv6  = tolist(alicloud_instance.hgh1.ipv6_addresses)[0]
+  cpu          = alicloud_instance.hgh1.cpu
+  memory       = alicloud_instance.hgh1.memory
+  disks = [
+    {
+      name = "vda"
+      size = alicloud_instance.hgh1.system_disk_size
+    }
+  ]
 }
 
-module "nixos_hgh2" {
-  source = "../modules/nixos"
+module "host_hgh2" {
+  source = "../modules/host_metadata"
+
+  boot   = "UEFI"
+  region = "cn"
   reinstall_triggers = {
     instance_id = alicloud_instance.hgh2.id
   }
-
-  working_directory = var.project_root
-  attribute         = "hgh2"
-  ssh_host          = alicloud_instance.hgh2.private_ip
-  bastion_host      = local.hgh0_public_ip
-  push_to_remote    = true
-}
-
-
-module "nixos_sin0" {
-  source = "../modules/nixos"
-
-  working_directory = var.project_root
-  attribute         = "sin0"
-  ssh_host          = local.sin0_public_ip
-  push_to_remote    = true
+  bastion_host = local.hgh0_public_ip
+  private_ipv4 = alicloud_instance.hgh2.private_ip
+  public_ipv6  = tolist(alicloud_instance.hgh2.ipv6_addresses)[0]
+  cpu          = alicloud_instance.hgh2.cpu
+  memory       = alicloud_instance.hgh2.memory
+  disks = [
+    {
+      name = "vda"
+      size = alicloud_instance.hgh2.system_disk_size
+    }
+  ]
 }
