@@ -64,8 +64,7 @@ jobs:
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
       - run: terragrunt run-all validate
-        env:
-          TERRAGRUNT_WORKING_DIR: terraform
+        working-directory: terraform
       - name: Run terragrunt plan
         id: plan
         shell: bash
@@ -78,9 +77,9 @@ jobs:
           diff="$(terragrunt run-all show -json | jq -s \
             '[.[].resource_changes.[].change.actions[]] | any(. != "no-op")')"
           echo "diff=$diff" >> "$GITHUB_OUTPUT"
+        working-directory: terraform
         env:
           TERRAGRUNT_OUT_DIR: ${{ github.workspace }}/.data/tfplans
-          TERRAGRUNT_WORKING_DIR: terraform
           TERRAGRUNT_EXCLUDE_DIR: bootstrap,github-action
       - uses: peter-evans/find-comment@v3
         id: find-comment
