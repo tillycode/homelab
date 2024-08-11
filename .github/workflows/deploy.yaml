@@ -62,7 +62,7 @@ jobs:
           echo "diff=$diff" >> "$GITHUB_OUTPUT"
 
           cd "${{ github.workspace }}"
-          tar -czf .data/tfplans.tar.gz -C .data tfplansa
+          tar -czf .data/tfplans.tar.gz -C .data tfplans
           sops --output .data/tfplans.tar.gz.enc -e .data/tfplans.tar.gz
         working-directory: terraform
         env:
