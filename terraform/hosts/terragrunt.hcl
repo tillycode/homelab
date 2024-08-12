@@ -41,6 +41,9 @@ inputs = {
       },
     },
   })
+  headscale_hosts = {
+    cn = "hgh0",
+  }
   known_hosts_output_file    = "${get_path_to_repo_root()}/generated/known_hosts"
   sops_config_output_file    = "${get_path_to_repo_root()}/generated/sops.yaml"
   hosts_output_file          = "${get_path_to_repo_root()}/generated/hosts.json"

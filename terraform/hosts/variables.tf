@@ -28,6 +28,11 @@ variable "hosts" {
   }))
 }
 
+variable "headscale_hosts" {
+  type    = map(string)
+  default = {}
+}
+
 variable "known_hosts_output_file" {
   type = string
 }
