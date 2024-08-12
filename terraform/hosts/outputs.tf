@@ -21,8 +21,12 @@ resource "local_file" "sops_config" {
 resource "local_file" "hosts" {
   filename = var.hosts_output_file
   content = jsonencode([
-    for name, module in var.hosts : merge({
-      hostname = name
-    }, module)
+    for name, module in var.hosts : merge(module, {
+      hostname = name,
+      addresses = merge(module.addresses, {
+        overlay_ipv4 = lookup(lookup(local.headscale_nodes, name, {}), "ipv4", null),
+        overlay_ipv6 = lookup(lookup(local.headscale_nodes, name, {}), "ipv6", null),
+      }),
+    })
   ])
 }
