@@ -10,6 +10,7 @@
     ++ suites.aliyun
     ++ (with profiles; [
       services.cluster.k3s-agent
+      services.cluster.k3s-common
       services.networking.caddy
       services.networking.headscale
       services.networking.headscale-caddy

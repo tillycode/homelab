@@ -87,7 +87,6 @@
 
         ./flake-modules/flake-module.nix
         ./flake/flake-module.nix
-        ./lib/flake-module.nix
         ./pkgs/flake-module.nix
       ];
       systems = [

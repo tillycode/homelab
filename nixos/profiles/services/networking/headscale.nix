@@ -50,7 +50,7 @@
         restricted_nameservers = {
           "k8s.szp.io" = [ "100.64.0.4" ];
         };
-        domains = [ "k8s.szp.io" ];
+        domains = [ ];
         magic_dns = true;
         base_domain = "nodes.szp.io";
       };

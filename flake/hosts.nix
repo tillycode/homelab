@@ -29,6 +29,7 @@ let
       config.i18n
       config.locale
       config.nix
+      misc.node-facts
       programs.cli-tools
       security.sudo
       services.misc.nix-gc
@@ -137,7 +138,7 @@ in
   };
 
   flake.deploy = {
-    autoRollback = true;
+    # autoRollback = true;
     magicRollback = true;
 
     nodes = lib.mapAttrs mkNode self.nixosConfigurations;
