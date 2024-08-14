@@ -31,6 +31,7 @@ let
       config.nix
       misc.node-facts
       programs.cli-tools
+      security.pki
       security.sudo
       services.misc.nix-gc
       services.misc.nix-optimise
