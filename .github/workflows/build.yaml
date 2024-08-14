@@ -80,7 +80,7 @@ jobs:
         working-directory: terraform
         env:
           TERRAGRUNT_OUT_DIR: ${{ github.workspace }}/.data/tfplans
-          TERRAGRUNT_EXCLUDE_DIR: bootstrap,github-action
+          TERRAGRUNT_EXCLUDE_DIR: bootstrap,github-action,vault
       - uses: peter-evans/find-comment@v3
         id: find-comment
         with:

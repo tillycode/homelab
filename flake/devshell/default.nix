@@ -26,6 +26,7 @@
           jq
           sops
           ssh-to-age
+          vault
           nvfetcher
         ];
         devshell.startup = {
