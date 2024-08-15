@@ -41,13 +41,15 @@ let
       system.persist.common
     ];
 
-    domestic = base ++ [ services.networking.sing-box-client ];
+    domestic = base ++ [
+      services.networking.sing-box-client
+      services.networking.tailscale
+      services.networking.tailscale-patched
+    ];
 
     aliyun = domestic ++ [
       system.boot.efi
       system.disk.aliyun
-      services.networking.tailscale
-      services.networking.tailscale-patched
     ];
 
     misaka = base ++ [ system.disk.misaka ];
@@ -62,8 +64,6 @@ let
       services.desktop.xfce
       services.hardware.bluetooth
       services.networking.iwd
-      services.networking.tailscale
-      services.networking.tailscale-patched
       system.boot.efi
       users.sun
       virtualisation.podman
@@ -134,6 +134,9 @@ in
       system = "x86_64-linux";
     };
     sin0 = {
+      system = "x86_64-linux";
+    };
+    sha0 = {
       system = "x86_64-linux";
     };
   };

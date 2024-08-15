@@ -38,7 +38,7 @@ resource "alicloud_key_pair" "github_action" {
 
 
 ## -----------------------------------------------------------------------------
-## Instances
+## INSTANCES
 ## -----------------------------------------------------------------------------
 module "sg" {
   source = "../modules/aliyun_security_group"
@@ -130,7 +130,7 @@ resource "alicloud_instance" "hgh2" {
 }
 
 ## -----------------------------------------------------------------------------
-## Metadata
+## METADATA
 ## -----------------------------------------------------------------------------
 locals {
   hgh0_public_ip = alicloud_eip_address.hgh0.ip_address
