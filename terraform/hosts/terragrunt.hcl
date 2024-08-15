@@ -10,6 +10,10 @@ dependency "aliyun" {
   config_path = "../aliyun"
 }
 
+dependency "tencent" {
+  config_path = "../tencent"
+}
+
 locals {
   sin0_public_ipv4 = "194.114.138.186"
   sin0_public_ipv6 = "2407:b9c0:e002:179:5054:ff:fee1:6eb7"
@@ -17,30 +21,34 @@ locals {
 
 inputs = {
   project_root = get_path_to_repo_root()
-  hosts = merge(dependency.aliyun.outputs.hosts, {
-    sin0 = {
-      boot   = "BIOS",
-      arch   = "x86_64",
-      region = "global",
-      ssh = {
-        host = local.sin0_public_ipv4,
-      },
-      addresses = {
-        public_ipv4 = local.sin0_public_ipv4,
-        public_ipv6 = local.sin0_public_ipv6,
-      },
-      resources = {
-        cpu    = 1,
-        memory = 1024,
-        disks = [
-          {
-            name = "vda",
-            size = 16,
-          },
-        ],
+  hosts = merge(
+    dependency.aliyun.outputs.hosts,
+    dependency.tencent.outputs.hosts,
+    {
+      sin0 = {
+        boot   = "BIOS",
+        arch   = "x86_64",
+        region = "global",
+        ssh = {
+          host = local.sin0_public_ipv4,
+        },
+        addresses = {
+          public_ipv4 = local.sin0_public_ipv4,
+          public_ipv6 = local.sin0_public_ipv6,
+        },
+        resources = {
+          cpu    = 1,
+          memory = 1024,
+          disks = [
+            {
+              name = "vda",
+              size = 16,
+            },
+          ],
+        },
       },
     },
-  })
+  )
   headscale_hosts = {
     cn = "hgh0",
   }
