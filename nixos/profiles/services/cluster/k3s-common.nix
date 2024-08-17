@@ -23,6 +23,10 @@ in
       ++ lib.optionals (lib.length node-external-ip != 0) [
         "--node-external-ip"
         (lib.concatStringsSep "," node-external-ip)
+      ]
+      ++ [
+        "--flannel-iface"
+        "tailscale0"
       ];
   };
 
