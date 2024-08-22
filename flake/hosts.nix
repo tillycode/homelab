@@ -64,6 +64,7 @@ let
       services.desktop.xfce
       services.hardware.bluetooth
       services.networking.iwd
+      services.printing
       system.boot.efi
       users.sun
       virtualisation.podman
