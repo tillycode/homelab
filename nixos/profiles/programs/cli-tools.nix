@@ -5,6 +5,7 @@
     coreutils
     dig
     dust
+    ethtool
     fd
     file
     htop

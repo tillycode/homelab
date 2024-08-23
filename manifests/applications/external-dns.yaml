@@ -1,0 +1,39 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: external-dns
+  namespace: argocd
+spec:
+  project: default
+  source:
+    chart: external-dns
+    repoURL: https://kubernetes-sigs.github.io/external-dns
+    targetRevision: 1.14.5
+    helm:
+      valuesObject:
+        affinity:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+                # Only hgh2 has been assigned the necessary Aliyun RAM role
+                - matchFields:
+                    - key: metadata.name
+                      operator: In
+                      values:
+                        - hgh2
+        domainFilters:
+          - "szp15.com"
+        policy: sync
+        txtOwnerId: external-dns
+        extraArgs:
+          - --alibaba-cloud-zone-type=public
+          - --alibaba-cloud-config-file=
+        provider:
+          name: alibabacloud
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: external-dns
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
