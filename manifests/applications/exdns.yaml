@@ -1,0 +1,24 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: exdns
+  namespace: argocd
+spec:
+  project: default
+  source:
+    chart: k8s-gateway
+    repoURL: https://ori-edge.github.io/k8s_gateway
+    targetRevision: 2.4.0
+    helm:
+      valuesObject:
+        domain: k8s.szp.io
+        service:
+          labels:
+            svccontroller.k3s.cattle.io/lbpool: internal
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: exdns
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true

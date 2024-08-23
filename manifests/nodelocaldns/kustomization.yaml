@@ -1,0 +1,19 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - nodelocaldns.yaml
+
+patches:
+  # We deployed the exdns/exdns-k8s-gateway DNS service to expose K8s services
+  # to the overlay network. This DNS server is issued to each node using
+  # Tailscale SplitDNS. However, this setup occupies the port 53 on
+  # load balancer nodes. So we have to exclude these nodes from running
+  # the node-local-dns DaemonSet to avoid port conflicts.
+  - path: nodelocaldns-affinity.yaml
+    target:
+      group: apps
+      version: v1
+      kind: DaemonSet
+      name: node-local-dns
+      namespace: kube-system
