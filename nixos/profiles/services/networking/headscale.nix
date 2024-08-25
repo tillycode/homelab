@@ -1,5 +1,52 @@
-{ pkgs, lib, ... }:
+{ lib, pkgs, ... }:
+let
+  generateYaml =
+    name: value:
+    pkgs.callPackage (
+      { runCommand, remarshal }:
+      runCommand name
+        {
+          nativeBuildInputs = [ remarshal ];
+          value = builtins.toJSON value;
+          passAsFile = [ "value" ];
+          preferLocalBuild = true;
+        }
+        ''
+          json2yaml "$valuePath" "$out"
+          # Hack to support int yaml key
+          sed -i -e "s/'\([0-9]\+\)':/\1:/" $out
+        ''
+    ) { };
+  derpFile = generateYaml "derp.yaml" {
+    regions = {
+      "999" = {
+        regionid = 999;
+        regioncode = "cn";
+        regionname = "China";
+        nodes = [
+          {
+            name = "hgh0";
+            regionid = 999;
+            hostname = "headscale.szp15.com";
+            # TODO: import ip from terraform
+            ipv4 = "47.96.145.133";
+            ipv6 = "2408:4005:3cd:1440:87e:2da4:1f5d:d760";
+          }
+          {
+            name = "hgh1";
+            regionid = 999;
+            hostname = "derper0.szp15.com";
+            ipv4 = "118.178.124.99";
+            ipv6 = "2408:4005:3cd:1440:87e:2da4:1f5d:d75f";
+          }
+        ];
+      };
+    };
+  };
+in
 {
+  environment.etc."headscale/derp.yaml".source = derpFile;
+
   services.headscale-beta = {
     enable = true;
     settings = lib.mkForce {
@@ -17,18 +64,12 @@
       derp = {
         server = {
           enabled = true;
-          region_id = 999;
-          region_code = "headscale";
-          region_name = "Headscale Embedded DERP";
           stun_listen_addr = "0.0.0.0:3478";
           private_key_path = "/var/lib/headscale/derp_server_private.key";
-          automatically_add_embedded_derp_region = true;
-          # TODO: ip from terraform
-          ipv4 = "47.96.145.133";
-          ipv6 = "2408:4005:3cd:1440:87e:2da4:1f5d:d760";
+          automatically_add_embedded_derp_region = false;
         };
         urls = [ ];
-        paths = [ ];
+        paths = [ "/etc/headscale/derp.yaml" ];
         auto_update_enable = true;
         update_frequency = "24h";
       };
@@ -61,5 +102,9 @@
       };
       randomize_client_port = false;
     };
+  };
+
+  systemd.services.headscale = {
+    restartTriggers = [ derpFile ];
   };
 }

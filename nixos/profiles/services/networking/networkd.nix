@@ -19,5 +19,7 @@
     };
   };
 
+  services.resolved.llmnr = "false";
+
   systemd.network.wait-online.anyInterface = true;
 }

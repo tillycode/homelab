@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 {
   # FIXME: Tailscale hardcodes the following iptables rules
   #     -A ts-forward -s 100.64.0.0/10 -o tailscale0 -j DROP

@@ -11,9 +11,10 @@
     ++ (with profiles; [
       services.cluster.k3s-agent
       services.cluster.k3s-common
-      services.networking.caddy
+      services.cluster.k3s-ingress
+      services.networking.nginx
       services.networking.headscale
-      services.networking.headscale-caddy
+      services.networking.headscale-nginx
     ]);
 
   networking.nat = {
