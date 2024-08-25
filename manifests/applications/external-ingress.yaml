@@ -39,6 +39,11 @@ spec:
           ipFamilyPolicy: "PreferDualStack"
           labels:
             svccontroller.k3s.cattle.io/lbpool: external
+        ports:
+          web:
+            exposedPort: 8000
+          websecure:
+            exposedPort: 8443
         ingressClass:
           isDefaultClass: false
           name: traefik-external

@@ -25,6 +25,7 @@ in
         (lib.concatStringsSep "," node-external-ip)
       ]
       ++ [
+        # TODO: depends on tailscale0. When tailscale is restarted, k3s should be restarted too.
         "--flannel-iface"
         "tailscale0"
       ];
