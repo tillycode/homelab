@@ -1,0 +1,15 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: node-local-dns
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/tillycode/homelab.git
+    targetRevision: HEAD
+    path: manifests/nodelocaldns
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: kube-system
