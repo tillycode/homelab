@@ -97,7 +97,7 @@ data:
         reload
         loop
         bind 169.254.20.11 10.43.0.10
-        forward . __PILLAR__UPSTREAM__SERVERS__
+        forward . 172.19.0.2
         prometheus :9253
         }
 ---
@@ -157,12 +157,14 @@ spec:
               add:
                 - NET_ADMIN
           ports:
-            - containerPort: 53
-              name: dns
-              protocol: UDP
-            - containerPort: 53
-              name: dns-tcp
-              protocol: TCP
+            # omit the DNS ports to avoid pod being unschedulable because of
+            # port conflicts with svclb-private-dns
+            # - containerPort: 53
+            #   name: dns
+            #   protocol: UDP
+            # - containerPort: 53
+            #   name: dns-tcp
+            #   protocol: TCP
             - containerPort: 9253
               name: metrics
               protocol: TCP

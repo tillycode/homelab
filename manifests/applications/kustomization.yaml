@@ -3,6 +3,8 @@ kind: Kustomization
 
 # TODO: refactor to public/private ingress/DNS/cert-manager
 resources:
-  - external-dns.yaml
-  - exdns.yaml
-  - external-ingress.yaml
+  - private-ingress.yaml
+  - private-dns.yaml
+  - public-ingress.yaml
+  - public-dns.yaml
+  - cert-manager.yaml

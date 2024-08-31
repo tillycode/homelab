@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: exdns
+  name: private-dns
   namespace: argocd
 spec:
   project: default
@@ -15,11 +15,7 @@ spec:
         domain: k8s.szp.io
         service:
           labels:
-            # TODO: currently this label is manually added to node
-            svccontroller.k3s.cattle.io/lbpool: internal
+            svccontroller.k3s.cattle.io/lbpool: private
   destination:
     server: "https://kubernetes.default.svc"
-    namespace: exdns
-  syncPolicy:
-    syncOptions:
-      - CreateNamespace=true
+    namespace: kube-system

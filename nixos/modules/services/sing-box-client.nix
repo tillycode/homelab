@@ -104,6 +104,7 @@ in
             tag = "google";
             address = "tls://8.8.8.8";
           }
+          # TODO: load local DNS server from /run/systemd/resolve/resolv.conf
           {
             tag = "local";
             address = "223.5.5.5";
@@ -159,8 +160,6 @@ in
           ];
         final = "google";
         independent_cache = true;
-        # GeoIP for IPv4 is more accurate than IPv6
-        strategy = "ipv4_only";
         fakeip = {
           enabled = true;
           inet4_range = "198.18.0.0/15";
