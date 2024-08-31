@@ -7,3 +7,6 @@ resources:
   - public-ingress.yaml
   - public-dns.yaml
   - cert-manager.yaml
+  - node-local-dns.yaml
+  - vault.yaml
+  - whoami.yaml

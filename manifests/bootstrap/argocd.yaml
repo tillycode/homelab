@@ -13,6 +13,11 @@ spec:
   valuesContent: |
     global:
       domain: argocd.k8s.szp.io
+    configs:
+      cm:
+        resource.customizations.ignoreDifferences.admissionregistration.k8s.io_MutatingWebhookConfiguration: |
+          jqPathExpressions:
+            - '.webhooks[]?.clientConfig.caBundle'
     server:
       certificate:
         enabled: true
@@ -26,3 +31,18 @@ spec:
         enabled: true
         ingressClassName: traefik
         tls: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: applications
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/tillycode/homelab.git
+    targetRevision: HEAD
+    path: manifests/applications
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: argocd
