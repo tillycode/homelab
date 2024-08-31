@@ -14,16 +14,16 @@ fi
 
 set -x
 headscale_nodes=$(ssh "${ssh_args[@]}" "${ssh_user:-root}@${ssh_host:?}" \
-    headscale nodes list -o json |
-    jq 'map({
-        name,
-        addresses: (
-            .ip_addresses |
-            map({
-                key: (if contains(".") then "ipv4" else "ipv6" end),
-                value:.,
-            }) |
-            from_entries
-        ),
-    })')
+  headscale nodes list -o json |
+  jq 'map({
+    name,
+    addresses: (
+      .ip_addresses |
+      map({
+          key: (if contains(".") then "ipv4" else "ipv6" end),
+          value:.,
+      }) |
+      from_entries
+    ),
+  })')
 jq -n --arg headscale_nodes "$headscale_nodes" '{headscale_nodes: $headscale_nodes}'
