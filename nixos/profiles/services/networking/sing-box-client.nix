@@ -6,6 +6,23 @@
     outboundsFile = config.sops.secrets."sing-box/outbounds.json".path;
     dnsRules = [
       {
+        # This is a trick to make sing-box return NXDOMAIN for a non-existent
+        # domain instead of returning a FakeIP.
+        #
+        # In sing-box, all destination CIDR rules won't match a DNS query for
+        # a non-existent domain. This causes the default rule to be used.
+        # In our case, the default rule is a FakeIP.
+        #
+        # By adding an invert rule that matches any existing domain, we can
+        # let sing-box return NXDOMAIN for a non-existent domain.
+        ip_cidr = [
+          "0.0.0.0/0"
+          "::/0"
+        ];
+        invert = true;
+        server = "local";
+      }
+      {
         ip_is_private = true;
         server = "local";
       }

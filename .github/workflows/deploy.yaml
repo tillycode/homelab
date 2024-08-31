@@ -67,7 +67,7 @@ jobs:
         working-directory: terraform
         env:
           TERRAGRUNT_OUT_DIR: ${{ github.workspace }}/.data/tfplans
-          TERRAGRUNT_EXCLUDE_DIR: bootstrap,github-action,vault,tencent,aliyun-dns
+          TERRAGRUNT_EXCLUDE_DIR: bootstrap,github-action,vault,tencent,kubernetes
       - name: Summarize plan
         run: |
           cat <<'EOF' >> "$GITHUB_STEP_SUMMARY"
@@ -121,7 +121,7 @@ jobs:
         working-directory: terraform
         env:
           TERRAGRUNT_OUT_DIR: ${{ github.workspace }}/.data/tfplans
-          TERRAGRUNT_EXCLUDE_DIR: bootstrap,github-action,vault,tencent,aliyun-dns
+          TERRAGRUNT_EXCLUDE_DIR: bootstrap,github-action,vault,tencent,kubernetes
       - run: nix fmt
         if: always()
       - name: Create Pull Request

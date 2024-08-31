@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: external-ingress
+  name: public-ingress
   namespace: argocd
 spec:
   project: default
@@ -13,7 +13,7 @@ spec:
     helm:
       valuesObject:
         additionalArguments:
-          - --providers.kubernetesingress.ingressclass=traefik-external
+          - --providers.kubernetesingress.ingressclass=traefik-public
         deployment:
           podAnnotations:
             prometheus.io/port: "8082"
@@ -38,7 +38,7 @@ spec:
         service:
           ipFamilyPolicy: "PreferDualStack"
           labels:
-            svccontroller.k3s.cattle.io/lbpool: external
+            svccontroller.k3s.cattle.io/lbpool: public
         ports:
           web:
             exposedPort: 8000
@@ -46,12 +46,12 @@ spec:
             exposedPort: 8443
         ingressClass:
           isDefaultClass: false
-          name: traefik-external
+          name: traefik-public
         globalArguments:
           - "--serversTransport.insecureSkipVerify=true"
   destination:
     server: "https://kubernetes.default.svc"
-    namespace: external-ingress
+    namespace: public
   syncPolicy:
     syncOptions:
       - CreateNamespace=true
