@@ -90,7 +90,6 @@ in
         (toString flannel-cni-conf)
       ]
       ++ [
-        # TODO: depends on tailscale0. When tailscale is restarted, k3s should be restarted too.
         "--flannel-iface"
         "tailscale0"
       ]
@@ -98,6 +97,19 @@ in
         "--resolv-conf"
         resolv-conf-no-search-path
       ];
+  };
+  systemd.services.k3s = {
+    partOf = [ "tailscaled.service" ];
+    after = [ "tailscaled.service" ];
+    serviceConfig = {
+      ExecStartPre = [
+        (pkgs.writeShellScript "wait-for-netdev" ''
+          until [[ -n "$(${pkgs.iproute2}/bin/ip -br address show up scope global dev tailscale0 2>/dev/null)" ]]; do
+            sleep 1
+          done
+        '')
+      ];
+    };
   };
 
   sops.secrets."k3s/bootstrap-token" = {
