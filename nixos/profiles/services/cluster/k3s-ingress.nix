@@ -52,6 +52,10 @@ in
       };
     };
     defaultSSLListenPort = local_https_port;
+    commonHttpConfig = ''
+      set_real_ip_from 127.0.0.1;
+      real_ip_header proxy_protocol;
+    '';
     streamConfig = ''
       map $ssl_preread_server_name $name {
         ${ssl_server_name_map}
