@@ -1,0 +1,72 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: monitoring
+  namespace: argocd
+spec:
+  project: default
+  source:
+    # TODO: kube-scheduler, kube-proxy and kube-controller-manager metrics don't
+    # work properly. See k3s-io/k3s#3619 for the issue.
+    chart: kube-prometheus-stack
+    repoURL: https://prometheus-community.github.io/helm-charts
+    targetRevision: 62.3.1
+    helm:
+      valuesObject:
+        prometheus:
+          ingress:
+            enabled: true
+            ingressClassName: traefik
+            annotations:
+              cert-manager.io/cluster-issuer: vault-issuer
+              cert-manager.io/private-key-size: "4096"
+              cert-manager.io/common-name: prometheus.k8s.szp.io
+            hosts:
+              - prometheus.k8s.szp.io
+            tls:
+              - secretName: prometheus-sever-tls
+                hosts:
+                  - prometheus.k8s.szp.io
+          prometheusSpec:
+            storageSpec:
+              volumeClaimTemplate:
+                spec:
+                  storageClassName: local-path
+                  accessModes: ["ReadWriteOnce"]
+                  resources:
+                    requests:
+                      storage: 2Gi
+        alertmanager:
+          alertmanagerSpec:
+            storage:
+              volumeClaimTemplate:
+                spec:
+                  storageClassName: local-path
+                  accessModes: ["ReadWriteOnce"]
+                  resources:
+                    requests:
+                      storage: 500Mi
+        grafana:
+          ingress:
+            enabled: true
+            ingressClassName: traefik
+            annotations:
+              cert-manager.io/cluster-issuer: vault-issuer
+              cert-manager.io/private-key-size: "4096"
+              cert-manager.io/common-name: grafana.k8s.szp.io
+            hosts:
+              - grafana.k8s.szp.io
+            tls:
+              - secretName: grafana-tls
+                hosts:
+                  - grafana.k8s.szp.io
+          persistence:
+            size: 2Gi
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: monitoring
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
