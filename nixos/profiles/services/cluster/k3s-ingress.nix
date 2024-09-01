@@ -34,10 +34,12 @@ in
       {
         addr = "127.0.0.1";
         ssl = true;
+        proxyProtocol = true;
       }
       {
         addr = "[::1]";
         ssl = true;
+        proxyProtocol = true;
       }
     ];
     virtualHosts = {
@@ -64,6 +66,7 @@ in
         listen [::]:443;
         ssl_preread on;
         proxy_pass $name;
+        proxy_protocol on;
       }
     '';
   };

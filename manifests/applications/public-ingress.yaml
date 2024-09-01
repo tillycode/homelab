@@ -42,8 +42,12 @@ spec:
         ports:
           web:
             exposedPort: 8000
+            forwardedHeaders:
+              insecure: true
           websecure:
             exposedPort: 8443
+            proxyProtocol:
+              insecure: true
         ingressClass:
           isDefaultClass: false
           name: traefik-public
