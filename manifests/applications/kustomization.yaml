@@ -10,3 +10,4 @@ resources:
   - node-local-dns.yaml
   - vault.yaml
   - whoami.yaml
+  - monitoring.yaml
