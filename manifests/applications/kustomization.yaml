@@ -12,3 +12,4 @@ resources:
   - whoami.yaml
   - monitoring.yaml
   - zitadel.yaml
+  - firefly-iii.yaml

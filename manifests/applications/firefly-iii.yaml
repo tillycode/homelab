@@ -1,0 +1,70 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: firefly-iii-db
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://charts.bitnami.com/bitnami
+    chart: postgresql
+    targetRevision: 15.5.27
+    helm:
+      valuesObject:
+        primary:
+          pgHbaConfiguration: |
+            host all all all trust
+          persistence:
+            size: 2Gi
+        auth:
+          database: firefly
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: firefly-iii
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: firefly-iii
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://firefly-iii.github.io/kubernetes
+    chart: firefly-iii
+    targetRevision: 1.8.1
+    helm:
+      valuesObject:
+        image:
+          tag: version-6.1.19
+        config:
+          existingSecret:
+          env:
+            DB_HOST: firefly-iii-db-postgresql
+            DB_CONNECTION: pgsql
+            DB_PORT: "5432"
+            DB_DATABASE: firefly
+            DB_USERNAME: postgres
+            TZ: Asia/Shanghai
+        ingress:
+          enabled: true
+          className: traefik-public
+          annotations:
+            cert-manager.io/cluster-issuer: letsencrypt
+            external-dns.alpha.kubernetes.io/target: ingress.szp15.com
+          hosts:
+            - firefly.szp15.com
+          tls:
+            - hosts:
+                - firefly.szp15.com
+              secretName: tls-firefly-iii-ingress-http
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: firefly-iii
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
