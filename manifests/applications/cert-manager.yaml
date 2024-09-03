@@ -82,4 +82,4 @@ spec:
     solvers:
       - http01:
           ingress:
-            class: traefik-external
+            class: traefik-public
