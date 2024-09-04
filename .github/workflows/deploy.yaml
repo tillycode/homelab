@@ -125,7 +125,7 @@ jobs:
       - run: nix fmt
         if: always()
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v6
+        uses: peter-evans/create-pull-request@v7
         if: always()
         with:
           commit-message: "chore(deploy): update generated files"
