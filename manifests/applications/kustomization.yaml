@@ -11,5 +11,5 @@ resources:
   - vault.yaml
   - whoami.yaml
   - monitoring.yaml
-  - zitadel.yaml
+  # - zitadel.yaml
   - firefly-iii.yaml
