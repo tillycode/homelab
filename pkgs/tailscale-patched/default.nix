@@ -1,5 +1,7 @@
-{ tailscale, buildGoModule }:
-
+{ tailscale, buildGo123Module }:
+let
+  buildGoModule = buildGo123Module;
+in
 tailscale.override {
   buildGoModule =
     args:
