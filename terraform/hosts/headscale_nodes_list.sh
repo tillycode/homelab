@@ -16,7 +16,7 @@ set -x
 headscale_nodes=$(ssh "${ssh_args[@]}" "${ssh_user:-root}@${ssh_host:?}" \
   headscale nodes list -o json |
   jq 'map({
-    name,
+    name: .given_name,
     addresses: (
       .ip_addresses |
       map({
