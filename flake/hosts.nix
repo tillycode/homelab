@@ -67,6 +67,7 @@ let
       services.printing
       system.boot.efi
       users.sun
+      virtualisation.lxd
       virtualisation.podman
     ];
   };
