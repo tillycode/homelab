@@ -27,6 +27,15 @@
         server = "local";
       }
       {
+        # steam CDNs
+        domain_suffix = [
+          "steamcontent.com"
+          "steamcontent.akadns.net"
+          "steamserver.net"
+        ];
+        server = "local";
+      }
+      {
         rule_set = [
           "geoip-cn"
           "geosite-geolocation-cn"

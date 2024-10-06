@@ -48,4 +48,7 @@
   services.pcscd.enable = true;
   services.gnome.gnome-keyring.enable = true;
   programs.steam.enable = true;
+  programs.steam.extraCompatPackages = with pkgs; [
+    proton-ge-bin
+  ];
 }
