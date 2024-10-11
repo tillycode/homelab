@@ -8,7 +8,7 @@ in
   # based on NixOS/nixpkgs#306533
   systemd.services.tailscale-derper = {
     serviceConfig = {
-      ExecStart = "${lib.getExe' package "derper"} -a :${toString port} -c /var/lib/derper/derper.key --hostname=${domain} --verify-clients";
+      ExecStart = "${lib.getOutput "derper" package}/bin/derper -a :${toString port} -c /var/lib/derper/derper.key --hostname=${domain} --verify-clients";
       DynamicUser = true;
       Restart = "always";
       RestartSec = "5sec";
