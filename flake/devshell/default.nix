@@ -28,6 +28,9 @@
           ssh-to-age
           vault
           nvfetcher
+
+          gnumake
+          gawk # for gnumake
         ];
         devshell.startup = {
           nixago.text = config.nixago.shellHook;
