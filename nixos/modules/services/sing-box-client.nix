@@ -185,11 +185,10 @@ in
           tag = "tun";
           type = "tun";
           interface_name = "sing0";
-          # FIXME: sing-box deprecates `inet4_address` and `inet6_address` options
-          #   in favor of the new `address` option in v1.10.0.
-          #   See https://sing-box.sagernet.org/configuration/inbound/tun/#address.
-          inet4_address = "172.19.0.1/30";
-          inet6_address = "fdfe:dcba:9876::1/126";
+          address = [
+            "172.19.0.1/30"
+            "fdfe:dcba:9876::1/126"
+          ];
           sniff = true;
         }
         {
@@ -229,9 +228,7 @@ in
       };
       # this should match the tun inbound and fake IP in sing-box.json
       networkConfig = {
-        Address = [
-          tunCfg.inet4_address
-          tunCfg.inet6_address
+        Address = tunCfg.address ++ [
           # fake IP
           fakeipCfg.inet4_range
           fakeipCfg.inet6_range
