@@ -58,6 +58,8 @@
     ms-vscode.cpptools
   ];
 
+  services.vscode-server.enable = true;
+
   xdg = {
     enable = true;
     userDirs.enable = true;
