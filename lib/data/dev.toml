@@ -1,0 +1,8 @@
+[nodes.vm001]
+ssh_host = "vm001.lxd"
+
+[nodes.vm002]
+ssh_host = "vm002.lxd"
+
+[nodes.vm003]
+ssh_host = "vm003.lxd"
