@@ -8,4 +8,5 @@ dependency "github_action" {
 
 inputs = {
   github_action_ssh_public_key = dependency.github_action.outputs.github_ssh_public_key
+  output_file    = "${get_path_to_repo_root()}/lib/data/aliyun.json"
 }

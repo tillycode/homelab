@@ -103,9 +103,15 @@ let
     name: cfg:
     let
       inherit (cfg.pkgs.stdenv.hostPlatform) system;
+      node = self.lib.data.nodes.${name};
     in
     {
-      hostname = name;
+      hostname = if node.ssh_host == null then name else node.ssh_host;
+      sshUser = "root";
+      sshOpts = lib.optionals (node.bastion_host != null) [
+        "-J"
+        "root@${node.bastion_host}"
+      ];
       profiles.system = {
         path = inputs.deploy-rs.lib.${system}.activate.nixos cfg;
       };

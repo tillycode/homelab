@@ -1,4 +1,4 @@
-{ self, lib, ... }:
+{ lib, inputs, ... }:
 {
-  flake.lib = import ../lib { inherit lib; };
+  flake.lib = import ../lib { inherit lib inputs; };
 }

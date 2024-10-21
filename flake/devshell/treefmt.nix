@@ -14,6 +14,7 @@
           "*.{gitignore,tfstate,lock,lock.hcl,tftpl}"
 
           # generated files
+          "lib/data/*.json"
           "generated/*"
           "secrets/*"
           "pkgs/_sources/*"
