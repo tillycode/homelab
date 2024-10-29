@@ -1,3 +1,27 @@
+## Common definitions
+[disko.dev]
+device = "/dev/sda"
+swapSize = "2G"
+
+[authorized-keys.dev]
+keys = [
+  "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAamaMcCAc7DhTJjDqBwXTWhewX0OI8vAuXLvc17yqK/", # sun@desktop
+  "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBIO4wL3BzfaMDOpbT/U/99MVQERjtzH2YxA6KAs7lwM", # yubikey
+]
+
+[nodes.default]
+system = "x86_64-linux"
+suites = ["disko.dev", "authorized-keys.dev"]
+profiles = [
+  "services.networkd",
+  "services.persistent",
+  "services.resolved",
+  "services.sshd",
+  "system.boot.efi",
+  "system.kernel.qemu-guest",
+]
+
+## Nodes
 [nodes.vm001]
 ssh_host = "vm001.lxd"
 
