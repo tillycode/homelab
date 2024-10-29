@@ -126,28 +126,61 @@ let
     {
       "${system}"."nixos/${name}" = toplevel;
     };
+
+  # v2 is the next version
+  selfNixosModulesV2 = lib.collect lib.isPath (
+    inputs.haumea.lib.load {
+      src = ../nixos/modules-v2;
+      loader = inputs.haumea.lib.loaders.path;
+    }
+  );
+
+  nixosModulesV2 = selfNixosModulesV2 ++ [
+    inputs.sops-nix.nixosModules.sops
+    inputs.impermanence.nixosModules.impermanence
+    inputs.home-manager.nixosModules.home-manager
+    inputs.disko.nixosModules.disko
+  ];
+
+  nixosProfilesV2 = inputs.haumea.lib.load {
+    src = ../nixos/profiles-v2;
+    loader = inputs.haumea.lib.loaders.path;
+  };
+
+  mkHostV2 =
+    name: profiles:
+    inputs.nixpkgs.lib.nixosSystem {
+      specialArgs = nixosSpecialArgs;
+      modules =
+        nixosModulesV2
+        ++ (lib.map (
+          p: if lib.isString p then lib.getAttrFromPath (lib.splitString "." p) nixosProfilesV2 else p
+        ) profiles);
+    };
 in
 {
-  flake.nixosConfigurations = lib.mapAttrs mkHost {
-    desktop = {
-      system = "x86_64-linux";
-    };
-    hgh0 = {
-      system = "x86_64-linux";
-    };
-    hgh1 = {
-      system = "x86_64-linux";
-    };
-    hgh2 = {
-      system = "x86_64-linux";
-    };
-    sin0 = {
-      system = "x86_64-linux";
-    };
-    sha0 = {
-      system = "x86_64-linux";
-    };
-  };
+  flake.nixosConfigurations =
+    (lib.mapAttrs mkHost {
+      desktop = {
+        system = "x86_64-linux";
+      };
+      hgh0 = {
+        system = "x86_64-linux";
+      };
+      hgh1 = {
+        system = "x86_64-linux";
+      };
+      hgh2 = {
+        system = "x86_64-linux";
+      };
+      sin0 = {
+        system = "x86_64-linux";
+      };
+      sha0 = {
+        system = "x86_64-linux";
+      };
+    })
+    // (lib.mapAttrs (n: cfg: mkHostV2 n cfg.profiles) self.lib.data.nodes);
 
   flake.deploy = {
     # autoRollback = true;
