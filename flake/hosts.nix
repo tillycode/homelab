@@ -103,12 +103,12 @@ let
     name: cfg:
     let
       inherit (cfg.pkgs.stdenv.hostPlatform) system;
-      node = self.lib.data.nodes.${name};
+      node = self.lib.data.nodes.${name} or null;
     in
     {
-      hostname = if node.ssh_host == null then name else node.ssh_host;
+      hostname = if node == null || node.ssh_host == null then name else node.ssh_host;
       sshUser = "root";
-      sshOpts = lib.optionals (node.bastion_host != null) [
+      sshOpts = lib.optionals (node != null && node.bastion_host != null) [
         "-J"
         "root@${node.bastion_host}"
       ];
