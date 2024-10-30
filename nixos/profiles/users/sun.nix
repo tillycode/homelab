@@ -17,14 +17,15 @@
 
   environment.persistence."/persist" = {
     users.sun.directories = [
+      ".aliyun"
+      ".aws"
       ".cache"
       ".config"
+      ".kube"
       ".local"
       ".npm"
+      ".vscode-server"
       ".vscode"
-      ".aws"
-      ".aliyun"
-      ".kube"
       "Documents"
       "Downloads"
       "Projects"
