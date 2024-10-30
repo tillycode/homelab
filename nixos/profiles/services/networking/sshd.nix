@@ -3,6 +3,7 @@
   services.openssh.extraConfig = ''
     ClientAliveInterval 60
     ClientAliveCountMax 2
+    StreamLocalBindUnlink yes
   '';
   users.users.root.openssh.authorizedKeys.keys = [
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAamaMcCAc7DhTJjDqBwXTWhewX0OI8vAuXLvc17yqK/" # sun@desktop
