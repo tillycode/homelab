@@ -86,12 +86,13 @@ in
         format = "text";
         level = "info";
       };
-      dns_config = {
-        override_local_dns = false;
-        restricted_nameservers = {
-          "k8s.szp.io" = [ "100.64.0.4" ];
+      dns = {
+        nameservers = {
+          split = {
+            "k8s.szp.io" = [ "100.64.0.4" ];
+          };
         };
-        domains = [ ];
+        search_domains = [ ];
         magic_dns = true;
         base_domain = "nodes.szp.io";
       };

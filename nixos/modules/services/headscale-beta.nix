@@ -15,7 +15,7 @@ in
   options = {
     services.headscale-beta = {
       enable = mkEnableOption "headscale-beta";
-      package = mkPackageOption pkgs "headscale-beta" { };
+      package = mkPackageOption pkgs "headscale" { };
       settings = mkOption {
         description = ''
           Overrides to {file}`config.yaml` as a Nix attribute set.
