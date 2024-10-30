@@ -79,7 +79,7 @@ in
       };
     };
   };
-  config = {
+  config = lib.mkIf cfg.enable {
     services.sing-box-client.settings = {
       log = {
         level = "warn";
