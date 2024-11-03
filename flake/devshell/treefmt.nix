@@ -11,7 +11,7 @@
         # global
         settings.global.excludes = lib.mkAfter [
           # unsupported extensions
-          "*.{gitignore,tfstate,lock,lock.hcl,tftpl}"
+          "*.{gitignore,tfstate,lock,lock.hcl,tftpl,gitkeep}"
 
           # generated files
           "lib/data/*.json"

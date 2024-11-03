@@ -19,6 +19,7 @@ profiles = [
   "services.sshd",
   "system.boot.efi",
   "system.kernel.qemu-guest",
+  "workarounds.systemd-machine-id-commit",
 ]
 
 ## Nodes
