@@ -39,6 +39,7 @@ let
       services.networking.sshd
       system.boot.loader
       system.persist.common
+      workarounds.systemd-machine-id-commit
     ];
 
     domestic = base ++ [

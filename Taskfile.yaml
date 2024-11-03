@@ -1,0 +1,40 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: "3"
+
+tasks:
+  default:
+    silent: true
+    desc: "List all tasks"
+    cmds:
+      - "{{.TASK_EXE}} --list-all"
+
+  check:
+    desc: "Check the code"
+    cmds:
+      - nix flake check
+
+  fmt:
+    desc: "Format the code"
+    cmds:
+      - nix fmt -- --no-cache
+
+  deploy-local:
+    desc: "Deploy to the current node (identified by hostname)"
+    cmds:
+      - nixos-rebuild switch --flake ".#$(hostname)" --use-remote-sudo
+
+  deploy-v2:
+    desc: "Deploy to the a node (identified by `NODE` variable)"
+    cmds:
+      - deploy --skip-checks ".#{{.NODE}}"
+    requires:
+      vars: [NODE]
+
+  docs:serve:
+    desc: "Serve the documentation locally"
+    cmds:
+      - >-
+        nix shell --impure --expr
+        'with import (builtins.getFlake "nixpkgs") {};
+        pkgs.python3.withPackages (ps: with ps; [ mkdocs mkdocs-material ])'
+        -c mkdocs serve
