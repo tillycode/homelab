@@ -47,7 +47,7 @@ in
 {
   environment.etc."headscale/derp.yaml".source = derpFile;
 
-  services.headscale-beta = {
+  services.headscale = {
     enable = true;
     settings = lib.mkForce {
       # external domain
