@@ -19,6 +19,7 @@
           opentofu
           cachix
           aws-vault
+          awscli2
           terragrunt
           terraform-ls
           gh

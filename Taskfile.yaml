@@ -23,7 +23,7 @@ tasks:
     cmds:
       - nixos-rebuild switch --flake ".#$(hostname)" --use-remote-sudo
 
-  deploy-v2:
+  deploy:
     desc: "Deploy to the a node (identified by `NODE` variable)"
     cmds:
       - deploy --skip-checks ".#{{.NODE}}"
@@ -38,3 +38,14 @@ tasks:
         'with import (builtins.getFlake "nixpkgs") {};
         pkgs.python3.withPackages (ps: with ps; [ mkdocs mkdocs-material ])'
         -c mkdocs serve
+
+  tf:apply:
+    desc: "Apply the Terraform configuration"
+    dir: "terraform/{{.MODULE}}"
+    cmds:
+      - terragrunt apply
+    env:
+      ALICLOUD_PROFILE: default
+      AWS_DEFAULT_PROFILE: admin
+    requires:
+      vars: [MODULE]

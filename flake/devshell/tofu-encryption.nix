@@ -533,21 +533,6 @@ in
               '';
             };
           }
-          {
-            category = "terraform";
-            name = "aws";
-            help = "AWS CLI wrapper";
-            package = pkgs.writeShellApplication {
-              name = "aws";
-              runtimeInputs = with pkgs; [
-                awscli2
-                aws-vault
-              ];
-              text = ''
-                exec aws-vault exec admin -- aws "$@"
-              '';
-            };
-          }
         ];
       };
     };
