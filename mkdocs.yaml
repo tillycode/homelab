@@ -1,4 +1,6 @@
 site_name: Homelab
+markdown_extensions:
+  - footnotes
 theme:
   name: material
   features:
@@ -15,3 +17,5 @@ nav:
   - Designs:
       - index.md
       - NixOS Configuration: designs/nixos-config.md
+      - Overlay Network: designs/overlay-network.md
+      - Dev Cluster (WIP): designs/dev-cluster.md

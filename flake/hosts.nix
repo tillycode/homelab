@@ -168,9 +168,6 @@ in
       hgh0 = {
         system = "x86_64-linux";
       };
-      hgh1 = {
-        system = "x86_64-linux";
-      };
       hgh2 = {
         system = "x86_64-linux";
       };
