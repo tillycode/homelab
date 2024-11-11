@@ -9,3 +9,7 @@ result-*
 
 # taskfile
 .task/
+
+# python
+__pycache__/
+*.py[cod]

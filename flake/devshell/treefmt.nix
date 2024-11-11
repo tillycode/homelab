@@ -11,7 +11,7 @@
         # global
         settings.global.excludes = lib.mkAfter [
           # unsupported extensions
-          "*.{gitignore,tfstate,lock,lock.hcl,tftpl,gitkeep}"
+          "*.{gitignore,tfstate,lock,lock.hcl,tftpl,gitkeep,python-version}"
 
           # generated files
           "lib/data/*.json"
@@ -53,6 +53,10 @@
         programs.shellcheck.enable = true;
         settings.formatter.shfmt.includes = [ ".envrc" ];
         settings.formatter.shellcheck.includes = [ ".envrc" ];
+
+        # py
+        programs.ruff.check = true;
+        programs.ruff.format = true;
       };
     };
 }
