@@ -30,6 +30,20 @@ tasks:
     requires:
       vars: [NODE]
 
+  infect:
+    desc: "Infect the node with nixos-anywhere"
+    cmds:
+      - uv run scripts/infect.py --node={{.NODE}} {{.CLI_ARGS}}
+    requires:
+      vars: [NODE]
+
+  ssh:
+    desc: "SSH into the node"
+    cmds:
+      - uv run scripts/ssh.py --node={{.NODE}} {{.CLI_ARGS}}
+    requires:
+      vars: [NODE]
+
   docs:serve:
     desc: "Serve the documentation locally"
     cmds:

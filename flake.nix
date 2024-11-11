@@ -83,6 +83,13 @@
 
     gitignore-nix.url = "github:hercules-ci/gitignore.nix";
     gitignore-nix.inputs.nixpkgs.follows = "nixpkgs";
+
+    pyproject-nix.url = "github:nix-community/pyproject.nix";
+    pyproject-nix.inputs.nixpkgs.follows = "nixpkgs";
+
+    nv2nix.url = "github:adisbladis/uv2nix";
+    nv2nix.inputs.pyproject-nix.follows = "pyproject-nix";
+    nv2nix.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =

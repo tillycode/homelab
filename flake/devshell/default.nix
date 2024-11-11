@@ -30,6 +30,8 @@
           vault
           nvfetcher
           go-task
+          python3
+          uv
         ];
         devshell.startup = {
           nixago.text = config.nixago.shellHook;
