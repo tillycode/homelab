@@ -11,20 +11,12 @@ keys = [
 
 [nodes.default]
 system = "x86_64-linux"
-suites = ["disko.dev", "authorized-keys.dev"]
-profiles = [
-  "services.networkd",
-  "services.persistent",
-  "services.resolved",
-  "services.sshd",
-  "system.boot.efi",
-  "system.kernel.qemu-guest",
-  "workarounds.systemd-machine-id-commit",
-]
+suites = ["disko.dev", "authorized-keys.dev", "suites.basic"]
 
 ## Nodes
 [nodes.vm001]
 ssh_host = "vm001.lxd"
+profiles = ["services.sing-box"]
 
 [nodes.vm002]
 ssh_host = "vm002.lxd"

@@ -14,10 +14,13 @@
           "*.{gitignore,tfstate,lock,lock.hcl,tftpl,gitkeep,python-version}"
 
           # generated files
-          "lib/data/*.json"
+          "lib/data/**.json"
+          "lib/secrets/**.yaml"
+          "pkgs/_sources/*"
+
+          # legacy generated files
           "generated/*"
           "secrets/*"
-          "pkgs/_sources/*"
         ];
 
         # json, yaml, markdown

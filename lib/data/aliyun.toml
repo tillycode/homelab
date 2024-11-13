@@ -7,13 +7,5 @@ swapSize = "2G"
 system = "x86_64-linux"
 bastion_host = "47.96.145.133"
 ssh_host = "172.16.0.76"
-suites = ["disko.aliyun-hgh1", "authorized-keys.dev"]
-profiles = [
-  "services.networkd",
-  "services.persistent",
-  "services.resolved",
-  "services.sshd",
-  "system.boot.efi",
-  "system.kernel.qemu-guest",
-  "workarounds.systemd-machine-id-commit",
-]
+suites = ["disko.aliyun-hgh1", "authorized-keys.dev", "suites.basic"]
+profiles = ["services.sing-box"]

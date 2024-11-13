@@ -9,7 +9,7 @@ from helpers.common import Connection
 def ssh_main() -> None:
     parser = argparse.ArgumentParser()
     Connection.add_argument_parser(parser)
-    args = parser.parse_args()
+    args, extra_args = parser.parse_known_args()
 
     connection = Connection.from_args(args)
     ssh_args: list[str] = [
@@ -24,7 +24,7 @@ def ssh_main() -> None:
     ssh_args += [
         f"{connection.ssh_user or "root"}@{connection.ssh_host}",
     ]
-    os.execlp("ssh", "ssh", *ssh_args)
+    os.execlp("ssh", "ssh", *ssh_args, *extra_args)
 
 
 if __name__ == "__main__":
