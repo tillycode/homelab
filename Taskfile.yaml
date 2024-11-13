@@ -26,7 +26,18 @@ tasks:
   deploy:
     desc: "Deploy to the a node (identified by `NODE` variable)"
     cmds:
-      - deploy --skip-checks ".#{{.NODE}}"
+      - deploy --skip-checks --fast-connection true ".#{{.NODE}}" -- --print-build-logs
+    requires:
+      vars: [NODE]
+
+  diff:
+    cmds:
+      - deploy --skip-checks --fast-connection true ".#{{.NODE}}" --dry-activate -- --print-build-logs
+      - >-
+        uv run scripts/ssh.py --node={{.NODE}}
+        nix run --extra-experimental-features '"nix-command flakes"'
+        nixpkgs#nvd -- --color always diff /run/current-system
+        "$(nix build .#nixosConfigurations.{{.NODE}}.config.system.build.toplevel --print-out-paths)"
     requires:
       vars: [NODE]
 
@@ -34,6 +45,14 @@ tasks:
     desc: "Infect the node with nixos-anywhere"
     cmds:
       - uv run scripts/infect.py --node={{.NODE}} {{.CLI_ARGS}}
+    requires:
+      vars: [NODE]
+
+  keyscan:
+    desc: "Scan the SSH keys of the node"
+    cmds:
+      - uv run scripts/keyscan.py --node={{.NODE}} {{.CLI_ARGS}} --output=lib/data/keyscan.{{.NODE}}.json
+      - yq -P -o yaml lib/data/keyscan.{{.NODE}}.json
     requires:
       vars: [NODE]
 
@@ -63,3 +82,20 @@ tasks:
       AWS_DEFAULT_PROFILE: admin
     requires:
       vars: [MODULE]
+
+  secrets:sync:
+    desc: "Sync the secrets from sources to nodes"
+    dir: lib
+    cmds:
+      - uv run ../scripts/secrets.py sync --node={{.NODE}} {{.CLI_ARGS}}
+    env:
+      AWS_DEFAULT_PROFILE: admin
+    requires:
+      vars: [NODE]
+
+  aws:login:
+    desc: "Login to the AWS account"
+    cmds:
+      - aws sso login
+    env:
+      AWS_DEFAULT_PROFILE: admin

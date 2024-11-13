@@ -1,4 +1,26 @@
-{ inputs, ... }:
+{
+  self,
+  inputs,
+  lib,
+  ...
+}:
+let
+  inherit (self.lib.data) node-keys sops-keys;
+  sops_source_creation_rule = {
+    path_regex = "^secrets/sources/.*\\.yaml$";
+    key_groups = [ sops-keys ];
+  };
+  sops_host_creation_rules = lib.pipe node-keys [
+    lib.attrsToList
+    (lib.map (
+      { name, value }:
+      {
+        path_regex = "^secrets/nodes/${name}\\.yaml$";
+        key_groups = [ { age = [ value.age-key ]; } ];
+      }
+    ))
+  ];
+in
 {
   # docs: https://numtide.github.io/devshell/modules_schema.html
   imports = [
@@ -14,6 +36,18 @@
   perSystem =
     { config, pkgs, ... }:
     {
+      nixago.configs = [
+        {
+          data = {
+            creation_rules = [
+              sops_source_creation_rule
+            ] ++ sops_host_creation_rules;
+          };
+          format = "yaml";
+          output = "lib/.sops.yaml";
+        }
+      ];
+
       devshells.default = {
         devshell.packages = with pkgs; [
           opentofu
@@ -38,7 +72,6 @@
           pre-commit-hook.text = config.pre-commit.installationScript;
         };
       };
-      nixago.configs = [ ];
 
       devshells.deploy = {
         devshell.motd = "Welcome to CI/CD shell";

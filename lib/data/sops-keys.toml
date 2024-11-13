@@ -1,0 +1,9 @@
+[sops-keys]
+pgp = [
+  # ziping_sun
+  "8CC5C91F72DB57DA20BD848C6523836CF4992251",
+]
+kms = [
+  # github-actions
+  { arn = "arn:aws:kms:ap-southeast-1:137927498482:alias/sops-key" },
+]

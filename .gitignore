@@ -13,3 +13,9 @@ result-*
 # python
 __pycache__/
 *.py[cod]
+
+# vscode-sops
+.decrypted~*
+
+# nixago: ignore-linked-files
+/lib/.sops.yaml
