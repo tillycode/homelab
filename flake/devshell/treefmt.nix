@@ -18,6 +18,9 @@
           "lib/secrets/**.yaml"
           "pkgs/_sources/*"
 
+          # treefmt reports error for symlinks
+          ".sops.yaml"
+
           # legacy generated files
           "generated/*"
           "secrets/*"
