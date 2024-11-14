@@ -18,6 +18,9 @@
           "lib/secrets/**.yaml"
           "pkgs/_sources/*"
 
+          # treefmt reports error for symlinks
+          ".sops.yaml"
+
           # legacy generated files
           "generated/*"
           "secrets/*"
@@ -38,18 +41,7 @@
         programs.terraform.package = pkgs.opentofu;
 
         # hcl
-        settings.formatter.terragrunt = {
-          command = pkgs.bash;
-          options = [
-            "-euc"
-            ''
-              for f in "$@"; do
-                ${pkgs.terragrunt}/bin/terragrunt hclfmt --terragrunt-hclfmt-file "$f"
-              done
-            ''
-          ];
-          includes = [ "*.hcl" ];
-        };
+        programs.hclfmt.enable = true;
 
         # sh
         programs.shfmt.enable = true;
