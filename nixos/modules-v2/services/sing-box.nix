@@ -91,7 +91,7 @@ in
 
     services.sing-box-client.settings = {
       log = {
-        level = "debug";
+        level = "warn";
       };
       experimental = {
         cache_file = {

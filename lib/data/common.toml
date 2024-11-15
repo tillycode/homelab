@@ -1,10 +1,11 @@
 [suites."suites.basic"]
 profiles = [
   "services.networkd",
+  "services.nix-optimise",
+  "services.nix-gc",
   "services.persistent.common",
   "services.resolved",
   "services.sshd",
   "system.boot.efi",
   "system.kernel.qemu-guest",
-  "workarounds.systemd-machine-id-commit",
 ]

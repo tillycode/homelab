@@ -55,5 +55,7 @@
     ];
   };
 
-  sops.secrets."sing-box/outbounds.json" = { };
+  sops.secrets."sing-box/outbounds.json" = {
+    restartUnits = [ "sing-box-client.service" ];
+  };
 }

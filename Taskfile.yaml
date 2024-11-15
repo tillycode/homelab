@@ -83,6 +83,26 @@ tasks:
     requires:
       vars: [MODULE]
 
+  secrets:edit:
+    desc: "Edit the secrets in the sources"
+    dir: lib
+    cmds:
+      - sops edit secrets/sources/{{.SOURCE}}.yaml
+    env:
+      AWS_DEFAULT_PROFILE: admin
+    requires:
+      vars: [SOURCE]
+
+  secrets:encrypt:
+    desc: "Encrypt the secrets in the sources"
+    dir: lib
+    cmds:
+      - sops encrypt --in-place secrets/sources/{{.SOURCE}}.yaml
+    env:
+      AWS_DEFAULT_PROFILE: admin
+    requires:
+      vars: [SOURCE]
+
   secrets:sync:
     desc: "Sync the secrets from sources to nodes"
     dir: lib
