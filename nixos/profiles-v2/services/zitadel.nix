@@ -130,12 +130,12 @@
       '';
     };
   };
-  warnings = lib.optionals config.services.nginx.enable [
+  warnings = lib.optionals (!config.services.nginx.enable) [
     "Nginx service is not enabled, Zitadel will not be accessible"
   ];
 
   ## ---------------------------------------------------------------------------
-  ## PATCHES
+  ## HACKS
   ## ---------------------------------------------------------------------------
   # The original service provided by NixOS runs `zitadel start-from-init`.
   # This command consists of three steps: `init`, `step`, and `start`.

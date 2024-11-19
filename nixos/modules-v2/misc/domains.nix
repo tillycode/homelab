@@ -8,6 +8,9 @@
   config = {
     domains = {
       zitadel = "login.szp15.com";
+      netbird = "netbird.szp15.com";
+
+      netbird-overlay = "nodes01.szp.io";
     };
   };
 }
