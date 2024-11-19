@@ -26,7 +26,7 @@ tasks:
   deploy:
     desc: "Deploy to the a node (identified by `NODE` variable)"
     cmds:
-      - deploy --skip-checks --fast-connection true ".#{{.NODE}}" -- --print-build-logs
+      - deploy --skip-checks --auto-rollback false --fast-connection true ".#{{.NODE}}" -- --print-build-logs
     requires:
       vars: [NODE]
 

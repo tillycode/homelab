@@ -2,52 +2,52 @@
 
 ## Motivation
 
-1. To provide connectivity for a hybrid cloud architecture, which consists of multiple cloud providers and local machines.
-2. To enable my laptop, github runner, etc., to access private resources.
+The primary goal for the overlay network is to provide a **flat network** for
+all kinds of nodes, including self-hosted VMs, VPSs, PCs, and Kubernetes pods.
 
 ## Considerations
 
-Here are some considerations for choosing a solution:
+Here are some considerations for the overlay network:
 
-- NAT traversal
-- Performance (throughput, latency; CPU, memory)
-- OIDC integration (and the ability to use without it)
-- Self-hosted (both the controller service and the relay service)
-- Routes
-- DNS
-- Operating system support
-- Codebase quality
-- UI
+| Feature                 | Priority | Description                              | Use Case                                               |
+| ----------------------- | -------- | ---------------------------------------- | ------------------------------------------------------ |
+| **Route Advertisement** | P1       | Advertise route between nodes            | 1. Access VMs and containers 2. join multiple networks |
+| **NAT Traversal**       | P1       | Direct connections if preferred          | Save traffic costs and improve performance             |
+| **Custom DNS**          | P1       | Support custom DNS servers               | Discover nodes and services by their domain names      |
+| **Performance**         | P2       | Kernel-space implementation is preferred |                                                        |
+| **Self-hosting**        | P2       | Provide official open-source solutions   |                                                        |
+| **Portability**         | P2       | Provide clients for major OSs            |                                                        |
+| **OIDC Integration**    | P3       |                                          |                                                        |
+| **Codebase Quality**    | P3       |                                          |                                                        |
+| **UI**                  | P3       |                                          |                                                        |
 
-After comparing **[Tailscale](https://tailscale.com/)**, **[ZeroTier](https://www.zerotier.com/)**,
-**[Netmaker](https://netmaker.io/)**, and **[NetBird](https://netbird.io/)**,
-I've decided to choose **[NetBird](https://netbird.io/)**.
+Note that route advertisement is a important feature. It allows a host node
+to advertise its VMs and containers to other nodes. This is essential for
+Kubernetes pods to communicate with each other without double encapsulation [^flannel-extension].
+It also allows multiple networks, including other overlay networks, to be joined together.
 
-**Pros**
+Here are some popular choices: **[ZeroTier](https://www.zerotier.com/)**,
+**[Tailscale](https://tailscale.com/)**, **[NetBird](https://netbird.io/)**,
+**[Netmaker](https://netmaker.io/)**, and **[Nebula](https://github.com/slackhq/nebula)**.
 
-- It uses kernel-space wireguard, which ensures good performance.
-- It's fully open-source and can be easily self-hosted.
-- It has an intuitive UI.
-- It supports routes. Unlike Tailscale, where nodes advertise their routes by themselves,
-  in NetBird, you need to specify the routes in the NetBird Dashboard.
-- It supports DNS. You can set a custom DNS server and configure split DNS.
-  However, you can't add custom DNS records.
-- It has clear API docs.
-- It has built-in service accounts.
+## Experiments
 
-**Cons**
+At first, I chose Tailscale. It has some limitations:
 
-- The control-plane (management service) can't be deployed without OIDC.
+- **Self-hosting**: Tailscale control-plane is closed-source. Luckily,
+  there is an open-source alternative called **[Headscale](https://github.com/juanfont/headscale)**.
+- **Performance**: It uses userspace wireguard, which may have performance issues.
+- **UI**: As there is no official open-source control-plane, there is also no official open-source UI.
+  Luckily, there are a few community UIs available.
 
-## Known Issues
+Then, I found NetBird. So I decided to give it a try. It is competitive with Tailscale in many aspects.
+However, I found it has a significant limitation:
 
-- **Unable to specify the CIDR for the overlay network.**
-  The overlay network CIDR is randomly selected from the CGNAT range.
-  This may conflict with existing services,
-  especially the Aliyun Metadata Service and the VPC DNS Servers.
-  I can create a patch to limit the CIDR range.
+- **NAT traversal**: When I have two VMs in one PC, and accessing them from another PC
+  under the same NAT, Tailscale can always establish a direct IPv6 connection.
+  NetBird, however, sometimes uses a relay server, and sometimes establishes
+  a IPv4 connection by hole-punching.
 
-- **K3s only has (experimental) built-in support for Tailscale, not NetBird.**
-  I can write a flannel extension myself. [^flannel-extension].
+After these experiments, I decided to keep using Tailscale and Headscale.
 
 [^flannel-extension]: [flannel/pkg/backend/extension/extension.go at v0.26.1 · flannel-io/flannel](https://github.com/flannel-io/flannel/blob/v0.26.1/pkg/backend/extension/extension.go)
