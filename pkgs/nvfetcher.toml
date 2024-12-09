@@ -1,1 +1,3 @@
-
+[headscale-ui]
+src.github = "gurucomputing/headscale-ui"
+fetch.github = "gurucomputing/headscale-ui"

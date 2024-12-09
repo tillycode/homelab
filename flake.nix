@@ -55,7 +55,6 @@
 
     sops-nix.url = "github:Mic92/sops-nix";
     sops-nix.inputs.nixpkgs.follows = "nixpkgs";
-    sops-nix.inputs.nixpkgs-stable.follows = "nixpkgs";
 
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
@@ -90,6 +89,11 @@
     nv2nix.url = "github:adisbladis/uv2nix";
     nv2nix.inputs.pyproject-nix.follows = "pyproject-nix";
     nv2nix.inputs.nixpkgs.follows = "nixpkgs";
+
+    dream2nix.url = "github:nix-community/dream2nix";
+    dream2nix.inputs.nixpkgs.follows = "nixpkgs";
+    dream2nix.inputs.purescript-overlay.follows = "blank";
+    dream2nix.inputs.pyproject-nix.follows = "blank";
   };
 
   outputs =

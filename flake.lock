@@ -81,6 +81,32 @@
         "type": "github"
       }
     },
+    "dream2nix": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "purescript-overlay": [
+          "blank"
+        ],
+        "pyproject-nix": [
+          "blank"
+        ]
+      },
+      "locked": {
+        "lastModified": 1732214960,
+        "narHash": "sha256-ViyEMSYwaza6y55XTDrsRi2K4YKCLsefMTorjWSE27s=",
+        "owner": "nix-community",
+        "repo": "dream2nix",
+        "rev": "a8dac99db44307fdecead13a39c584b97812d0d4",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "dream2nix",
+        "type": "github"
+      }
+    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -358,6 +384,7 @@
         "deploy-rs": "deploy-rs",
         "devshell": "devshell",
         "disko": "disko",
+        "dream2nix": "dream2nix",
         "flake-compat": "flake-compat",
         "flake-parts": "flake-parts",
         "flake-utils": "flake-utils",

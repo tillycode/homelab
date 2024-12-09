@@ -70,7 +70,7 @@ in
         };
         urls = [ ];
         paths = [ "/etc/headscale/derp.yaml" ];
-        auto_update_enable = true;
+        auto_update_enabled = true;
         update_frequency = "24h";
       };
       disable_check_updates = true;

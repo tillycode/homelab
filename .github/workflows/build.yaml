@@ -33,7 +33,7 @@ jobs:
         run: nix develop .#deploy --command setup
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-      - run: nix flake show --all-systems
+      # - run: nix flake show --all-systems
       - run: nix flake check --all-systems
 
   plan:

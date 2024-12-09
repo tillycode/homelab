@@ -1,1 +1,22 @@
-{}
+{
+    "headscale-ui": {
+        "cargoLocks": null,
+        "date": null,
+        "extract": null,
+        "name": "headscale-ui",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "owner": "gurucomputing",
+            "repo": "headscale-ui",
+            "rev": "2024.10.10",
+            "sha256": "sha256-r7LWzna6ZI5hI5ojyfWssqQc+IA3vInSwDlmXGBmhZQ=",
+            "type": "github"
+        },
+        "version": "2024.10.10"
+    }
+}
