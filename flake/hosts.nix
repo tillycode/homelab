@@ -140,6 +140,9 @@ let
     inputs.impermanence.nixosModules.impermanence
     inputs.home-manager.nixosModules.home-manager
     inputs.disko.nixosModules.disko
+    {
+      nixpkgs.overlays = [ self.overlays.default ];
+    }
   ];
 
   nixosProfilesV2 = inputs.haumea.lib.load {

@@ -13,4 +13,5 @@ profiles = [
   "services.nginx",
   "services.sing-box",
   "services.zitadel",
+  "services.headscale",
 ]

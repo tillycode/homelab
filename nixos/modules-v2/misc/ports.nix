@@ -19,11 +19,15 @@ in
 
     ports = {
       zitadel = 30000;
+
       netbird-signal = 10000;
       netbird-management = 33073;
       netbird-signal-metrics = 30010;
       netbird-management-metrics = 30011;
       # TODO: coturn ports
+
+      headscale = 30020;
+      headscale-metrics = 30021;
     };
   };
 }
