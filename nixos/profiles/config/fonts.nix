@@ -1,19 +1,18 @@
 { pkgs, ... }:
 {
   fonts.enableDefaultPackages = false;
-  fonts.packages = with pkgs; [
-    noto-fonts
-    noto-fonts-cjk-sans
-    noto-fonts-cjk-serif
-    noto-fonts-emoji
-    jetbrains-mono
-    (nerdfonts.override {
-      fonts = [
-        "JetBrainsMono"
-        "RobotoMono"
-      ];
-    })
-  ];
+  fonts.packages =
+    (with pkgs; [
+      noto-fonts
+      noto-fonts-cjk-sans
+      noto-fonts-cjk-serif
+      noto-fonts-emoji
+      # jetbrains-mono
+    ])
+    ++ (with pkgs.nerd-fonts; [
+      jetbrains-mono
+      roboto-mono
+    ]);
   fonts.fontconfig.defaultFonts = {
     serif = [
       "Noto Serif"
