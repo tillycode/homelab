@@ -32,4 +32,10 @@
         };
       };
     };
+
+  flake.overlays.fix-lxd = final: prev: {
+    dqlite = prev.dqlite.overrideAttrs (oldAttrs: {
+      buildInputs = oldAttrs.buildInputs ++ [ final.lz4.dev ];
+    });
+  };
 }
