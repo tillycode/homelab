@@ -31,7 +31,7 @@ in
     ];
   };
 
-  fileSystems."/efi" = {
+  fileSystems."/boot" = {
     device = "/dev/disk/by-partlabel/EFI";
     fsType = "vfat";
   };
@@ -41,6 +41,10 @@ in
     neededForBoot = true;
   };
   fileSystems."/swap" = mkBtrfsMount "swap";
+
+  environment.persistence.default.persistentStoragePath = "/persist";
+  sops.age.sshKeyPaths = [ "/persist/etc/ssh/ssh_host_ed25519_key" ];
+  sops.gnupg.sshKeyPaths = [ ];
 
   swapDevices = [
     {

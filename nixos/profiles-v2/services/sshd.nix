@@ -4,5 +4,6 @@
   services.openssh.extraConfig = ''
     ClientAliveInterval 60
     ClientAliveCountMax 2
+    StreamLocalBindUnlink yes
   '';
 }
