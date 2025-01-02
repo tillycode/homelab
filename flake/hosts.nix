@@ -66,7 +66,6 @@ let
       services.printing
       system.boot.efi
       users.sun
-      virtualisation.lxd
       virtualisation.podman
     ];
   };
@@ -284,6 +283,7 @@ in
               ++ (with profiles; [
                 services.sing-box
                 services.tailscale
+                virtualization.lxd
               ])
               ++ (with nixosProfiles; [
                 programs.cli-tools
@@ -300,7 +300,6 @@ in
                 services.networking.iwd
                 services.printing
                 users.sun
-                virtualisation.lxd
                 virtualisation.podman
               ]);
           }

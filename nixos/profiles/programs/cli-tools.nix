@@ -24,5 +24,7 @@
     usbutils
     util-linux
     yq-go
+    killall
+    mtr
   ];
 }
