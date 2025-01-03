@@ -259,6 +259,7 @@ in
                 services.zitadel
                 services.headscale
                 services.tailscale
+                services.coredns
               ]);
           }
         )

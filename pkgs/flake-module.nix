@@ -10,7 +10,7 @@
     in
     {
       overlayAttrs = {
-        inherit (config.packages) tailscale-patched headscale-ui;
+        inherit (config.packages) tailscale-patched headscale-ui hschip;
       };
       packages = {
         tailscale-patched = pkgs.callPackage (import ./tailscale-patched) { };
@@ -30,6 +30,7 @@
             }
           ];
         };
+        hschip = pkgs.callPackage (import ./hschip) { };
       };
     };
 

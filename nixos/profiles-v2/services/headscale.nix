@@ -10,7 +10,8 @@ let
   ## ---------------------------------------------------------------------------
   baseDomain = "ts.szp.io";
   splitDomain = {
-    # "k8s.szp.io" = [ "100.64.0.4" ];
+    "svc.szp.io" = [ "100.71.0.1" ];
+    "vm.szp.io" = [ "100.71.0.1" ];
   };
 
   # https://github.com/juanfont/headscale/blob/v0.23.0/hscontrol/policy/acls_types.go
@@ -38,7 +39,7 @@ let
         # podman
         "10.88.0.0/16" = [ "tag:server" ];
         # LXD
-        "10.212.0.0/16" = [ "tag:server" ];
+        "10.75.0.0/16" = [ "tag:lxd" ];
       };
     };
   };
@@ -201,4 +202,11 @@ in
       return = "301 /web/";
     };
   };
+
+  ## ---------------------------------------------------------------------------
+  ## DECLARATIVE PREDEFINED IP
+  ## ---------------------------------------------------------------------------
+  systemd.services.headscale.preStart = ''
+    ${lib.getExe pkgs.hschip} ${config.networking.hostName} 100.71.0.1
+  '';
 }

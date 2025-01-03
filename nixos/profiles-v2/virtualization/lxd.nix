@@ -9,6 +9,7 @@ let
   zitadelClientID = "300717015688085580";
   ipv4Address = "10.75.0.1";
   ipv4CIDR = "${ipv4Address}/24";
+  ipv4RouteAdvertise = "10.75.0.0/24";
 in
 {
   ## ---------------------------------------------------------------------------
@@ -36,6 +37,8 @@ in
           config = {
             "ipv4.address" = ipv4CIDR;
             "ipv6.address" = "auto";
+            "ipv4.nat" = "true";
+            "ipv6.nat" = "true";
           };
         }
       ];
@@ -45,7 +48,7 @@ in
           driver = "btrfs";
           description = "";
           config = {
-            size = "5GiB";
+            size = "30GiB";
           };
         }
       ];
@@ -162,5 +165,18 @@ in
       directory = "/var/lib/lxc";
       mode = "0755";
     }
+  ];
+
+  ## ---------------------------------------------------------------------------
+  ## FIREWALL
+  ## ---------------------------------------------------------------------------
+  networking.firewall.trustedInterfaces = [ "lxdbr0" ];
+
+  ## ---------------------------------------------------------------------------
+  ## ROUTE ADVERTISEMENT
+  ## ---------------------------------------------------------------------------
+  services.tailscale.extraSetFlags = [
+    "--advertise-routes"
+    ipv4RouteAdvertise
   ];
 }
