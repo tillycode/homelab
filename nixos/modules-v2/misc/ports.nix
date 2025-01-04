@@ -28,6 +28,8 @@ in
 
       headscale = 30020;
       headscale-metrics = 30021;
+
+      lxd-https = 30030;
     };
   };
 }

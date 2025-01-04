@@ -10,6 +10,8 @@ let
   ipv4Address = "10.75.0.1";
   ipv4CIDR = "${ipv4Address}/24";
   ipv4RouteAdvertise = "10.75.0.0/24";
+  httpsPort = config.ports.lxd-https;
+  domain = config.domains.lxd;
 in
 {
   ## ---------------------------------------------------------------------------
@@ -21,13 +23,11 @@ in
     ui.enable = true;
     preseed = {
       config = {
-        "core.https_address" = ":8443";
-        "core.dns_address" = ":853";
+        "core.https_address" = "127.0.0.1:${toString httpsPort}";
         "oidc.audience" = zitadelResourceID;
         "oidc.client.id" = zitadelClientID;
         "oidc.issuer" = "https://login.szp15.com";
         "oidc.groups.claim" = "groups";
-        # TODO: TLS pass through?
       };
       networks = [
         {
@@ -179,4 +179,14 @@ in
     "--advertise-routes"
     ipv4RouteAdvertise
   ];
+
+  ## ---------------------------------------------------------------------------
+  ## INGRESS
+  ## ---------------------------------------------------------------------------
+  services.nginx.virtualHosts."${domain}" = {
+    locations."/" = {
+      proxyPass = "https://127.0.0.1:${toString httpsPort}";
+      proxyWebsockets = true;
+    };
+  };
 }

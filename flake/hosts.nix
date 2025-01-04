@@ -282,6 +282,7 @@ in
               ]
               ++ suites.desktop
               ++ (with profiles; [
+                services.nginx
                 services.sing-box
                 services.tailscale
                 virtualization.lxd
