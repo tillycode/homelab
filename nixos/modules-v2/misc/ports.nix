@@ -30,6 +30,8 @@ in
       headscale-metrics = 30021;
 
       lxd-https = 30030;
+
+      step-ca = 30040;
     };
   };
 }

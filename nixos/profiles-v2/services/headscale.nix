@@ -144,7 +144,7 @@ in
       unix_socket = "/var/run/headscale/headscale.sock";
       unix_socket_permission = "0770";
       oidc = {
-        only_start_if_oidc_is_available = true;
+        only_start_if_oidc_is_available = false;
         issuer = "https://login.szp15.com";
         client_id = oidcClientID;
         client_secret_path = config.sops.secrets."headscale/oidcClientSecret".path;

@@ -184,9 +184,19 @@ in
   ## INGRESS
   ## ---------------------------------------------------------------------------
   services.nginx.virtualHosts."${domain}" = {
+    enableACME = true;
+    forceSSL = true;
     locations."/" = {
       proxyPass = "https://127.0.0.1:${toString httpsPort}";
       proxyWebsockets = true;
+      extraConfig = ''
+        allow 100.71.0.0/16;
+        allow 10.75.0.0/16;
+        deny all;
+      '';
     };
+  };
+  security.acme.certs."${domain}" = {
+    server = "https://ca.svc.szp.io/acme/acme/directory";
   };
 }

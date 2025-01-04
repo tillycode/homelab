@@ -81,6 +81,7 @@ let
       config.home-manager
       config.persistent-common
       config.nix
+      config.root-ca
       services.networkd
       services.nix-optimise
       services.nix-gc
@@ -260,6 +261,7 @@ in
                 services.headscale
                 services.tailscale
                 services.coredns
+                services.step-ca
               ]);
           }
         )
@@ -289,7 +291,6 @@ in
               ])
               ++ (with nixosProfiles; [
                 programs.cli-tools
-                security.pki
                 security.sudo
 
                 hardware.nvidia

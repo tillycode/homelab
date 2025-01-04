@@ -12,6 +12,7 @@
       tailnet = "tailnet.szp15.com";
 
       lxd = "lxd.svc.szp.io";
+      ca = "ca.svc.szp.io";
     };
   };
 }
