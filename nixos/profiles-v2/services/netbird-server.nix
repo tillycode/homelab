@@ -48,7 +48,7 @@ in
 
     management = {
       port = config.ports.netbird-management;
-      dnsDomain = config.domains.netbird-overlay;
+      dnsDomain = "nodes.szp.io";
       oidcConfigEndpoint = "https://${config.domains.zitadel}/.well-known/openid-configuration";
       extraOptions = [
         "--metrics-port"

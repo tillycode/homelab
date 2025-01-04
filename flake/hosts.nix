@@ -55,7 +55,6 @@ let
     misaka = base ++ [ system.disk.misaka ];
 
     desktop = domestic ++ [
-      config.fonts
       hardware.nvidia
       i18n.input-method.fcitx
       programs.desktop
@@ -67,10 +66,51 @@ let
       services.printing
       system.boot.efi
       users.sun
-      virtualisation.lxd
       virtualisation.podman
     ];
   };
+
+  nixosProfilesV2 = inputs.haumea.lib.load {
+    src = ../nixos/profiles-v2;
+    loader = inputs.haumea.lib.loaders.path;
+  };
+
+  nixosSuitesV2 = with nixosProfilesV2; rec {
+    # base should always doesn't require sops
+    base = [
+      config.home-manager
+      config.persistent-common
+      config.nix
+      config.root-ca
+      services.networkd
+      services.nix-optimise
+      services.nix-gc
+      services.resolved
+      services.sshd
+      system.boot.efi
+      system.kernel.qemu-guest
+    ];
+
+    desktop = base ++ [
+      config.fonts
+    ];
+  };
+
+  hmProfiles = inputs.haumea.lib.load {
+    src = ../home-manager/profiles;
+    loader = inputs.haumea.lib.loaders.path;
+  };
+
+  selfHmModules = lib.collect lib.isPath (
+    inputs.haumea.lib.load {
+      src = ../home-manager/modules;
+      loader = inputs.haumea.lib.loaders.path;
+    }
+  );
+
+  hmModules = selfHmModules ++ [
+    inputs.vscode-server.homeModules.default
+  ];
 
   nixosSpecialArgs = {
     inherit inputs self;
@@ -99,11 +139,18 @@ let
       ];
     };
 
+  nodeDeployOverrides = {
+    hgh1 = {
+      bastion_host = "47.96.145.133";
+      ssh_host = "172.16.0.76";
+    };
+  };
+
   mkNode =
     name: cfg:
     let
       inherit (cfg.pkgs.stdenv.hostPlatform) system;
-      node = self.lib.data.nodes.${name} or null;
+      node = nodeDeployOverrides.${name} or null;
     in
     {
       hostname = if node == null || node.ssh_host == null then name else node.ssh_host;
@@ -140,33 +187,37 @@ let
     inputs.impermanence.nixosModules.impermanence
     inputs.home-manager.nixosModules.home-manager
     inputs.disko.nixosModules.disko
+    (
+      { config, ... }:
+      {
+        nixpkgs.pkgs = (getSystem config.nixpkgs.system).allModuleArgs.pkgs;
+      }
+    )
     {
-      nixpkgs.overlays = [ self.overlays.default ];
+      home-manager = {
+        sharedModules = hmModules;
+        extraSpecialArgs = {
+          inherit inputs self;
+          profiles = hmProfiles;
+        };
+      };
     }
   ];
 
-  nixosProfilesV2 = inputs.haumea.lib.load {
-    src = ../nixos/profiles-v2;
-    loader = inputs.haumea.lib.loaders.path;
-  };
-
   mkHostV2 =
-    name: profiles:
+    modules:
     inputs.nixpkgs.lib.nixosSystem {
-      specialArgs = nixosSpecialArgs;
-      modules =
-        nixosModulesV2
-        ++ (lib.map (
-          p: if lib.isString p then lib.getAttrFromPath (lib.splitString "." p) nixosProfilesV2 else p
-        ) profiles);
+      specialArgs = {
+        inherit inputs self;
+        profiles = nixosProfilesV2;
+        suites = nixosSuitesV2;
+      };
+      modules = nixosModulesV2 ++ modules;
     };
 in
 {
   flake.nixosConfigurations =
     (lib.mapAttrs mkHost {
-      desktop = {
-        system = "x86_64-linux";
-      };
       hgh0 = {
         system = "x86_64-linux";
       };
@@ -180,11 +231,88 @@ in
         system = "x86_64-linux";
       };
     })
-    // (lib.mapAttrs (n: cfg: mkHostV2 n cfg.profiles) self.lib.data.nodes);
+    // {
+      hgh1 = mkHostV2 [
+        {
+          users.users.root.openssh.authorizedKeys.keys = [
+            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAamaMcCAc7DhTJjDqBwXTWhewX0OI8vAuXLvc17yqK/"
+            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBIO4wL3BzfaMDOpbT/U/99MVQERjtzH2YxA6KAs7lwM"
+          ];
+          profiles.disko = {
+            device = "/dev/vda";
+            swapSize = "2G";
+          };
+          sops.defaultSopsFile = ../lib/secrets/nodes/hgh1.yaml;
+          networking.hostName = "hgh1";
+          nixpkgs.system = "x86_64-linux";
+          system.stateVersion = "24.11";
+        }
+        (
+          { profiles, suites, ... }:
+          {
+            imports =
+              suites.base
+              ++ (with profiles; [
+                system.disko
+                services.postgresql
+                services.nginx
+                services.sing-box
+                services.zitadel
+                services.headscale
+                services.tailscale
+                services.coredns
+                services.step-ca
+              ]);
+          }
+        )
+      ];
+      desktop = mkHostV2 [
+        {
+          time.timeZone = "Asia/Shanghai";
+          # add options for enable sopsFile, enable imports
+          sops.defaultSopsFile = ../lib/secrets/nodes/desktop.yaml;
+          networking.hostName = "desktop";
+          nixpkgs.system = "x86_64-linux";
+          system.stateVersion = "24.11";
+        }
+        (
+          { profiles, suites, ... }:
+          {
+            imports =
+              [
+                ../nixos/hosts/desktop
+              ]
+              ++ suites.desktop
+              ++ (with profiles; [
+                services.nginx
+                services.sing-box
+                services.tailscale
+                virtualization.lxd
+              ])
+              ++ (with nixosProfiles; [
+                programs.cli-tools
+                security.sudo
+
+                hardware.nvidia
+                i18n.input-method.fcitx
+                programs.desktop
+                programs.nix-dev
+                services.desktop.pipewire
+                services.desktop.xfce
+                services.hardware.bluetooth
+                services.networking.iwd
+                services.printing
+                users.sun
+                virtualisation.podman
+              ]);
+          }
+        )
+      ];
+    };
 
   flake.deploy = {
-    # autoRollback = true;
-    magicRollback = true;
+    autoRollback = false;
+    magicRollback = false;
 
     nodes = lib.mapAttrs mkNode self.nixosConfigurations;
   };

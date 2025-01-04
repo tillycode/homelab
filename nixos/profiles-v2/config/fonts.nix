@@ -6,12 +6,10 @@
       noto-fonts
       noto-fonts-cjk-sans
       noto-fonts-cjk-serif
-      noto-fonts-emoji
-      # jetbrains-mono
+      noto-fonts-color-emoji
     ])
     ++ (with pkgs.nerd-fonts; [
       jetbrains-mono
-      roboto-mono
     ]);
   fonts.fontconfig.defaultFonts = {
     serif = [
@@ -22,7 +20,7 @@
       "Noto Sans"
       "Noto Sans CJK SC"
     ];
-    monospace = [ "JetBrains Mono" ];
+    monospace = [ "JetBrainsMono Nerd Font" ];
     emoji = [ "Noto Color Emoji" ];
   };
   fonts.fontDir.enable = true;

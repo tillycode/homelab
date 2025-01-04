@@ -8,9 +8,10 @@ let
   ## ---------------------------------------------------------------------------
   ## CONFIGURATION
   ## ---------------------------------------------------------------------------
-  baseDomain = "tailnet.szp.io";
+  baseDomain = "ts.szp.io";
   splitDomain = {
-    # "k8s.szp.io" = [ "100.64.0.4" ];
+    "svc.szp.io" = [ "100.71.0.1" ];
+    "vm.szp.io" = [ "100.71.0.1" ];
   };
 
   # https://github.com/juanfont/headscale/blob/v0.23.0/hscontrol/policy/acls_types.go
@@ -38,7 +39,7 @@ let
         # podman
         "10.88.0.0/16" = [ "tag:server" ];
         # LXD
-        "10.212.0.0/16" = [ "tag:server" ];
+        "10.75.0.0/16" = [ "tag:lxd" ];
       };
     };
   };
@@ -143,7 +144,7 @@ in
       unix_socket = "/var/run/headscale/headscale.sock";
       unix_socket_permission = "0770";
       oidc = {
-        only_start_if_oidc_is_available = true;
+        only_start_if_oidc_is_available = false;
         issuer = "https://login.szp15.com";
         client_id = oidcClientID;
         client_secret_path = config.sops.secrets."headscale/oidcClientSecret".path;
@@ -201,4 +202,11 @@ in
       return = "301 /web/";
     };
   };
+
+  ## ---------------------------------------------------------------------------
+  ## DECLARATIVE PREDEFINED IP
+  ## ---------------------------------------------------------------------------
+  systemd.services.headscale.preStart = ''
+    ${lib.getExe pkgs.hschip} ${config.networking.hostName} 100.71.0.1
+  '';
 }

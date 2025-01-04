@@ -8,11 +8,11 @@
   config = {
     domains = {
       zitadel = "login.szp15.com";
-
       netbird = "netbird.szp15.com";
-      netbird-overlay = "nodes01.szp.io";
-
       tailnet = "tailnet.szp15.com";
+
+      lxd = "lxd.svc.szp.io";
+      ca = "ca.svc.szp.io";
     };
   };
 }

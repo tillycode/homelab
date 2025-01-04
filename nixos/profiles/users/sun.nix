@@ -2,7 +2,7 @@
 {
   sops.secrets."user-password/sun" = {
     neededForUsers = true;
-    sopsFile = config.sops-file.common;
+    # sopsFile = config.sops-file.common;
   };
 
   users.users.sun = {

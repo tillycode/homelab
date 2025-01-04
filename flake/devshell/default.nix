@@ -1,11 +1,23 @@
 {
-  self,
   inputs,
   lib,
   ...
 }:
 let
-  inherit (self.lib.data) node-keys sops-keys;
+  sops-keys = {
+    # ziping_sun
+    gpg = [
+      "8CC5C91F72DB57DA20BD848C6523836CF4992251"
+    ];
+    kms = [
+      # github-actions
+      { arn = "arn:aws:kms:ap-southeast-1:137927498482:alias/sops-key"; }
+    ];
+  };
+  node-keys = {
+    hgh1 = "age1ydjlaersukg2jms5hrjz7z2ja0htlln40uexcmcg2yxzlny8s39qc88wya";
+    desktop = "age1v6lnkm7prm0dpmcdpvn44v50rpfkzsed5uv3znxt4grsd5y6sv5qjru9qq";
+  };
   sops_source_creation_rule = {
     path_regex = "^secrets/sources/.*\\.yaml$";
     key_groups = [ sops-keys ];
@@ -16,7 +28,7 @@ let
       { name, value }:
       {
         path_regex = "^secrets/nodes/${name}\\.yaml$";
-        key_groups = [ { age = [ value.age-key ]; } ];
+        key_groups = [ { age = [ value ]; } ];
       }
     ))
   ];
