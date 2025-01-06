@@ -38,8 +38,9 @@ let
         "10.43.0.0/16" = [ "tag:server" ];
         # podman
         "10.88.0.0/16" = [ "tag:server" ];
-        # LXD
-        "10.75.0.0/16" = [ "tag:lxd" ];
+        # incus
+        "10.75.0.0/16" = [ "tag:incus" ];
+        "fd42:e16c:cbc4::/48" = [ "tag:incus" ];
       };
     };
   };

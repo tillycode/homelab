@@ -6,7 +6,7 @@
     blueman
     chromium
     firefox
-    gimp-with-plugins
+    # gimp-with-plugins
     evince
     font-manager
     file-roller
