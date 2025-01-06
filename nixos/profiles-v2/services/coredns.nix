@@ -17,8 +17,8 @@ let
     @ IN NS ns.svc.szp.io.
     ns IN A 100.71.0.1
 
-    ca IN CNAME hgh1.ts.szp.io.
-    lxd IN CNAME desktop.ts.szp.io.
+    acme IN CNAME hgh1.ts.szp.io.
+    incus IN CNAME desktop.ts.szp.io.
   '';
 in
 {
@@ -39,7 +39,7 @@ in
         import snip
         forward . 10.75.0.1
         cache 60
-        rewrite name suffix .vm.szp.io .lxd answer auto
+        rewrite name suffix .vm.szp.io .incus answer auto
       }
       svc.szp.io:53 {
         import snip

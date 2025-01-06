@@ -11,8 +11,8 @@
       netbird = "netbird.szp15.com";
       tailnet = "tailnet.szp15.com";
 
-      lxd = "lxd.svc.szp.io";
-      ca = "ca.svc.szp.io";
+      incus = "incus.svc.szp.io";
+      acme = "acme.svc.szp.io";
     };
   };
 }

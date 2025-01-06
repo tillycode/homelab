@@ -6,7 +6,7 @@
 }:
 let
   caName = "szp.io";
-  domain = config.domains.ca;
+  domain = config.domains.acme;
   home = config.users.users.step-ca.home;
 in
 {
@@ -89,7 +89,9 @@ in
       proxyPass = "https://127.0.0.1:${toString config.ports.step-ca}";
       extraConfig = ''
         allow 100.71.0.0/16;
+        allow fd7a:115c:a1e0:7::/64;
         allow 10.75.0.0/16;
+        allow fd42:e16c:cbc4::/48;
         deny all;
       '';
     };

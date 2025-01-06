@@ -53,21 +53,6 @@ let
     ];
 
     misaka = base ++ [ system.disk.misaka ];
-
-    desktop = domestic ++ [
-      hardware.nvidia
-      i18n.input-method.fcitx
-      programs.desktop
-      programs.nix-dev
-      services.desktop.pipewire
-      services.desktop.xfce
-      services.hardware.bluetooth
-      services.networking.iwd
-      services.printing
-      system.boot.efi
-      users.sun
-      virtualisation.podman
-    ];
   };
 
   nixosProfilesV2 = inputs.haumea.lib.load {
@@ -78,17 +63,19 @@ let
   nixosSuitesV2 = with nixosProfilesV2; rec {
     # base should always doesn't require sops
     base = [
+      system.boot.efi
       config.home-manager
       config.persistent-common
       config.nix
       config.root-ca
+      config.sudo
+      config.firewall
       services.networkd
       services.nix-optimise
       services.nix-gc
       services.resolved
       services.sshd
-      system.boot.efi
-      system.kernel.qemu-guest
+      programs.cli-tools
     ];
 
     desktop = base ++ [
@@ -253,6 +240,7 @@ in
             imports =
               suites.base
               ++ (with profiles; [
+                system.kernel.qemu-guest
                 system.disko
                 services.postgresql
                 services.nginx
@@ -287,12 +275,10 @@ in
                 services.nginx
                 services.sing-box
                 services.tailscale
-                virtualization.lxd
+                virtualization.incus
+                virtualization.podman
               ])
               ++ (with nixosProfiles; [
-                programs.cli-tools
-                security.sudo
-
                 hardware.nvidia
                 i18n.input-method.fcitx
                 programs.desktop
@@ -303,7 +289,6 @@ in
                 services.networking.iwd
                 services.printing
                 users.sun
-                virtualisation.podman
               ]);
           }
         )

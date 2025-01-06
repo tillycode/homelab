@@ -29,7 +29,7 @@ in
       headscale = 30020;
       headscale-metrics = 30021;
 
-      lxd-https = 30030;
+      incus-https = 30030;
 
       step-ca = 30040;
     };
