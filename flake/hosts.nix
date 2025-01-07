@@ -80,6 +80,15 @@ let
 
     desktop = base ++ [
       config.fonts
+      services.iwd
+      services.printing
+      services.bluetooth
+      services.pipewire
+      services.pcscd
+      services.xfce
+      services.gnome-keyring
+      programs.steam
+      programs."1password"
     ];
   };
 
@@ -277,17 +286,6 @@ in
                 services.tailscale
                 virtualization.incus
                 virtualization.podman
-              ])
-              ++ (with nixosProfiles; [
-                hardware.nvidia
-                i18n.input-method.fcitx
-                programs.desktop
-                programs.nix-dev
-                services.desktop.pipewire
-                services.desktop.xfce
-                services.hardware.bluetooth
-                services.networking.iwd
-                services.printing
                 users.sun
               ]);
           }

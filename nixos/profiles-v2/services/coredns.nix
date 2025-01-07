@@ -19,6 +19,7 @@ let
 
     acme IN CNAME hgh1.ts.szp.io.
     incus IN CNAME desktop.ts.szp.io.
+    home IN CNAME archlinux.vm.szp.io.
   '';
 in
 {
