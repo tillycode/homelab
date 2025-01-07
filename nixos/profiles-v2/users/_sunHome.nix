@@ -1,5 +1,12 @@
-{ pkgs, ... }:
+{ pkgs, profiles, ... }:
 {
+  imports = with profiles; [
+    programs.fcitx
+    programs.desktop-apps
+    programs.nix-dev
+    services.xdg-portal
+  ];
+
   programs.git = {
     enable = true;
     userName = "Ziping Sun";
