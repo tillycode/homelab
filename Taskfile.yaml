@@ -77,9 +77,6 @@ tasks:
     dir: "terraform/{{.MODULE}}"
     cmds:
       - terragrunt apply
-    env:
-      ALICLOUD_PROFILE: default
-      AWS_DEFAULT_PROFILE: admin
     requires:
       vars: [MODULE]
 
@@ -88,8 +85,6 @@ tasks:
     dir: lib
     cmds:
       - sops edit secrets/sources/{{.SOURCE}}.yaml
-    env:
-      AWS_DEFAULT_PROFILE: admin
     requires:
       vars: [SOURCE]
 
@@ -98,8 +93,6 @@ tasks:
     dir: lib
     cmds:
       - sops encrypt --in-place secrets/sources/{{.SOURCE}}.yaml
-    env:
-      AWS_DEFAULT_PROFILE: admin
     requires:
       vars: [SOURCE]
 
@@ -108,8 +101,6 @@ tasks:
     dir: lib
     cmds:
       - uv run ../scripts/secrets.py sync --node={{.NODE}} {{.CLI_ARGS}}
-    env:
-      AWS_DEFAULT_PROFILE: admin
     requires:
       vars: [NODE]
 
@@ -117,5 +108,3 @@ tasks:
     desc: "Login to the AWS account"
     cmds:
       - aws sso login
-    env:
-      AWS_DEFAULT_PROFILE: admin
