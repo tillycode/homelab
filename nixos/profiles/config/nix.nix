@@ -1,17 +1,16 @@
-{ self, inputs, ... }:
 {
   nix.settings = {
-    min-free = 1024 * 1024 * 1024; # bytes
+    min-free = 1024 * 1024 * 1024; # 1GiB
     auto-optimise-store = true;
-
     experimental-features = [
-      "nix-command"
-      "flakes"
-      "ca-derivations"
       "auto-allocate-uids"
+      "ca-derivations"
       "cgroups"
+      "flakes"
+      "nix-command"
     ];
 
+    auto-allocate-uids = true;
     sandbox = true;
     use-cgroups = true;
 
@@ -22,7 +21,6 @@
     ];
 
     keep-outputs = true;
-    keep-derivations = true;
 
     use-xdg-base-directories = true;
   };
