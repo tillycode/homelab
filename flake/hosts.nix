@@ -401,6 +401,7 @@ in
               ]
               ++ suites.desktop
               ++ (with profiles; [
+                system.systemd-boot
                 services.nginx
                 services.sing-box
                 services.tailscale
