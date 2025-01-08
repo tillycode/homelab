@@ -1,30 +1,41 @@
 { pkgs, ... }:
 {
   environment.systemPackages = with pkgs; [
-    binutils
-    coreutils
-    dig
-    dust
+    ## network
     ethtool
-    fd
+    iptables
+    nftables
+    dnsutils
+    openssl
+    tcpdump
+    mtr
+
+    ## data processing
+    jq
+    yq-go
+
+    ## system management
     file
     htop
-    iptables
-    jq
     lsof
-    nettools
-    nftables
-    openssl
-    p7zip
-    pciutils
-    ripgrep
-    strace
-    tcpdump
-    unzip
-    usbutils
-    util-linux
-    yq-go
     killall
-    mtr
+    binutils
+    pciutils
+    usbutils
+
+    ## compression
+    unzip
+    p7zip
+
+    ## RIIR tools
+    ripgrep
+    fd
+    dust
+    bandwhich
+    sd
+    tokei
+    miniserve
+    tealdeer
+    nushell
   ];
 }
