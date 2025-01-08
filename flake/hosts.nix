@@ -63,7 +63,7 @@ let
   nixosSuitesV2 = with nixosProfilesV2; rec {
     # base should always doesn't require sops
     base = [
-      system.boot.efi
+      config.bootloader
       config.home-manager
       config.persistent-common
       config.nix
@@ -136,9 +136,9 @@ let
     };
 
   nodeDeployOverrides = {
-    hgh1 = {
-      bastion_host = "47.96.145.133";
-      ssh_host = "172.16.0.76";
+    sin0 = {
+      ssh_host = "194.114.138.186";
+      bastion_host = null;
     };
   };
 
@@ -214,20 +214,44 @@ in
 {
   flake.nixosConfigurations =
     (lib.mapAttrs mkHost {
-      hgh0 = {
-        system = "x86_64-linux";
-      };
-      hgh2 = {
-        system = "x86_64-linux";
-      };
       sin0 = {
-        system = "x86_64-linux";
-      };
-      sha0 = {
         system = "x86_64-linux";
       };
     })
     // {
+      hgh0 = mkHostV2 [
+        {
+          users.users.root.openssh.authorizedKeys.keys = [
+            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAamaMcCAc7DhTJjDqBwXTWhewX0OI8vAuXLvc17yqK/"
+            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBIO4wL3BzfaMDOpbT/U/99MVQERjtzH2YxA6KAs7lwM"
+          ];
+          profiles.disko = {
+            device = "/dev/vda";
+            swapSize = "4G";
+          };
+          sops.defaultSopsFile = ../lib/secrets/nodes/hgh0.yaml;
+          networking.hostName = "hgh0";
+          nixpkgs.system = "x86_64-linux";
+          system.stateVersion = "24.11";
+        }
+        (
+          { profiles, suites, ... }:
+          {
+            imports =
+              [
+                ../nixos/hosts/hgh0
+              ]
+              ++ suites.base
+              ++ (with profiles; [
+                system.systemd-boot
+                system.kernel.qemu-guest
+                system.disko
+                services.sing-box
+                services.tailscale
+              ]);
+          }
+        )
+      ];
       hgh1 = mkHostV2 [
         {
           users.users.root.openssh.authorizedKeys.keys = [
@@ -249,6 +273,7 @@ in
             imports =
               suites.base
               ++ (with profiles; [
+                system.systemd-boot
                 system.kernel.qemu-guest
                 system.disko
                 services.postgresql
@@ -259,6 +284,101 @@ in
                 services.tailscale
                 services.coredns
                 services.step-ca
+              ]);
+          }
+        )
+      ];
+      hgh2 = mkHostV2 [
+        {
+          users.users.root.openssh.authorizedKeys.keys = [
+            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAamaMcCAc7DhTJjDqBwXTWhewX0OI8vAuXLvc17yqK/"
+            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBIO4wL3BzfaMDOpbT/U/99MVQERjtzH2YxA6KAs7lwM"
+          ];
+          profiles.disko = {
+            device = "/dev/vda";
+            swapSize = "4G";
+          };
+          sops.defaultSopsFile = ../lib/secrets/nodes/hgh2.yaml;
+          networking.hostName = "hgh2";
+          nixpkgs.system = "x86_64-linux";
+          system.stateVersion = "24.11";
+        }
+        (
+          { profiles, suites, ... }:
+          {
+            imports =
+              suites.base
+              ++ (with profiles; [
+                system.systemd-boot
+                system.kernel.qemu-guest
+                system.disko
+                services.sing-box
+                services.tailscale
+              ]);
+          }
+        )
+      ];
+      sha0 = mkHostV2 [
+        {
+          users.users.root.openssh.authorizedKeys.keys = [
+            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAamaMcCAc7DhTJjDqBwXTWhewX0OI8vAuXLvc17yqK/"
+            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBIO4wL3BzfaMDOpbT/U/99MVQERjtzH2YxA6KAs7lwM"
+          ];
+          profiles.disko = {
+            device = "/dev/vda";
+            swapSize = "2G";
+          };
+          sops.defaultSopsFile = ../lib/secrets/nodes/sha0.yaml;
+          networking.hostName = "sha0";
+          nixpkgs.system = "x86_64-linux";
+          system.stateVersion = "24.11";
+        }
+        (
+          { profiles, suites, ... }:
+          {
+            imports =
+              suites.base
+              ++ (with profiles; [
+                system.kernel.qemu-guest
+                system.disko
+                services.sing-box
+                services.tailscale
+              ]);
+          }
+        )
+      ];
+      # To make nixos-anywhere work, please manually turn on zramswap and increase
+      # writable nix store size before the disko phase.
+      #
+      #     mount -o remount,size=70% -t tmpfs tmpfs /nix/.rw-store
+      #     modprobe zram
+      #     zramctl /dev/zram0 --algorithm zstd --size 800000KiB
+      #     mkswap -U clear /dev/zram0
+      #     swapon --discard --priority 100 /dev/zram0
+      #
+      sin0 = mkHostV2 [
+        {
+          users.users.root.openssh.authorizedKeys.keys = [
+            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAamaMcCAc7DhTJjDqBwXTWhewX0OI8vAuXLvc17yqK/"
+            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBIO4wL3BzfaMDOpbT/U/99MVQERjtzH2YxA6KAs7lwM"
+          ];
+          profiles.disko = {
+            device = "/dev/vda";
+            swapSize = "1G";
+          };
+          # sops.defaultSopsFile = ../lib/secrets/nodes/sin0.yaml;
+          networking.hostName = "sin0";
+          nixpkgs.system = "x86_64-linux";
+          system.stateVersion = "24.11";
+        }
+        (
+          { profiles, suites, ... }:
+          {
+            imports =
+              suites.base
+              ++ (with profiles; [
+                system.kernel.qemu-guest
+                system.disko
               ]);
           }
         )
@@ -281,6 +401,7 @@ in
               ]
               ++ suites.desktop
               ++ (with profiles; [
+                system.systemd-boot
                 services.nginx
                 services.sing-box
                 services.tailscale

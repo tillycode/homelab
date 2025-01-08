@@ -11,8 +11,8 @@ from helpers.common import Connection
 def infect_main() -> None:
     parser = argparse.ArgumentParser()
     Connection.add_argument_parser(parser)
-    parser.add_argument("--nixos-images-version", default="nixos-24.05")
-    parser.add_argument("--nixos-anywhere-version", default="1.3.0")
+    parser.add_argument("--nixos-images-version", default="nixos-24.11")
+    parser.add_argument("--nixos-anywhere-version", default="1.6.0")
     parser.add_argument("--use-cached-image", action="store_true")
     args = parser.parse_args()
 
