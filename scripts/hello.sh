@@ -1,3 +1,7 @@
 #!/usr/bin/env bash
 
-echo "Hello, World!"
+echo args "$@"
+echo "env"
+env
+
+echo "pwd" "$(pwd)"
