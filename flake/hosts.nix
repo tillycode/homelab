@@ -265,6 +265,7 @@ let
               services.nginx
               services.sing-box
               services.tailscale
+              services.github-runner
               virtualization.incus
               virtualization.podman
               users.sun
