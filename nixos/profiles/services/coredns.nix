@@ -14,12 +14,12 @@ let
       3600       ; minimum
     )
 
-    @ IN NS ns.svc.szp.io.
-    ns IN A 100.71.0.1
+    @     IN NS ns.svc.szp.io.
+    ns    IN A 100.71.0.1
 
-    acme IN CNAME hgh1.ts.szp.io.
+    home  CNAME hgh1.ts.szp.io.
+    acme  IN CNAME hgh1.ts.szp.io.
     incus IN CNAME desktop.ts.szp.io.
-    home IN CNAME archlinux.vm.szp.io.
   '';
 in
 {
