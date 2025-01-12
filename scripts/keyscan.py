@@ -41,7 +41,7 @@ def keyscan_main() -> None:
             "ssh",
             "-p",
             str(connection.bastion_port or 22),
-            f"{connection.bastion_user or "root"}@{connection.bastion_host}",
+            f"{connection.bastion_user or 'root'}@{connection.bastion_host}",
         ] + cmd
     keyscan = subprocess.run(
         cmd,

@@ -29,7 +29,7 @@ def infect_main() -> None:
     if connection.bastion_host is not None:
         nixos_anywhere_args += [
             "--ssh-option",
-            f"ProxyJump={connection.bastion_user or "root"}@{connection.bastion_host}:{connection.bastion_port or 22}",
+            f"ProxyJump={connection.bastion_user or 'root'}@{connection.bastion_host}:{connection.bastion_port or 22}",
         ]
     image_path = os.path.join(
         ".data",
@@ -53,7 +53,7 @@ def infect_main() -> None:
     nixos_anywhere_args += [
         "--kexec",
         image_path,
-        f"{connection.ssh_user or "root"}@{connection.ssh_host}",
+        f"{connection.ssh_user or 'root'}@{connection.ssh_host}",
     ]
     os.execlp(
         "nix",
