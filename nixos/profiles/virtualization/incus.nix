@@ -8,6 +8,8 @@ let
   ipv4Address = "10.75.0.1";
   ipv4CIDR = "${ipv4Address}/24";
   ipv4RouteAdvertise = "10.75.0.0/24";
+  ipv6CIDR = "fd42:e16c:cbc4:9d5e::1/64";
+  ipv6RouteAdvertise = "fd42:e16c:cbc4:9d5e::/64";
   httpsPort = config.ports.incus-https;
   domain = config.domains.incus;
   acmeDomain = config.domains.acme;
@@ -33,7 +35,7 @@ in
           project = "default";
           config = {
             "ipv4.address" = ipv4CIDR;
-            "ipv6.address" = "auto";
+            "ipv6.address" = ipv6CIDR;
             "ipv4.nat" = "true";
             "ipv6.nat" = "true";
           };
@@ -104,7 +106,7 @@ in
   ## ---------------------------------------------------------------------------
   services.tailscale.extraSetFlags = [
     "--advertise-routes"
-    ipv4RouteAdvertise
+    "${ipv4RouteAdvertise},${ipv6RouteAdvertise}"
   ];
 
   ## ---------------------------------------------------------------------------
