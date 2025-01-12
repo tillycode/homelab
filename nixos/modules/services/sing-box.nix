@@ -31,6 +31,11 @@ in
     services.sing-box-client = {
       enable = lib.mkEnableOption "Enable sing-box client service";
       enableClashApi = lib.mkEnableOption "Enable clash api";
+      useLocalDNSServer = lib.mkOption {
+        type = lib.types.bool;
+        default = true;
+        description = "Use local DNS server";
+      };
       openFirewall = lib.mkOption {
         type = lib.types.bool;
         default = true;
@@ -113,7 +118,6 @@ in
             tag = "google";
             address = "tls://8.8.8.8";
           }
-          # TODO: load local DNS server from /run/systemd/resolve/resolv.conf
           {
             tag = "local";
             address = "223.5.5.5";
@@ -258,9 +262,14 @@ in
       restartTriggers = [ settingsFile ];
 
       preStart =
+        let
+          resolveConf = /run/systemd/resolve/resolv.conf;
+        in
+        # remove stale config.json
         ''
           rm -f "$STATE_DIRECTORY/config.json"
         ''
+        # merge config.json
         + (
           if cfg.outboundsFile != null then
             ''
@@ -272,7 +281,26 @@ in
             ''
               cp "$CREDENTIALS_DIRECTORY/sing-box.json" "$STATE_DIRECTORY/config.json"
             ''
-        );
+        )
+        # inject local DNS server
+        + lib.strings.optionalString cfg.useLocalDNSServer ''
+          nameserver=""
+          while true; do
+            while IFS= read -r line; do
+              if [[ $line != "172.18.0.2" ]]; then
+                nameserver=$line
+                break
+              fi
+            done < <(${pkgs.gawk}/bin/awk '/^nameserver / { print $2 }' ${lib.strings.escapeShellArg resolveConf})
+            [[ -n $nameserver ]] && break
+            sleep 1;
+          done
+
+          ${pkgs.jq}/bin/jq --arg nameserver "$nameserver" '.dns.servers |= map((select(.tag == "local") | .address) = $nameserver)' \
+            "$STATE_DIRECTORY/config.json" > "$STATE_DIRECTORY/config.json.tmp"
+          mv "$STATE_DIRECTORY/config.json.tmp" "$STATE_DIRECTORY/config.json"
+        '';
+
       serviceConfig = {
         LoadCredential =
           (lib.lists.optional (cfg.outboundsFile != null) [ "outbounds.json:${cfg.outboundsFile}" ])
@@ -315,6 +343,9 @@ in
         SystemCallArchitectures = "native";
         SystemCallFilter = [ "@system-service" ];
         UMask = "0077";
+        BindReadOnlyPaths = lib.optionals cfg.useLocalDNSServer [
+          "/run/systemd/resolve/resolv.conf"
+        ];
       };
     };
   };

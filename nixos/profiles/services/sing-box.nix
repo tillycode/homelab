@@ -26,11 +26,13 @@
         server = "local";
       }
       {
-        # steam CDNs
         domain_suffix = [
+          # steam CDNs
           "steamcontent.com"
           "steamcontent.akadns.net"
           "steamserver.net"
+          # Aliyun
+          "aliyuncs.com"
         ];
         server = "local";
       }
