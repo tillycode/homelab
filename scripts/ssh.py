@@ -19,10 +19,10 @@ def ssh_main() -> None:
     if connection.bastion_host is not None:
         ssh_args += [
             "-o",
-            f"ProxyJump={connection.bastion_user or "root"}@{connection.bastion_host}:{connection.bastion_port or 22}",
+            f"ProxyJump={connection.bastion_user or 'root'}@{connection.bastion_host}:{connection.bastion_port or 22}",
         ]
     ssh_args += [
-        f"{connection.ssh_user or "root"}@{connection.ssh_host}",
+        f"{connection.ssh_user or 'root'}@{connection.ssh_host}",
     ]
     os.execlp("ssh", "ssh", *ssh_args, *extra_args)
 
