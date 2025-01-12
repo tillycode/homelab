@@ -108,6 +108,8 @@ let
               system.disko
               services.sing-box
               services.tailscale
+              services.nginx
+              services.atticd
             ]);
         }
       )
@@ -262,6 +264,7 @@ let
             ]
             ++ suites.desktop
             ++ (with profiles; [
+              config.nix-cache
               system.systemd-boot
               services.nginx
               services.sing-box
@@ -312,7 +315,10 @@ let
         path = inputs.deploy-rs.lib.${system}.activate.nixos cfg;
       };
     };
-  nodes = lib.mapAttrs mkNode self.nixosConfigurations;
+  nodes = lib.pipe self.nixosConfigurations [
+    (lib.filterAttrs (name: cfg: name != "desktop"))
+    (lib.mapAttrs mkNode)
+  ];
 
   ## ---------------------------------------------------------------------------
   ## HELPERS

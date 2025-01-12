@@ -20,6 +20,7 @@ let
     home  CNAME hgh1.ts.szp.io.
     acme  IN CNAME hgh1.ts.szp.io.
     incus IN CNAME desktop.ts.szp.io.
+    cache IN CNAME hgh0.ts.szp.io.
   '';
 in
 {

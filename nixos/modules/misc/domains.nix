@@ -15,6 +15,7 @@
       incus = "incus.svc.szp.io";
       step-ca = "acme.svc.szp.io";
       acme = config.domains.step-ca;
+      atticd = "cache.svc.szp.io";
     };
   };
 }

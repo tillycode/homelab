@@ -34,6 +34,8 @@ in
       step-ca = 30040;
 
       homepage-dashboard = 30050;
+
+      atticd = 30060;
     };
   };
 }
