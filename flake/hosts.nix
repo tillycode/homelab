@@ -144,6 +144,7 @@ let
               services.tailscale
               services.coredns
               services.step-ca
+              services.homepage-dashboard
             ]);
         }
       )

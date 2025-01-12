@@ -32,6 +32,8 @@ in
       incus-https = 30030;
 
       step-ca = 30040;
+
+      homepage-dashboard = 30050;
     };
   };
 }

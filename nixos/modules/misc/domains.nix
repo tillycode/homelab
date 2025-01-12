@@ -1,7 +1,7 @@
-{ lib, ... }:
+{ config, lib, ... }:
 {
   options.domains = lib.mkOption {
-    type = with lib.types; attrsOf str;
+    type = with lib.types; lazyAttrsOf str;
     default = { };
   };
 
@@ -11,8 +11,10 @@
       netbird = "netbird.szp15.com";
       tailnet = "tailnet.szp15.com";
 
+      homepage-dashboard = "home.svc.szp.io";
       incus = "incus.svc.szp.io";
-      acme = "acme.svc.szp.io";
+      step-ca = "acme.svc.szp.io";
+      acme = config.domains.step-ca;
     };
   };
 }

@@ -6,7 +6,7 @@
 }:
 let
   caName = "szp.io";
-  domain = config.domains.acme;
+  domain = config.domains.step-ca;
   home = config.users.users.step-ca.home;
 in
 {
