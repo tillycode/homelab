@@ -15,10 +15,7 @@
     use-cgroups = true;
 
     allowed-users = [ "@users" ];
-    trusted-users = [
-      "root"
-      "@wheel"
-    ];
+    trusted-users = [ "@wheel" ];
 
     keep-outputs = true;
 

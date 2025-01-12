@@ -73,6 +73,14 @@ in
               }
             ];
           }
+          {
+            "Misaka" = [
+              {
+                abbr = "MS";
+                href = "https://app.misaka.io/";
+              }
+            ];
+          }
         ];
       }
     ];
@@ -115,13 +123,23 @@ in
           }
         ];
       }
+      {
+        "Binary Cache" = [
+          {
+            Attic = {
+              href = "https://${config.domains.atticd}";
+              description = "Binary Cache";
+            };
+          }
+        ];
+      }
     ];
   };
 
   ## ---------------------------------------------------------------------------
   ## INGRESS
   ## ---------------------------------------------------------------------------
-  services.nginx.virtualHosts.${config.domains.homepage-dashboard} = {
+  services.nginx.virtualHosts.${domain} = {
     forceSSL = true;
     enableACME = true;
     locations."/" = {

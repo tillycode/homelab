@@ -4,6 +4,7 @@
     programs.fcitx
     programs.desktop-apps
     programs.nix-dev
+    programs.attic
     services.xdg-portal
   ];
 
