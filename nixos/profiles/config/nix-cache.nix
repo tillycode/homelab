@@ -2,7 +2,7 @@
 {
   nix.settings = {
     substituters = [
-      "https://cache.svc.szp.io/default"
+      "https://cache.szp15.com/default"
     ];
     trusted-public-keys = [
       "default:xmfbjleCtsq4S/39VqDwKhzVg8Afd2YM7rjWWYHUqqk="
@@ -17,7 +17,7 @@
   sops.secrets."cache/atticPullToken" = { };
   sops.templates."nix-netrc" = {
     content = ''
-      machine cache.svc.szp.io
+      machine cache.szp15.com
       password ${config.sops.placeholder."cache/atticPullToken"}
     '';
   };

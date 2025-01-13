@@ -28,6 +28,12 @@ let
       programs.cli-tools
     ];
 
+    domestic = [
+      config.nix-cache
+      services.sing-box
+      services.tailscale
+    ];
+
     desktop = base ++ [
       config.fonts
       services.iwd
@@ -102,12 +108,11 @@ let
               ../nixos/hosts/hgh0
             ]
             ++ suites.base
+            ++ suites.domestic
             ++ (with profiles; [
               system.systemd-boot
               system.kernel.qemu-guest
               system.disko
-              services.sing-box
-              services.tailscale
               services.nginx
               services.atticd
             ]);
@@ -134,16 +139,15 @@ let
         {
           imports =
             suites.base
+            ++ suites.domestic
             ++ (with profiles; [
               system.systemd-boot
               system.kernel.qemu-guest
               system.disko
               services.postgresql
               services.nginx
-              services.sing-box
               services.zitadel
               services.headscale
-              services.tailscale
               services.coredns
               services.step-ca
               services.homepage-dashboard
@@ -171,12 +175,11 @@ let
         {
           imports =
             suites.base
+            ++ suites.domestic
             ++ (with profiles; [
               system.systemd-boot
               system.kernel.qemu-guest
               system.disko
-              services.sing-box
-              services.tailscale
             ]);
         }
       )
@@ -201,11 +204,10 @@ let
         {
           imports =
             suites.base
+            ++ suites.domestic
             ++ (with profiles; [
               system.kernel.qemu-guest
               system.disko
-              services.sing-box
-              services.tailscale
             ]);
         }
       )
@@ -263,12 +265,10 @@ let
               ../nixos/hosts/desktop
             ]
             ++ suites.desktop
+            ++ suites.domestic
             ++ (with profiles; [
-              config.nix-cache
               system.systemd-boot
               services.nginx
-              services.sing-box
-              services.tailscale
               services.github-runner
               virtualization.incus
               virtualization.podman
