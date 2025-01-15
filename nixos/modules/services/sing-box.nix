@@ -33,7 +33,7 @@ in
       enableClashApi = lib.mkEnableOption "Enable clash api";
       useLocalDNSServer = lib.mkOption {
         type = lib.types.bool;
-        default = true;
+        default = false;
         description = "Use local DNS server";
       };
       openFirewall = lib.mkOption {
