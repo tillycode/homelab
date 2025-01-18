@@ -12,4 +12,15 @@
       sha256 = "sha256-r7LWzna6ZI5hI5ojyfWssqQc+IA3vInSwDlmXGBmhZQ=";
     };
   };
+  terraboard = {
+    pname = "terraboard";
+    version = "v2.4.0";
+    src = fetchFromGitHub {
+      owner = "camptocamp";
+      repo = "terraboard";
+      rev = "v2.4.0";
+      fetchSubmodules = false;
+      sha256 = "sha256-BkvGOE1ElETp4NLgMC9s8BtzNkskkvFt6/nVgmJNRww=";
+    };
+  };
 }

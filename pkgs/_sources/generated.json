@@ -18,5 +18,25 @@
             "type": "github"
         },
         "version": "2024.10.10"
+    },
+    "terraboard": {
+        "cargoLocks": null,
+        "date": null,
+        "extract": null,
+        "name": "terraboard",
+        "passthru": null,
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "owner": "camptocamp",
+            "repo": "terraboard",
+            "rev": "v2.4.0",
+            "sha256": "sha256-BkvGOE1ElETp4NLgMC9s8BtzNkskkvFt6/nVgmJNRww=",
+            "type": "github"
+        },
+        "version": "v2.4.0"
     }
 }
