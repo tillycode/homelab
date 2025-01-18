@@ -15,10 +15,14 @@
           headscale-ui
           hschip
           lego_4_21
+          terraboard
           ;
       };
       packages = {
         tailscale-patched = pkgs.callPackage (import ./tailscale-patched) { };
+        terraboard = pkgs.callPackage (import ./terraboard) {
+          source = sources.terraboard;
+        };
         headscale-ui = inputs.dream2nix.lib.evalModules {
           packageSets.nixpkgs = pkgs;
           modules = [

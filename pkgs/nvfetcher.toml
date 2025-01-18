@@ -1,3 +1,7 @@
 [headscale-ui]
 src.github = "gurucomputing/headscale-ui"
 fetch.github = "gurucomputing/headscale-ui"
+
+[terraboard]
+src.github = "camptocamp/terraboard"
+fetch.github = "camptocamp/terraboard"
