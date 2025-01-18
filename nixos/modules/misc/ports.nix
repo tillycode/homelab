@@ -36,6 +36,9 @@ in
       homepage-dashboard = 30050;
 
       atticd = 30060;
+
+      terraboard = 30070;
+      terraboard-swagger = 30071;
     };
   };
 }

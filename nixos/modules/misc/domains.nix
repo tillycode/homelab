@@ -16,6 +16,7 @@
       incus = "incus.svc.szp.io";
       step-ca = "acme.svc.szp.io";
       acme = config.domains.step-ca;
+      terraboard = "terraboard.svc.szp.io";
     };
   };
 }
