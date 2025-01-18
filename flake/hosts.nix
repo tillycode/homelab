@@ -151,6 +151,7 @@ let
               services.coredns
               services.step-ca
               services.homepage-dashboard
+              services.terraboard
             ]);
         }
       )

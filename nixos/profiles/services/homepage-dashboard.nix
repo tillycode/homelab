@@ -124,11 +124,17 @@ in
         ];
       }
       {
-        "Binary Cache" = [
+        "CI/CD" = [
           {
             Attic = {
               href = "https://${config.domains.atticd}";
               description = "Binary Cache";
+            };
+          }
+          {
+            Terraboard = {
+              href = "https://${config.domains.terraboard}";
+              description = "Terraform State Viewer";
             };
           }
         ];
