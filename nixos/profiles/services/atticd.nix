@@ -56,6 +56,9 @@
     enableACME = true;
     locations."/" = {
       proxyPass = "http://[::1]:${toString config.ports.atticd}";
+      extraConfig = ''
+        client_max_body_size 600M;
+      '';
     };
   };
 }
