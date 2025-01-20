@@ -152,6 +152,7 @@ let
               services.step-ca
               services.homepage-dashboard
               services.terraboard
+              services.oauth2-proxy
             ]);
         }
       )

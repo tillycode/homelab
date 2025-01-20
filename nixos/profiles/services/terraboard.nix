@@ -7,6 +7,8 @@
 let
   package = pkgs.terraboard;
   domain = config.domains.terraboard;
+
+  endSessionEndpoint = "https://${config.domains.zitadel}/oidc/v1/end_session";
 in
 {
   ## ---------------------------------------------------------------------------
@@ -94,8 +96,19 @@ in
     enableACME = true;
     locations."/" = {
       proxyPass = "http://127.0.0.1:${toString config.ports.terraboard}";
+      extraConfig = ''
+        proxy_set_header X-Forwarded-User $preferred_username;
+        proxy_set_header X-Forwarded-Email $email;
+      '';
+    };
+    locations."/oauth2/sign_in" = {
+      return = "307 https://${config.domains.oauth2-proxy}/oauth2/sign_out?rd=${lib.escapeURL endSessionEndpoint}";
+      extraConfig = ''
+        auth_request off;
+      '';
     };
     extraConfig = ''
+      auth_request_set $preferred_username $upstream_http_x_auth_request_preferred_username;
       allow 100.71.0.0/16;
       allow fd7a:115c:a1e0:7::/64;
       allow 10.75.0.0/16;
@@ -103,7 +116,8 @@ in
       deny all;
     '';
   };
-  security.acme.certs."${domain}" = {
+  security.acme.certs.${domain} = {
     server = "https://${config.domains.acme}/acme/acme/directory";
   };
+  services.oauth2-proxy.nginx.virtualHosts.${domain} = { };
 }

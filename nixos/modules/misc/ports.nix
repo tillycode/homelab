@@ -39,6 +39,8 @@ in
 
       terraboard = 30070;
       terraboard-swagger = 30071;
+
+      oauth2-proxy = 30080;
     };
   };
 }
