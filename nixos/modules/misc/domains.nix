@@ -17,6 +17,7 @@
       step-ca = "acme.svc.szp.io";
       acme = config.domains.step-ca;
       terraboard = "terraboard.svc.szp.io";
+      oauth2-proxy = "auth.svc.szp.io";
     };
   };
 }
