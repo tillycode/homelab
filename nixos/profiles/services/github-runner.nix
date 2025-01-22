@@ -4,33 +4,50 @@ let
 
   user = "github-runner";
   group = "github-runner";
+
+  mkRunners =
+    f:
+    lib.pipe num [
+      (lib.range 1)
+      (lib.map (n: if n < 10 then "0${toString n}" else toString n))
+      (lib.map f)
+      lib.listToAttrs
+    ];
 in
 {
   ## ---------------------------------------------------------------------------
   ## CONFIGURATION
   ## ---------------------------------------------------------------------------
-  services.github-runners = lib.pipe num [
-    (lib.range 1)
-    (lib.map (n: if n < 10 then "0${toString n}" else toString n))
-    (lib.map (n: {
-      name = "${n}";
-      value = {
-        enable = true;
-        name = "${config.networking.hostName}-${n}";
-        url = "https://github.com/tillycode";
-        tokenFile = config.sops.secrets."github-runner/token".path;
-        replace = true;
-        ephemeral = true;
-        user = user;
-        group = group;
-        noDefaultLabels = true;
-        extraLabels = [
-          "nixos-${config.nixpkgs.system}"
-        ];
+  services.github-runners = mkRunners (
+    n:
+    lib.nameValuePair n {
+      enable = true;
+      name = "${config.networking.hostName}-${n}";
+      url = "https://github.com/tillycode";
+      tokenFile = config.sops.secrets."github-runner/token".path;
+      replace = true;
+      ephemeral = true;
+      user = user;
+      group = group;
+      noDefaultLabels = true;
+      extraLabels = [
+        "nixos-${config.nixpkgs.system}"
+        config.networking.hostName
+      ];
+      serviceOverrides = {
+        Restart = lib.mkForce "always";
       };
-    }))
-    lib.listToAttrs
-  ];
+    }
+  );
+
+  systemd.services = lib.mkIf config.services.sing-box-client.enable (
+    mkRunners (
+      n:
+      lib.nameValuePair "github-runner-${n}" {
+        after = [ "sing-box-client.service" ];
+      }
+    )
+  );
 
   ## ---------------------------------------------------------------------------
   ## SECRETS
