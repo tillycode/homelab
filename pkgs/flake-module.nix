@@ -67,5 +67,8 @@
       ];
     };
 
+    attic-client = prev.attic-client.overrideAttrs (oldAttrs: {
+      patches = oldAttrs.patches ++ [ ./attic-client-graceful-shutdown.patch ];
+    });
   };
 }

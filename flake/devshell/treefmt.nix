@@ -24,6 +24,9 @@
           # legacy generated files
           "generated/*"
           "secrets/*"
+
+          # symlinks
+          ".github/actions/with-post-step/post.js"
         ];
 
         # json, yaml, markdown
