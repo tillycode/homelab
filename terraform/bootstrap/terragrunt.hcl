@@ -1,5 +1,5 @@
 locals {
-  bootstrap = jsondecode(sops_decrypt_file("${get_repo_root()}/secrets/terraform/tofu-encryption.json")).bootstrap
+  bootstrap = jsondecode(sops_decrypt_file("${get_repo_root()}/secrets/sources/tofu-encryption.json")).bootstrap
 }
 
 terraform {

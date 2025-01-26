@@ -46,7 +46,7 @@ Update `.sops.yaml` to include `aws_sops_key_arn`.
 Re-encrypt the secrets.
 
 ```shell
-aws-vault exec admin -- sops updatekeys secrets/terraform/tofu-encryption.json
+aws-vault exec admin -- sops updatekeys secrets/sources/tofu-encryption.json
 ```
 
 ## Considerations
