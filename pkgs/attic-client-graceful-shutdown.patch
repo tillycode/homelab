@@ -1,0 +1,42 @@
+From 1797c287d9b579e79bb0049242777778e3c6130c Mon Sep 17 00:00:00 2001
+From: Ziping Sun <me@szp.io>
+Date: Fri, 24 Jan 2025 01:55:29 +0800
+Subject: [PATCH] feat: Graceful shutdown for watch-store command
+
+---
+ client/Cargo.toml                 | 1 +
+ client/src/command/watch_store.rs | 8 ++++++++
+ 2 files changed, 9 insertions(+)
+
+diff --git a/client/Cargo.toml b/client/Cargo.toml
+index 4608369..a57e067 100644
+--- a/client/Cargo.toml
++++ b/client/Cargo.toml
+@@ -44,4 +44,5 @@ features = [
+ 	"rt",
+ 	"rt-multi-thread",
+ 	"sync",
++	"signal",
+ ]
+diff --git a/client/src/command/watch_store.rs b/client/src/command/watch_store.rs
+index 24eaf7a..61e2d6c 100644
+--- a/client/src/command/watch_store.rs
++++ b/client/src/command/watch_store.rs
+@@ -91,6 +91,14 @@ pub async fn run(opts: Opts) -> Result<()> {
+ 
+     watcher.watch(&store_dir, RecursiveMode::NonRecursive)?;
+ 
++    tokio::spawn(async move {
++        tokio::signal::ctrl_c()
++            .await
++            .expect("Failed to listen for Ctrl-C");
++        eprintln!("📶 Ctrl-C received. Exiting...");
++        drop(watcher);
++    });
++
+     eprintln!(
+         "👀 Pushing new store paths to \"{cache}\" on \"{server}\"",
+         cache = cache.as_str(),
+-- 
+2.47.0
+

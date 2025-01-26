@@ -1,0 +1,26 @@
+name: "Build"
+
+on:
+  pull_request:
+    branches:
+      - "master"
+
+jobs:
+  build:
+    runs-on: nixos-x86_64-linux
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup CI/CD environment
+        uses: ./.github/actions/with-post-step
+        with:
+          main: nix develop .#deploy --command setup
+          post: nix develop .#deploy --command teardown
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          ATTIC_ENDPOINT: https://cache.szp15.com
+          # Created with the following command:
+          #
+          #     atticd-atticadm make-token --pull default --push default \
+          #         --sub github-runner --validity 1y
+          #
+          ATTIC_TOKEN: ${{ secrets.ATTIC_TOKEN }}

@@ -82,7 +82,6 @@ tasks:
 
   secrets:edit:
     desc: "Edit the secrets in the sources"
-    dir: lib
     cmds:
       - sops edit secrets/sources/{{.SOURCE}}.yaml
     requires:
@@ -90,7 +89,6 @@ tasks:
 
   secrets:encrypt:
     desc: "Encrypt the secrets in the sources"
-    dir: lib
     cmds:
       - sops encrypt --in-place secrets/sources/{{.SOURCE}}.yaml
     requires:
@@ -98,7 +96,6 @@ tasks:
 
   secrets:sync:
     desc: "Sync the secrets from sources to nodes"
-    dir: lib
     cmds:
       - uv run ../scripts/secrets.py sync --node={{.NODE}} {{.CLI_ARGS}}
     requires:

@@ -95,7 +95,7 @@ let
           device = "/dev/vda";
           swapSize = "4G";
         };
-        sops.defaultSopsFile = ../lib/secrets/nodes/hgh0.yaml;
+        sops.defaultSopsFile = ../secrets/nodes/hgh0.yaml;
         networking.hostName = "hgh0";
         nixpkgs.system = "x86_64-linux";
         system.stateVersion = "24.11";
@@ -129,7 +129,7 @@ let
           device = "/dev/vda";
           swapSize = "2G";
         };
-        sops.defaultSopsFile = ../lib/secrets/nodes/hgh1.yaml;
+        sops.defaultSopsFile = ../secrets/nodes/hgh1.yaml;
         networking.hostName = "hgh1";
         nixpkgs.system = "x86_64-linux";
         system.stateVersion = "24.11";
@@ -167,7 +167,7 @@ let
           device = "/dev/vda";
           swapSize = "4G";
         };
-        sops.defaultSopsFile = ../lib/secrets/nodes/hgh2.yaml;
+        sops.defaultSopsFile = ../secrets/nodes/hgh2.yaml;
         networking.hostName = "hgh2";
         nixpkgs.system = "x86_64-linux";
         system.stateVersion = "24.11";
@@ -197,7 +197,7 @@ let
           device = "/dev/vda";
           swapSize = "2G";
         };
-        sops.defaultSopsFile = ../lib/secrets/nodes/sha0.yaml;
+        sops.defaultSopsFile = ../secrets/nodes/sha0.yaml;
         networking.hostName = "sha0";
         nixpkgs.system = "x86_64-linux";
         system.stateVersion = "24.11";
@@ -234,7 +234,7 @@ let
           device = "/dev/vda";
           swapSize = "1G";
         };
-        # sops.defaultSopsFile = ../lib/secrets/nodes/sin0.yaml;
+        # sops.defaultSopsFile = ../secrets/nodes/sin0.yaml;
         networking.hostName = "sin0";
         nixpkgs.system = "x86_64-linux";
         system.stateVersion = "24.11";
@@ -255,7 +255,7 @@ let
       {
         time.timeZone = "Asia/Shanghai";
         # add options for enable sopsFile, enable imports
-        sops.defaultSopsFile = ../lib/secrets/nodes/desktop.yaml;
+        sops.defaultSopsFile = ../secrets/nodes/desktop.yaml;
         networking.hostName = "desktop";
         nixpkgs.system = "x86_64-linux";
         system.stateVersion = "24.11";
