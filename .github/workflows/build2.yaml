@@ -24,3 +24,5 @@ jobs:
           #         --sub github-runner --validity 1y
           #
           ATTIC_TOKEN: ${{ secrets.ATTIC_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          AWS_ROLE_TO_ASSUME: ${{ vars.AWS_ROLE_TO_ASSUME }}
