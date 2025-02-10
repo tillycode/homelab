@@ -37,6 +37,12 @@
         server = "local";
       }
       {
+        domain_suffix = [
+          "byr.pt"
+        ];
+        server = "remote";
+      }
+      {
         rule_set = [
           "geoip-cn"
           "geosite-geolocation-cn"
