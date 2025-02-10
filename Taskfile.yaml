@@ -97,7 +97,7 @@ tasks:
   secrets:sync:
     desc: "Sync the secrets from sources to nodes"
     cmds:
-      - uv run ../scripts/secrets.py sync --node={{.NODE}} {{.CLI_ARGS}}
+      - uv run scripts/secrets.py sync --node={{.NODE}} {{.CLI_ARGS}}
     requires:
       vars: [NODE]
 
