@@ -18,6 +18,8 @@
           runtimeInputs = with pkgs; [
             openssh
             attic-client
+            awscli2
+            jq
           ];
           text = ''
             echo "Setting up PATH"
@@ -40,6 +42,12 @@
             ATTIC_PID=$!
             echo "ATTIC_LOG=$ATTIC_LOG" >>"$GITHUB_ENV"
             echo "ATTIC_PID=$ATTIC_PID" >>"$GITHUB_ENV"
+
+            echo "Setting up AWS credentials"
+            aws sts assume-role-with-web-identity --role-arn "$AWS_ROLE_TO_ASSUME" \
+              --role-session-name "GithubActions" \
+              --web-identity-token "$GITHUB_TOKEN" \
+              --output json
           '';
           meta = {
             description = "setup GitHub Actions environment";
