@@ -4,7 +4,7 @@
     ./hardware.nix
   ];
   boot.kernelParams = [ "resume_offset=533760" ];
-  boot.resumeDevice = "/dev/disk/by-partlabel/disk-vda-root";
+  boot.resumeDevice = "/dev/disk/by-partlabel/disk-root-root";
 
   # TODO: add personal profiles to avoid the hard code
   # sudo mkfs.vfat -C -F 32 civ6mods.img 2097152
