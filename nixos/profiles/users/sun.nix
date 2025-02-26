@@ -7,7 +7,10 @@
 
   users.users.sun = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ];
+    extraGroups = [
+      "wheel"
+      "incus-admin"
+    ];
     hashedPasswordFile = config.sops.secrets."user-password/sun".path;
     shell = pkgs.fish;
   };

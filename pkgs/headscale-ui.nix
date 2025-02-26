@@ -31,14 +31,10 @@
   nodejs-package-lock-v3 = {
     packageLockFile = "${config.mkDerivation.src}/package-lock.json";
     # TODO: record bugs
-    pdefs.headscale-ui."2024.10.05".dependencies = {
+    pdefs.headscale-ui."2024.10.10".dependencies = {
       "vite" = {
         dev = true;
-        version = "5.4.8";
-      };
-      "@sveltejs/vite-plugin-svelte" = {
-        dev = true;
-        version = "3.1.2";
+        version = "5.4.11";
       };
     };
   };

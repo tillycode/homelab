@@ -3,14 +3,26 @@
 {
   headscale-ui = {
     pname = "headscale-ui";
-    version = "2024.10.10";
+    version = "2025.01.20";
     src = fetchFromGitHub {
       owner = "gurucomputing";
       repo = "headscale-ui";
-      rev = "2024.10.10";
+      rev = "2025.01.20";
       fetchSubmodules = false;
-      sha256 = "sha256-r7LWzna6ZI5hI5ojyfWssqQc+IA3vInSwDlmXGBmhZQ=";
+      sha256 = "sha256-I+kPzVxLwZ3Gw0oLro8j6p7D+n81mbPZ5t2wDcNP0lA=";
     };
+  };
+  sing-box = {
+    pname = "sing-box";
+    version = "v1.12.0-alpha.13";
+    src = fetchFromGitHub {
+      owner = "SagerNet";
+      repo = "sing-box";
+      rev = "v1.12.0-alpha.13";
+      fetchSubmodules = false;
+      sha256 = "sha256-bMG6Kn+s7v+hWLMoo5T1m9hnqdNJ/w4Iqcj+w8r4Rn8=";
+    };
+    vendorHash = "sha256-SLTrWUl73B/rqfEppM/O3LchEc/bHifAbvY+cM7d7dc=";
   };
   terraboard = {
     pname = "terraboard";

@@ -1,8 +1,9 @@
-{ config, ... }:
+{ pkgs, config, ... }:
 {
-  services.sing-box-client = {
+  services.sing-box = {
     enable = true;
-    outboundsFile = config.sops.secrets."sing-box/outbounds.json".path;
+    package = pkgs.sing-box_1_12;
+    # outboundsFile = config.sops.secrets."sing-box/outbounds.json".path;
     dnsRules = [
       {
         # This is a trick to make sing-box return NXDOMAIN for a non-existent
@@ -19,10 +20,12 @@
           "::/0"
         ];
         invert = true;
+        action = "route";
         server = "local";
       }
       {
         ip_is_private = true;
+        action = "route";
         server = "local";
       }
       {
@@ -40,7 +43,7 @@
         domain_suffix = [
           "byr.pt"
         ];
-        server = "remote";
+        server = "proxy";
       }
       {
         rule_set = [
@@ -61,9 +64,8 @@
       "geosite-openai"
       "geosite-geolocation-cn"
     ];
+    outboundsFile = config.sops.secrets."sing-box/outbounds.json".path;
   };
 
-  sops.secrets."sing-box/outbounds.json" = {
-    restartUnits = [ "sing-box-client.service" ];
-  };
+  sops.secrets."sing-box/outbounds.json" = { };
 }

@@ -16,6 +16,7 @@
           hschip
           lego_4_21
           terraboard
+          sing-box_1_12
           ;
       };
       packages = {
@@ -40,6 +41,16 @@
           ];
         };
         hschip = pkgs.callPackage (import ./hschip) { };
+        sing-box_1_12 = pkgs.sing-box.overrideAttrs (oldAttrs: rec {
+          inherit (sources.sing-box)
+            pname
+            version
+            src
+            vendorHash
+            ;
+          tags = oldAttrs.tags ++ [ "with_tailscale" ];
+          ldflags = "-X=github.com/sagernet/sing-box/constant.Version=${version}";
+        });
       };
     };
 
@@ -70,5 +81,6 @@
     attic-client = prev.attic-client.overrideAttrs (oldAttrs: {
       patches = oldAttrs.patches ++ [ ./attic-client-graceful-shutdown.patch ];
     });
+
   };
 }
