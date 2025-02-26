@@ -13,11 +13,35 @@
             "name": null,
             "owner": "gurucomputing",
             "repo": "headscale-ui",
-            "rev": "2024.10.10",
-            "sha256": "sha256-r7LWzna6ZI5hI5ojyfWssqQc+IA3vInSwDlmXGBmhZQ=",
+            "rev": "2025.01.20",
+            "sha256": "sha256-I+kPzVxLwZ3Gw0oLro8j6p7D+n81mbPZ5t2wDcNP0lA=",
+            "sparseCheckout": [],
             "type": "github"
         },
-        "version": "2024.10.10"
+        "version": "2025.01.20"
+    },
+    "sing-box": {
+        "cargoLocks": null,
+        "date": null,
+        "extract": null,
+        "name": "sing-box",
+        "passthru": {
+            "vendorHash": "sha256-SLTrWUl73B/rqfEppM/O3LchEc/bHifAbvY+cM7d7dc="
+        },
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "owner": "SagerNet",
+            "repo": "sing-box",
+            "rev": "v1.12.0-alpha.13",
+            "sha256": "sha256-bMG6Kn+s7v+hWLMoo5T1m9hnqdNJ/w4Iqcj+w8r4Rn8=",
+            "sparseCheckout": [],
+            "type": "github"
+        },
+        "version": "v1.12.0-alpha.13"
     },
     "terraboard": {
         "cargoLocks": null,
@@ -35,6 +59,7 @@
             "repo": "terraboard",
             "rev": "v2.4.0",
             "sha256": "sha256-BkvGOE1ElETp4NLgMC9s8BtzNkskkvFt6/nVgmJNRww=",
+            "sparseCheckout": [],
             "type": "github"
         },
         "version": "v2.4.0"

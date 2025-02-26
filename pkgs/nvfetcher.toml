@@ -5,3 +5,11 @@ fetch.github = "gurucomputing/headscale-ui"
 [terraboard]
 src.github = "camptocamp/terraboard"
 fetch.github = "camptocamp/terraboard"
+
+# fetch alpha release
+[sing-box]
+src.github_tag = "SagerNet/sing-box"
+fetch.github = "SagerNet/sing-box"
+src.include_regex = "v.*"
+[sing-box.passthru]
+vendorHash = "sha256-SLTrWUl73B/rqfEppM/O3LchEc/bHifAbvY+cM7d7dc="

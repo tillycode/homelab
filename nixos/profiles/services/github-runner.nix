@@ -40,11 +40,11 @@ in
     }
   );
 
-  systemd.services = lib.mkIf config.services.sing-box-client.enable (
+  systemd.services = lib.mkIf config.services.sing-box.enable (
     mkRunners (
       n:
       lib.nameValuePair "github-runner-${n}" {
-        after = [ "sing-box-client.service" ];
+        after = [ "sing-box.service" ];
       }
     )
   );
