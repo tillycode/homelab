@@ -1,0 +1,121 @@
+name: "Setup CI/CD environment"
+
+description: "An action that setups necessary environment for this flake"
+
+inputs:
+  components:
+    description: >
+      Comma-separated list of components to setup.
+      Available components: attic,aws,aliyun,ssh,devshell
+    required: true
+  ## ====== ATTIC ======
+  attic-token:
+    description: Attic token
+    required: false
+  attic-package:
+    description: Attic package
+    default: attic-client_patched
+  attic-endpoint:
+    description: Attic endpoint
+    default: https://cache.szp15.com
+  attic-cache:
+    description: Attic cache
+    default: "default"
+  attic-push-self:
+    description: Push the action itself to attic
+    default: "true"
+  ## ====== AWS ======
+  aws-role-to-assume:
+    description: AWS role to assume
+    required: false
+  aws-region:
+    description: AWS region
+    default: ap-southeast-1
+  ## ====== ALIYUN ======
+  aliyun-role-to-assume:
+    description: Aliyun role to assume
+    required: false
+  aliyun-oidc-provider-arn:
+    description: Aliyun OIDC provider ARN
+    required: false
+  ## ====== SSH ======
+  ssh-package:
+    description: SSH package
+    default: openssh
+  ssh-private-key:
+    description: SSH private key
+    required: false
+  ## ====== DEVSHELL ======
+  devshell-arguments:
+    description: Additional arguments to pass to the `nix develop` command
+    default: .#deploy
+
+runs:
+  using: "composite"
+  steps:
+    ## ====== ATTIC ======
+    - name: Setup Attic
+      if: contains(format(',{0},', inputs.components), ',attic,')
+      uses: ./.github/actions/with-post-step
+      with:
+        main: |
+          set -euo pipefail
+          attic_path="$(nix build ".#$ATTIC_PACKAGE" --print-out-paths --no-link)"
+          export PATH="$attic_path/bin:$PATH"
+          ATTIC_LOG="$(mktemp)"
+          attic login --set-default default "$ATTIC_ENDPOINT" "$ATTIC_TOKEN"
+          attic use "$ATTIC_CACHE"
+          if [[ $ATTIC_PUSH_SELF == "true" ]]; then
+            attic push "$ATTIC_CACHE" "$attic_path"
+          fi
+          nohup attic watch-store "$ATTIC_CACHE" >"$ATTIC_LOG" 2>&1 &
+          ATTIC_PID=$!
+          echo "ATTIC_LOG=$ATTIC_LOG" >>"$GITHUB_STATE"
+          echo "ATTIC_PID=$ATTIC_PID" >>"$GITHUB_STATE"
+        post: |
+          set -euo pipefail
+          kill -INT "$STATE_ATTIC_PID"
+          tail -n +1 --pid "$STATE_ATTIC_PID" -f "$STATE_ATTIC_LOG"
+          rm "$STATE_ATTIC_LOG"
+      env:
+        ATTIC_PACKAGE: ${{ inputs.attic-package }}
+        ATTIC_ENDPOINT: ${{ inputs.attic-endpoint }}
+        ATTIC_TOKEN: ${{ inputs.attic-token }}
+        ATTIC_CACHE: ${{ inputs.attic-cache }}
+        ATTIC_PUSH_SELF: ${{ inputs.attic-push-self }}
+    ## ====== AWS ======
+    - uses: aws-actions/configure-aws-credentials@ececac1a45f3b08a01d2dd070d28d111c5fe6722 #v4.1.0
+      if: contains(format(',{0},', inputs.components), ',aws,')
+      with:
+        aws-region: ${{ inputs.aws-region }}
+        role-to-assume: ${{ inputs.aws-role-to-assume }}
+    ## ====== ALIYUN ======
+    - uses: aliyun/configure-aliyun-credentials-action@7908ef99874e16899f740b9071babcf0d48bd598 #v1.0.4
+      if: contains(format(',{0},', inputs.components), ',aliyun,')
+      with:
+        role-to-assume: ${{ inputs.aliyun-role-to-assume }}
+        oidc-provider-arn: ${{ inputs.aliyun-oidc-provider-arn }}
+    ## ====== SSH ======
+    - name: Setup SSH
+      if: contains(format(',{0},', inputs.components), ',ssh,')
+      uses: ./.github/actions/with-post-step
+      with:
+        main: |
+          set -euo pipefail
+          ssh_path="$(nix build ".#$SSH_PACKAGE" --print-out-paths --no-link)"
+          export PATH="$ssh_path/bin:$PATH"
+          eval "$(ssh-agent -s)"
+          echo "SSH_AUTH_SOCK=$SSH_AUTH_SOCK" >>"$GITHUB_ENV"
+          echo "SSH_AGENT_PID=$SSH_AGENT_PID" >>"$GITHUB_STATE"
+          ssh-add - <<<"$SSH_PRIVATE_KEY"
+        post: |
+          set -euo pipefail
+          kill -TERM "$STATE_SSH_AGENT_PID"
+      env:
+        SSH_PACKAGE: ${{ inputs.ssh-package }}
+        SSH_PRIVATE_KEY: ${{ inputs.ssh-private-key }}
+    ## ====== DEVSHELL ======
+    - uses: nicknovitski/nix-develop@9be7cfb4b10451d3390a75dc18ad0465bed4932a #v1.2.1
+      if: contains(format(',{0},', inputs.components), ',devshell,')
+      with:
+        arguments: ${{ inputs.devshell-arguments }}

@@ -1,7 +1,7 @@
 { inputs, self, ... }:
 {
   perSystem =
-    { system, ... }:
+    { system, pkgs, ... }:
     {
       _module.args.pkgs = import inputs.nixpkgs {
         inherit system;
@@ -14,5 +14,7 @@
           allowUnfree = true;
         };
       };
+
+      legacyPackages = pkgs;
     };
 }

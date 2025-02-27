@@ -96,12 +96,10 @@ resource "alicloud_instance" "hgh0" {
 resource "alicloud_instance" "hgh1" {
   instance_name = "hgh1"
 
-  instance_type     = "ecs.e-c1m1.large"
-  image_id          = "ubuntu_22_04_uefi_x64_20G_alibase_20230515.vhd"
-  security_groups   = [module.sg.security_group_id]
-  vswitch_id        = module.vpc.vswitch_ids[0]
-  renewal_status    = "AutoRenewal"
-  auto_renew_period = 12
+  instance_type   = "ecs.e-c1m1.large"
+  image_id        = "ubuntu_22_04_uefi_x64_20G_alibase_20230515.vhd"
+  security_groups = [module.sg.security_group_id]
+  vswitch_id      = module.vpc.vswitch_ids[0]
 
   tags = {
     Terraform = "true"

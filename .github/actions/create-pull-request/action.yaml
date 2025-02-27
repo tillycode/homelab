@@ -1,0 +1,23 @@
+name: "Create pull request"
+description: "Create a pull request to update generated files"
+
+inputs:
+  labels:
+    description: "The labels to add to the pull request"
+    default: "automated"
+  token:
+    description: "The GitHub token"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - run: nix fmt
+      shell: bash
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v7
+      with:
+        commit-message: "chore(deploy): update generated files"
+        title: Update generated files
+        labels: ${{ inputs.labels }}
+        token: ${{ inputs.token }}

@@ -1,0 +1,61 @@
+name: "Run terragrunt plan"
+description: "Run terragrunt plan"
+
+inputs:
+  skip-upload:
+    description: "Skip uploading the plan artifact"
+    default: "false"
+  working-directory:
+    description: "The working directory"
+    default: "terraform"
+
+outputs:
+  plan:
+    description: "The plan output"
+    value: ${{ steps.plan.outputs.plan }}
+  diff:
+    description: "Whether the plan is out of sync"
+    value: ${{ steps.plan.outputs.diff }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Run terragrunt plan
+      id: plan
+      shell: bash
+      run: |
+        delimiter="$(head -c 12 /dev/urandom | base64)"
+        echo "plan<<$delimiter" >> "$GITHUB_OUTPUT"
+        terragrunt run-all plan -concise |& tee \
+          >(sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g' >> "$GITHUB_OUTPUT")
+        echo "$delimiter" >> "$GITHUB_OUTPUT"
+
+        diff="$(terragrunt run-all show -json | jq -s \
+          '[.[].resource_changes.[].change.actions[]] | any(. != "no-op")')"
+        echo "diff=$diff" >> "$GITHUB_OUTPUT"
+      working-directory: ${{ inputs.working-directory }}
+      env:
+        TERRAGRUNT_OUT_DIR: ${{ github.workspace }}/.data/tfplans
+    - name: Summarize plan
+      shell: bash
+      run: |
+        cat <<'EOF' >> "$GITHUB_STEP_SUMMARY"
+        ### Terragrunt Plan :memo:
+
+        ```text
+        ${{ steps.plan.outputs.plan }}
+        ```
+
+        **Status**: ${{ steps.plan.outputs.diff == 'true' && 'out of sync :warning:' || 'no changes :ok_hand:' }}
+        EOF
+    - name: Pack tfplans
+      if: steps.plan.outputs.diff == 'true' && inputs.skip-upload != 'true'
+      shell: bash
+      run: |
+        tar -czf .data/tfplans.tar.gz -C .data tfplans
+        sops --output .data/tfplans.tar.gz.enc -e .data/tfplans.tar.gz
+    - uses: actions/upload-artifact@v4
+      if: steps.plan.outputs.diff == 'true' && inputs.skip-upload != 'true'
+      with:
+        name: tfplans
+        path: .data/tfplans.tar.gz.enc
