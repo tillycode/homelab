@@ -1,0 +1,86 @@
+name: "Setup CI/CD environment"
+
+description: "An action that setups necessary environment for this flake"
+
+inputs:
+  components:
+    description: Comma-separated list of components to setup
+    required: true
+  ## ====== attic options ======
+  attic-token:
+    description: Attic token
+    required: false
+  attic-endpoint:
+    description: Attic endpoint
+    default: https://cache.szp15.com
+  attic-cache:
+    description: Attic cache
+    default: "default"
+  attic-push-self:
+    description: Push the action itself to attic
+    default: "true"
+  ## ====== aws options ======
+  aws-role-to-assume:
+    description: AWS role to assume
+    required: false
+  aws-region:
+    description: AWS region
+    default: ap-southeast-1
+
+runs:
+  using: "composite"
+  steps:
+    ## ====== attic setup ======
+    - name: Setup Attic
+      if: contains(format(',{0},', inputs.components), ',attic,')
+      uses: ./.github/actions/with-post-step
+      with:
+        main: |
+          set -euo pipefail
+          attic_path="$(nix build .#attic-client_patched --print-out-paths)"
+          export PATH="$attic_path/bin:$PATH"
+          ATTIC_LOG="$(mktemp)"
+          attic login --set-default default "$ATTIC_ENDPOINT" "$ATTIC_TOKEN"
+          attic use "$ATTIC_CACHE"
+          if [[ $ATTIC_PUSH_SELF == "true" ]]; then
+            attic push "$ATTIC_CACHE" "$attic_path"
+          fi
+          nohup attic watch-store "$ATTIC_CACHE" >"$ATTIC_LOG" 2>&1 &
+          ATTIC_PID=$!
+          echo "ATTIC_LOG=$ATTIC_LOG" >>"$GITHUB_STATE"
+          echo "ATTIC_PID=$ATTIC_PID" >>"$GITHUB_STATE"
+        post: |
+          set -euo pipefail
+          kill -INT "$STATE_ATTIC_PID"
+          tail -n +1 --pid "$STATE_ATTIC_PID" -f "$STATE_ATTIC_LOG"
+          rm "$STATE_ATTIC_LOG"
+      env:
+        ATTIC_ENDPOINT: ${{ inputs.attic-endpoint }}
+        ATTIC_TOKEN: ${{ inputs.attic-token }}
+        ATTIC_CACHE: ${{ inputs.attic-cache }}
+        ATTIC_PUSH_SELF: ${{ inputs.attic-push-self }}
+    - uses: aws-actions/configure-aws-credentials@v4
+      if: contains(format(',{0},', inputs.components), ',aws,')
+      with:
+        aws-region: ${{ inputs.aws-region }}
+        role-to-assume: ${{ inputs.aws-role-to-assume }}
+  # - name: Setup PATH, ssh and binary cache
+  #   uses: ./.github/actions/with-post-step
+  #   with:
+  #     main: nix develop .#deploy --command setup
+  #     post: nix develop .#deploy --command teardown
+  #   env:
+  #     SSH_PRIVATE_KEY: ${{ inputs.ssh-private-key }}
+  #     ATTIC_ENDPOINT: ${{ inputs.attic-endpoint }}
+  #     ATTIC_TOKEN: ${{ inputs.attic-token }}
+  # - name: Setup AWS Credentials
+  #   if: ${{ inputs.aws-role-to-assume != '' }}
+  #   uses: aws-actions/configure-aws-credentials@v4
+  #   with:
+  #     aws-region: ${{ inputs.aws-region }}
+  #     aws-role-to-assume: ${{ inputs.aws-role-to-assume }}
+  # - name: Setup Aliyun Credentials
+  #   uses: aliyun/configure-aliyun-credentials-action@v1
+  #   with:
+  #     role-to-assume: ${{ inputs.aliyun-role-to-assume }}
+  #     oidc-provider-arn: ${{ inputs.aliyun-oidc-provider-arn }}

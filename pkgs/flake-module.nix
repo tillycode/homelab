@@ -51,6 +51,9 @@
           tags = oldAttrs.tags ++ [ "with_tailscale" ];
           ldflags = "-X=github.com/sagernet/sing-box/constant.Version=${version}";
         });
+        attic-client_patched = pkgs.attic-client.overrideAttrs (oldAttrs: {
+          patches = oldAttrs.patches ++ [ ./attic-client-graceful-shutdown.patch ];
+        });
       };
     };
 
@@ -77,10 +80,5 @@
         "-X main.version=${version}"
       ];
     };
-
-    attic-client = prev.attic-client.overrideAttrs (oldAttrs: {
-      patches = oldAttrs.patches ++ [ ./attic-client-graceful-shutdown.patch ];
-    });
-
   };
 }

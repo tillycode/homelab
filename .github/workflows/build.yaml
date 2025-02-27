@@ -6,98 +6,91 @@ on:
       - "master"
   workflow_dispatch:
 
-permissions:
-  id-token: write
-  contents: read
-  pull-requests: write
+# permissions:
+#   id-token: write
+#   contents: read
+#   pull-requests: write
 
-env:
-  TERRAGRUNT_NON_INTERACTIVE: "true"
-  TF_IN_AUTOMATION: "true"
+# env:
+#   TERRAGRUNT_NON_INTERACTIVE: "true"
+#   TF_IN_AUTOMATION: "true"
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: nixos-x86_64-linux
     steps:
       - uses: actions/checkout@v4
-      - uses: cachix/install-nix-action@v30
+      - uses: ./.github/actions/setup
         with:
-          github_access_token: ${{ secrets.GITHUB_TOKEN }}
-          extra_nix_config: |
-            accept-flake-config = true
-      - uses: cachix/cachix-action@master
-        with:
-          name: sunziping2016
-          signingKey: "${{ secrets.CACHIX_SIGNING_KEY }}"
-      - name: Setup CI/CD environment
-        run: nix develop .#deploy --command setup
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          components: attic
+          attic-token: ${{ secrets.ATTIC_TOKEN }}
+      # FIXME: error: cannot build '/nix/store/...^out' during evaluation
+      # because the option 'allow-import-from-derivation' is disabled
       # - run: nix flake show --all-systems
       - run: nix flake check --all-systems
 
-  plan:
-    runs-on: ubuntu-latest
-    outputs:
-      diff: ${{ steps.plan.outputs.diff }}
-    steps:
-      - uses: actions/checkout@v4
-      - uses: cachix/install-nix-action@v30
-        with:
-          github_access_token: ${{ secrets.GITHUB_TOKEN }}
-          extra_nix_config: |
-            accept-flake-config = true
-      - uses: cachix/cachix-action@master
-        with:
-          name: sunziping2016
-          signingKey: "${{ secrets.CACHIX_SIGNING_KEY }}"
-      - uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-region: ap-southeast-1
-          role-to-assume: ${{ vars.AWS_ROLE_TO_ASSUME }}
-      - uses: aliyun/configure-aliyun-credentials-action@v1
-        with:
-          role-to-assume: ${{ vars.ALIYUN_ROLE_TO_ASSUME }}
-          oidc-provider-arn: ${{ vars.ALIYUN_OIDC_PROVIDER_ARN  }}
-      - name: Setup CI/CD environment
-        run: nix develop .#deploy --command setup
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-      - run: terragrunt run-all validate
-        working-directory: terraform
-      - name: Run terragrunt plan
-        id: plan
-        shell: bash
-        run: |
-          echo "plan<<EOF" >> "$GITHUB_OUTPUT"
-          terragrunt run-all plan -concise |& tee \
-            >(sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g' >> "$GITHUB_OUTPUT")
-          echo "EOF" >> "$GITHUB_OUTPUT"
+  # plan:
+  #   runs-on: ubuntu-latest
+  #   outputs:
+  #     diff: ${{ steps.plan.outputs.diff }}
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: cachix/install-nix-action@v30
+  #       with:
+  #         github_access_token: ${{ secrets.GITHUB_TOKEN }}
+  #         extra_nix_config: |
+  #           accept-flake-config = true
+  #     - uses: cachix/cachix-action@master
+  #       with:
+  #         name: sunziping2016
+  #         signingKey: "${{ secrets.CACHIX_SIGNING_KEY }}"
+  #     - uses: aws-actions/configure-aws-credentials@v4
+  #       with:
+  #         aws-region: ap-southeast-1
+  #         role-to-assume: ${{ vars.AWS_ROLE_TO_ASSUME }}
+  #     - uses: aliyun/configure-aliyun-credentials-action@v1
+  #       with:
+  #         role-to-assume: ${{ vars.ALIYUN_ROLE_TO_ASSUME }}
+  #         oidc-provider-arn: ${{ vars.ALIYUN_OIDC_PROVIDER_ARN  }}
+  #     - name: Setup CI/CD environment
+  #       run: nix develop .#deploy --command setup
+  #       env:
+  #         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+  #     - run: terragrunt run-all validate
+  #       working-directory: terraform
+  #     - name: Run terragrunt plan
+  #       id: plan
+  #       shell: bash
+  #       run: |
+  #         echo "plan<<EOF" >> "$GITHUB_OUTPUT"
+  #         terragrunt run-all plan -concise |& tee \
+  #           >(sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g' >> "$GITHUB_OUTPUT")
+  #         echo "EOF" >> "$GITHUB_OUTPUT"
 
-          diff="$(terragrunt run-all show -json | jq -s \
-            '[.[].resource_changes.[].change.actions[]] | any(. != "no-op")')"
-          echo "diff=$diff" >> "$GITHUB_OUTPUT"
-        working-directory: terraform
-        env:
-          TERRAGRUNT_OUT_DIR: ${{ github.workspace }}/.data/tfplans
-          TERRAGRUNT_EXCLUDE_DIR: bootstrap,github-action,vault,tencent,kubernetes
-      - uses: peter-evans/find-comment@v3
-        id: find-comment
-        with:
-          issue-number: ${{ github.event.pull_request.number }}
-          comment-author: "github-actions[bot]"
-          body-includes: "### Terragrunt Plan"
-      - uses: peter-evans/create-or-update-comment@v4
-        with:
-          comment-id: ${{ steps.find-comment.outputs.comment-id }}
-          issue-number: ${{ github.event.pull_request.number }}
-          body: |
-            ### Terragrunt Plan :memo:
+  #         diff="$(terragrunt run-all show -json | jq -s \
+  #           '[.[].resource_changes.[].change.actions[]] | any(. != "no-op")')"
+  #         echo "diff=$diff" >> "$GITHUB_OUTPUT"
+  #       working-directory: terraform
+  #       env:
+  #         TERRAGRUNT_OUT_DIR: ${{ github.workspace }}/.data/tfplans
+  #         TERRAGRUNT_EXCLUDE_DIR: bootstrap,github-action,vault,tencent,kubernetes
+  #     - uses: peter-evans/find-comment@v3
+  #       id: find-comment
+  #       with:
+  #         issue-number: ${{ github.event.pull_request.number }}
+  #         comment-author: "github-actions[bot]"
+  #         body-includes: "### Terragrunt Plan"
+  #     - uses: peter-evans/create-or-update-comment@v4
+  #       with:
+  #         comment-id: ${{ steps.find-comment.outputs.comment-id }}
+  #         issue-number: ${{ github.event.pull_request.number }}
+  #         body: |
+  #           ### Terragrunt Plan :memo:
 
-            ```text
-            ${{ steps.plan.outputs.plan }}
-            ```
+  #           ```text
+  #           ${{ steps.plan.outputs.plan }}
+  #           ```
 
-            **Status**: ${{ steps.plan.outputs.diff == 'true' && 'out of sync :warning:' || 'no changes :ok_hand:' }}
-          token: ${{ secrets.GITHUB_TOKEN }}
-          edit-mode: replace
+  #           **Status**: ${{ steps.plan.outputs.diff == 'true' && 'out of sync :warning:' || 'no changes :ok_hand:' }}
+  #         token: ${{ secrets.GITHUB_TOKEN }}
+  #         edit-mode: replace
