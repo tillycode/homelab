@@ -150,6 +150,8 @@ in
         client_id = oidcClientID;
         client_secret_path = config.sops.secrets."headscale/oidcClientSecret".path;
         strip_email_domain = true;
+        pkce3.enable = true;
+        # map_legacy_users = true;
       };
       logtail = {
         enabled = false;
