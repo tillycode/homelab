@@ -18,7 +18,7 @@
   programs.fish.enable = true;
   home-manager.users.sun = import ./_sunHome.nix;
 
-  environment.persistence."/persist" = {
+  environment.persistence.default = {
     users.sun.directories = [
       ".aliyun"
       ".aws"

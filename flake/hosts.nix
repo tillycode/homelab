@@ -280,6 +280,35 @@ let
         }
       )
     ];
+    laptop = mkHost [
+      {
+        time.timeZone = "Asia/Shanghai";
+        sops.defaultSopsFile = ../secrets/nodes/laptop.yaml;
+        networking.hostName = "laptop";
+        nixpkgs.system = "x86_64-linux";
+        system.stateVersion = "25.05";
+        profiles.disko = {
+          device = "/dev/nvme0n1";
+          swapSize = "32G";
+        };
+      }
+      (
+        { profiles, suites, ... }:
+        {
+          imports =
+            [
+              ../nixos/hosts/laptop
+            ]
+            ++ suites.desktop
+            ++ suites.domestic
+            ++ (with profiles; [
+              system.systemd-boot
+              system.disko
+              users.sun
+            ]);
+        }
+      )
+    ];
   };
   mkHost =
     modules:
