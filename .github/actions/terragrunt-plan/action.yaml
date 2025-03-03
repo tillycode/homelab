@@ -30,8 +30,11 @@ runs:
           >(sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g' >> "$GITHUB_OUTPUT")
         echo "$delimiter" >> "$GITHUB_OUTPUT"
 
-        diff="$(terragrunt run-all show -json | jq -s \
-          '[.[].resource_changes.[].change.actions[]] | any(. != "no-op")')"
+        diff="$(terragrunt run-all show -json | jq -s '
+          [.[].resource_changes[].change.actions[]]
+          + [.[].output_changes[].actions[]]
+          | any(. != "no-op")
+        ')"
         echo "diff=$diff" >> "$GITHUB_OUTPUT"
       working-directory: ${{ inputs.working-directory }}
       env:
