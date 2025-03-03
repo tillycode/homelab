@@ -10,21 +10,10 @@ jobs:
     runs-on: nixos-x86_64-linux
     steps:
       - uses: actions/checkout@v4
-      - name: Update flake.lock
-        uses: DeterminateSystems/update-flake-lock@main
+      - run: |
+          nix flake update --commit-lock-file --commit-lockfile-summary \
+            "chore(deps): update flake.lock"
+      - uses: ./.github/actions/create-pull-request
         with:
-          commit-msg: "chore(deps): update flake.lock"
-          pr-title: "Update flake.lock"
-          pr-labels: |
-            automated
-            dependencies
-          # PRs created using the default GITHUB_TOKEN won't trigger other GitHub actions.
-          # Check https://github.com/peter-evans/create-pull-request/blob/main/docs/concepts-guidelines.md#triggering-further-workflow-runs
-          # for various workarounds. We use a PAT here to trigger further workflows.
-          # NOTE: need to manually provision the secret
-          #   Create a token from https://github.com/settings/tokens?type=beta,
-          #   (permission: contents/write, pull-requests/write), and run the
-          #   following command:
-          #     gh secret set GH_TOKEN_FOR_UPDATES  # paste the token
+          title: "Update flake.lock"
           token: ${{ secrets.GH_TOKEN_FOR_UPDATES }}
-          branch: chore/update-flake-lock
