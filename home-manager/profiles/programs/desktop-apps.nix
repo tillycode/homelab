@@ -19,7 +19,7 @@
 
     # office
     evince
-    wpsoffice
+    # wpsoffice
 
     # utilities
     blueman

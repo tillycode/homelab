@@ -18,6 +18,7 @@
       go-task
       python3
       uv
+      nix-fast-build
     ];
     devshell.startup = {
       nixago.text = config.nixago.shellHook;

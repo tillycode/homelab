@@ -9,7 +9,9 @@
       sops
       jq
       ssh-to-age
+      nix-fast-build
     ];
+    devshell.startup.nixago.text = config.nixago.shellHook;
     env = [
       {
         name = "TERRAGRUNT_NON_INTERACTIVE";
