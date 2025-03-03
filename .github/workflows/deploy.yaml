@@ -8,130 +8,45 @@ on:
 
 permissions:
   id-token: write
-  contents: read
 
-env:
-  TERRAGRUNT_NON_INTERACTIVE: "true"
-  TF_IN_AUTOMATION: "true"
+concurrency:
+  group: terraform
 
 jobs:
   plan:
-    runs-on: ubuntu-latest
+    runs-on: nixos-x86_64-linux
     outputs:
       diff: ${{ steps.plan.outputs.diff }}
     steps:
       - uses: actions/checkout@v4
-      - uses: cachix/install-nix-action@v30
+      - uses: ./.github/actions/setup
         with:
-          github_access_token: ${{ secrets.GITHUB_TOKEN }}
-          extra_nix_config: |
-            accept-flake-config = true
-      - uses: cachix/cachix-action@master
-        with:
-          name: sunziping2016
-          # NOTE: need to manually provision the signing key.
-          #   Create a token from https://app.cachix.org/personal-auth-tokens,
-          #   and run the following commands:
-          #     cachix authtoken --stdin  # paste personal auth token
-          #     cachix generate-keypair sunziping2016
-          #     gh secret set CACHIX_SIGNING_KEY  # paste signing key
-          signingKey: "${{ secrets.CACHIX_SIGNING_KEY }}"
-      - uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-region: ap-southeast-1
-          role-to-assume: ${{ vars.AWS_ROLE_TO_ASSUME }}
-      - uses: aliyun/configure-aliyun-credentials-action@v1
-        with:
-          role-to-assume: ${{ vars.ALIYUN_ROLE_TO_ASSUME }}
-          oidc-provider-arn: ${{ vars.ALIYUN_OIDC_PROVIDER_ARN  }}
-      - name: Setup CI/CD environment
-        run: nix develop .#deploy --command setup
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-      - name: Run terragrunt plan
+          components: attic,ssh,aws,aliyun,devshell
+          attic-token: ${{ secrets.ATTIC_TOKEN }}
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          aws-role-to-assume: ${{ vars.AWS_ROLE_TO_ASSUME }}
+          aliyun-role-to-assume: ${{ vars.ALIYUN_ROLE_TO_ASSUME }}
+          aliyun-oidc-provider-arn: ${{ vars.ALIYUN_OIDC_PROVIDER_ARN }}
+      - uses: ./.github/actions/terragrunt-plan
         id: plan
-        shell: bash
-        run: |
-          echo "plan<<EOF" >> "$GITHUB_OUTPUT"
-          terragrunt run-all plan -concise |& tee \
-            >(sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g' >> "$GITHUB_OUTPUT")
-          echo "EOF" >> "$GITHUB_OUTPUT"
-
-          diff="$(terragrunt run-all show -json | jq -s \
-            '[.[].resource_changes.[].change.actions[]] | any(. != "no-op")')"
-          echo "diff=$diff" >> "$GITHUB_OUTPUT"
-
-          cd "${{ github.workspace }}"
-          tar -czf .data/tfplans.tar.gz -C .data tfplans
-          sops --output .data/tfplans.tar.gz.enc -e .data/tfplans.tar.gz
-        working-directory: terraform
-        env:
-          TERRAGRUNT_OUT_DIR: ${{ github.workspace }}/.data/tfplans
-          TERRAGRUNT_EXCLUDE_DIR: bootstrap,github-action,vault,tencent,kubernetes
-      - name: Summarize plan
-        run: |
-          cat <<'EOF' >> "$GITHUB_STEP_SUMMARY"
-          ### Terragrunt Plan :memo:
-
-          ```text
-          ${{ steps.plan.outputs.plan }}
-          ```
-
-          **Status**: ${{ steps.plan.outputs.diff == 'true' && 'out of sync :warning:' || 'no changes :ok_hand:' }}
-          EOF
-      - uses: actions/upload-artifact@v4
-        if: steps.plan.outputs.diff == 'true'
-        with:
-          name: tfplans
-          path: .data/tfplans.tar.gz.enc
 
   apply:
-    runs-on: ubuntu-latest
+    runs-on: nixos-x86_64-linux
     environment: infrastructure
-    concurrency: infrastructure
     needs: plan
     if: needs.plan.outputs.diff == 'true'
     steps:
       - uses: actions/checkout@v4
-      - uses: cachix/install-nix-action@v30
+      - uses: ./.github/actions/setup
         with:
-          github_access_token: ${{ secrets.GITHUB_TOKEN }}
-          extra_nix_config: |
-            accept-flake-config = true
-      - uses: aws-actions/configure-aws-credentials@v4
-        with:
-          aws-region: ap-southeast-1
-          role-to-assume: ${{ vars.AWS_ROLE_TO_ASSUME }}
-      - uses: aliyun/configure-aliyun-credentials-action@v1
-        with:
-          role-to-assume: ${{ vars.ALIYUN_ROLE_TO_ASSUME }}
-          oidc-provider-arn: ${{ vars.ALIYUN_OIDC_PROVIDER_ARN  }}
-      - name: Setup CI/CD environment
-        run: nix develop .#deploy --command setup
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-      - uses: actions/download-artifact@v4
-        with:
-          name: tfplans
-          path: .data
-      - name: "Unpack tfplans"
-        run: sops -d .data/tfplans.tar.gz.enc | tar -xz -C .data
-      - name: "Run Terragrunt Apply"
-        run: terragrunt run-all apply -auto-approve
-        working-directory: terraform
-        env:
-          TERRAGRUNT_OUT_DIR: ${{ github.workspace }}/.data/tfplans
-          TERRAGRUNT_EXCLUDE_DIR: bootstrap,github-action,vault,tencent,kubernetes
-      - run: nix fmt
-        if: always()
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v7
+          components: attic,ssh,aws,aliyun,devshell
+          attic-token: ${{ secrets.ATTIC_TOKEN }}
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          aws-role-to-assume: ${{ vars.AWS_ROLE_TO_ASSUME }}
+          aliyun-role-to-assume: ${{ vars.ALIYUN_ROLE_TO_ASSUME }}
+          aliyun-oidc-provider-arn: ${{ vars.ALIYUN_OIDC_PROVIDER_ARN }}
+      - uses: ./.github/actions/terragrunt-apply
+      - uses: ./.github/actions/create-pull-request
         if: always()
         with:
-          commit-message: "chore(deploy): update generated files"
-          title: Update generated files
-          labels: |
-            deployment
-            automated
           token: ${{ secrets.GH_TOKEN_FOR_UPDATES }}
-          branch: chore/generated-files
