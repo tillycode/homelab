@@ -10,6 +10,11 @@ jobs:
     runs-on: nixos-x86_64-linux
     steps:
       - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+        with:
+          components: api-token,attic
+          api-token: ${{ secrets.GITHUB_TOKEN }}
+          attic-token: ${{ secrets.ATTIC_TOKEN }}
       - run: |
           git config --global user.name "${GITHUB_ACTOR}"
           git config --global user.email "${GITHUB_ACTOR_ID}+${GITHUB_ACTOR}@users.noreply.github.com"
