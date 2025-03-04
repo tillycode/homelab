@@ -11,6 +11,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: |
+          git config --global user.name "${GITHUB_ACTOR}"
+          git config --global user.email "${GITHUB_ACTOR_ID}+${GITHUB_ACTOR}@users.noreply.github.com"
           nix flake update --commit-lock-file --commit-lockfile-summary \
             "chore(deps): update flake.lock"
       - uses: ./.github/actions/create-pull-request

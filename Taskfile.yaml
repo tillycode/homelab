@@ -13,6 +13,13 @@ tasks:
     cmds:
       - nix flake check
 
+  build:
+    desc: "Build the code"
+    cmds:
+      - >-
+        nix-fast-build --attic-cache default --skip-cached --no-download
+        --no-nom -j 4 --eval-workers 4 --flake .#checks.x86_64-linux
+
   fmt:
     desc: "Format the code"
     cmds:
