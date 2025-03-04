@@ -10,6 +10,7 @@
       jq
       ssh-to-age
       nix-fast-build
+      gnupg
     ];
     devshell.startup.nixago.text = config.nixago.shellHook;
     env = [

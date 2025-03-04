@@ -8,6 +8,10 @@ inputs:
       Comma-separated list of components to setup.
       Available components: attic,aws,aliyun,ssh,devshell
     required: true
+  ## ====== API TOKEN ======
+  api-token:
+    description: API token
+    required: false
   ## ====== ATTIC ======
   attic-token:
     description: Attic token
@@ -45,6 +49,16 @@ inputs:
   ssh-private-key:
     description: SSH private key
     required: false
+  ## ====== GNUPG ======
+  gpg-package:
+    description: GPG package
+    default: gnupg
+  gpg-keyserver:
+    description: GPG keyserver
+    default: hkps://keys.openpgp.org
+  gpg-keys:
+    description: GPG keys
+    required: false
   ## ====== DEVSHELL ======
   devshell-arguments:
     description: Additional arguments to pass to the `nix develop` command
@@ -53,6 +67,15 @@ inputs:
 runs:
   using: "composite"
   steps:
+    ## ====== API TOKEN ======
+    - name: Setup API token
+      if: contains(format(',{0},', inputs.components), ',api-token,')
+      run: |
+        mkdir -p ~/.config/nix
+        echo "access-tokens = github.com=$GITHUB_TOKEN" >~/.config/nix/nix.conf
+      shell: bash
+      env:
+        GITHUB_TOKEN: ${{ inputs.api-token }}
     ## ====== ATTIC ======
     - name: Setup Attic
       if: contains(format(',{0},', inputs.components), ',attic,')
@@ -123,6 +146,18 @@ runs:
       env:
         SSH_PACKAGE: ${{ inputs.ssh-package }}
         SSH_PRIVATE_KEY: ${{ inputs.ssh-private-key }}
+    ## ====== GNUPG ======
+    - name: Setup GPG
+      if: contains(format(',{0},', inputs.components), ',gpg,')
+      run: |
+        gpg_path="$(nix build ".#$GPG_PACKAGE" --print-out-paths --no-link)"
+        export PATH="$gpg_path/bin:$PATH"
+        gpg --keyserver "$GPG_KEYSERVER" --recv-keys $GPG_KEYS
+      shell: bash
+      env:
+        GPG_PACKAGE: ${{ inputs.gpg-package }}
+        GPG_KEYSERVER: ${{ inputs.gpg-keyserver }}
+        GPG_KEYS: ${{ inputs.gpg-keys }}
     ## ====== DEVSHELL ======
     - uses: nicknovitski/nix-develop@9be7cfb4b10451d3390a75dc18ad0465bed4932a #v1.2.1
       if: contains(format(',{0},', inputs.components), ',devshell,')

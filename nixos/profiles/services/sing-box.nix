@@ -36,6 +36,8 @@
           "steamserver.net"
           # Aliyun
           "aliyuncs.com"
+          # GNUPG
+          "keys.openpgp.org"
         ];
         server = "local";
       }

@@ -24,7 +24,7 @@ runs:
       id: plan
       shell: bash
       run: |
-        delimiter="$(head -c 12 /dev/urandom | base64)"
+        delimiter="$({ tr -dc A-Za-z0-9 </dev/urandom || true; } | head -c 13)"
         echo "plan<<$delimiter" >> "$GITHUB_OUTPUT"
         terragrunt run-all plan -concise |& tee \
           >(sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g' >> "$GITHUB_OUTPUT")
