@@ -52,4 +52,5 @@ jobs:
       - uses: ./.github/actions/create-pull-request
         if: always()
         with:
+          branch: chore/auto-generated
           token: ${{ secrets.GH_TOKEN_FOR_UPDATES }}

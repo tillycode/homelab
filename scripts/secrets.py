@@ -89,21 +89,22 @@ builtins.listToAttrs (
                 yaml.load(f, Loader=Loader)["sops"]["lastmodified"]
             )
     # STEP 4: check node secret file last modified and skip if not changed
-    for node in sorted(node_secrets.keys()):
-        filepath = build_node_secret_filepath(node)
-        if not os.path.exists(filepath):
-            continue
-        with open(filepath) as f:
-            node_last_modified = datetime.fromisoformat(
-                yaml.load(f, Loader=Loader)["sops"]["lastmodified"]
-            )
-        if all(
-            source_last_modified[source] < node_last_modified
-            for source in node_sources[node]
-        ):
-            print(f"Skip {filepath}")
-            del node_secrets[node]
-            del node_sources[node]
+    if not args.force:
+        for node in sorted(node_secrets.keys()):
+            filepath = build_node_secret_filepath(node)
+            if not os.path.exists(filepath):
+                continue
+            with open(filepath) as f:
+                node_last_modified = datetime.fromisoformat(
+                    yaml.load(f, Loader=Loader)["sops"]["lastmodified"]
+                )
+            if all(
+                source_last_modified[source] < node_last_modified
+                for source in node_sources[node]
+            ):
+                print(f"Skip {filepath}")
+                del node_secrets[node]
+                del node_sources[node]
     # STEP 5: decrypt sources
     source_decrypted: dict[str, typing.Any] = {}
     for source in set(chain.from_iterable(node_sources.values())):
@@ -151,6 +152,7 @@ def secrets_main() -> None:
 
     sync_parser = subparsers.add_parser("sync", help="Sync secrets")
     sync_parser.add_argument("--node", help="Node name", nargs="+", type=str)
+    sync_parser.add_argument("--force", help="Force sync", action="store_true")
     sync_parser.set_defaults(func=sync_secrets)
 
     args = parser.parse_args()

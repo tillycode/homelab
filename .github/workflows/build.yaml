@@ -22,7 +22,7 @@ jobs:
       - name: Build with nix-fast-build
         run: |
           nix-fast-build --attic-cache default --skip-cached --no-download \
-            --no-nom -j 2 --eval-workers 2 --flake .#checks.x86_64-linux
+            --no-nom -j 4 --eval-workers 4 --flake .#checks.x86_64-linux
 
   lint:
     runs-on: nixos-x86_64-linux

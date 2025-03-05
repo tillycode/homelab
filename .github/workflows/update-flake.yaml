@@ -20,7 +20,14 @@ jobs:
           git config --global user.email "${GITHUB_ACTOR_ID}+${GITHUB_ACTOR}@users.noreply.github.com"
           nix flake update --commit-lock-file --commit-lockfile-summary \
             "chore(deps): update flake.lock"
+          delimiter="$({ tr -dc A-Za-z0-9 </dev/urandom || true; } | head -c 13)"
+
+          echo "body<<$delimiter" >> "$GITHUB_OUTPUT"
+          git rev-list --max-count=1 --no-commit-header --format=%b HEAD >> "$GITHUB_OUTPUT"
+          echo "$delimiter" >> "$GITHUB_OUTPUT"
       - uses: ./.github/actions/create-pull-request
         with:
-          title: "Update flake.lock"
           token: ${{ secrets.GH_TOKEN_FOR_UPDATES }}
+          branch: chore/auto-update-flake
+          title: "Update flake.lock"
+          body: ${{ steps.lockfile.outputs.body }}

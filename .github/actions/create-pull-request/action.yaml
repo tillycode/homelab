@@ -2,15 +2,21 @@ name: "Create pull request"
 description: "Create a pull request to update generated files"
 
 inputs:
-  labels:
-    description: "The labels to add to the pull request"
-    default: "automated"
-  title:
-    description: "The pull request title"
-    default: "Update generated files"
   token:
     description: "The GitHub token"
     required: true
+  branch:
+    description: "The pull request branch name."
+    required: true # to avoid conflicts
+  title:
+    description: "The pull request title"
+    default: "Update generated files"
+  body:
+    description: "The pull request body"
+    default: ""
+  labels:
+    description: "The labels to add to the pull request"
+    default: "automated"
   commit-message:
     description: "The commit message"
     default: "chore: update generated files"
@@ -23,7 +29,9 @@ runs:
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v7
       with:
-        commit-message: ${{ inputs.commit-message }}
-        title: ${{ inputs.title }}
-        labels: ${{ inputs.labels }}
         token: ${{ inputs.token }}
+        branch: ${{ inputs.branch }}
+        title: ${{ inputs.title }}
+        body: ${{ inputs.body }}
+        labels: ${{ inputs.labels }}
+        commit-message: ${{ inputs.commit-message }}
