@@ -182,7 +182,6 @@ let
               system.systemd-boot
               system.kernel.qemu-guest
               system.disko
-              services.github-runner
             ]);
         }
       )
