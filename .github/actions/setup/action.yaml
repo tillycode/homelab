@@ -16,6 +16,7 @@ inputs:
       * ssh: setup SSH private key. Needed by terraform (run).
       * gpg: setup GPG keys. Needed by sops (encryption).
       * devshell: setup development shell. Needed by sops (encryption) and terraform (run) and various commands.
+      * terraform-cache: setup terraform cache. Needed by terraform
     required: true
   ## ====== API TOKEN ======
   api-token:
@@ -151,3 +152,18 @@ runs:
       if: contains(format(',{0},', inputs.components), ',devshell,')
       with:
         arguments: ${{ inputs.devshell-arguments }}
+    ## ====== TERRAFORM CACHE ======
+    - name: Setup Terraform cache
+      if: contains(format(',{0},', inputs.components), ',terraform-cache,')
+      run: |
+        mkdir -p ~/.terraform.d/plugin-cache
+        echo "TF_PLUGIN_CACHE_DIR=$HOME/.terraform.d/plugin-cache" >>"$GITHUB_ENV"
+      shell: bash
+    - uses: actions/cache@v4
+      if: contains(format(',{0},', inputs.components), ',terraform-cache,')
+      with:
+        path: |
+          ~/.terraform.d/plugin-cache
+        key: terraform-${{ runner.os }}-${{ hashFiles('**/.terraform.lock.hcl') }}
+        restore-keys: |
+          terraform-${{ runner.os }}-
