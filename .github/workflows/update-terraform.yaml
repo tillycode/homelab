@@ -1,0 +1,27 @@
+name: "Update terraform.lock.hcl"
+on:
+  workflow_dispatch:
+  schedule:
+    # every day 00:00 +08:00
+    - cron: "0 16 * * *"
+
+jobs:
+  update-terraform:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+        with:
+          components: api-token,attic,devshell,terraform-cache
+          api-token: ${{ secrets.GITHUB_TOKEN }}
+          attic-token: ${{ secrets.ATTIC_TOKEN }}
+      - name: Run terragurnt init
+        run: |
+          terragrunt run-all init -upgrade
+      - uses: ./.github/actions/create-pull-request
+        if: always()
+        with:
+          branch: chore/auto-update-terraform
+          token: ${{ secrets.GH_TOKEN_FOR_UPDATES }}
+          title: "Update terraform.lock.hcl"
+          commit-message: "chore(deps): update terraform.lock.hcl"
