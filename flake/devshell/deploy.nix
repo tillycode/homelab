@@ -15,7 +15,7 @@
     devshell.startup.nixago.text = config.nixago.shellHook;
     env = [
       {
-        name = "TERRAGRUNT_NON_INTERACTIVE";
+        name = "TG_NON_INTERACTIVE";
         value = "true";
       }
       {
@@ -26,7 +26,7 @@
         # FIXME: terragrunt is planning to change the envvar prefix to `TG_`.
         # And `run-all` subcommand is changed to `run --all`.
         # See https://github.com/gruntwork-io/terragrunt/issues/3445.
-        name = "TERRAGRUNT_EXCLUDE_DIR";
+        name = "TG_QUEUE_EXCLUDE_DIR";
         value = "bootstrap,github-action,tencent";
       }
     ];
