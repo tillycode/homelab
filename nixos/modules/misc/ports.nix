@@ -41,6 +41,8 @@ in
       terraboard-swagger = 30071;
 
       oauth2-proxy = 30080;
+
+      gha-cache-server = 30090;
     };
   };
 }

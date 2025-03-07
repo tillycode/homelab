@@ -39,7 +39,7 @@ jobs:
       - run: terragrunt run-all validate
         working-directory: terraform
         env:
-          TERRAGRUNT_EXCLUDE_DIR: ""
+          TG_QUEUE_EXCLUDE_DIR: ""
 
   plan:
     runs-on: nixos-x86_64-linux

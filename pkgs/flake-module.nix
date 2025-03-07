@@ -17,6 +17,7 @@
           lego_4_21
           terraboard
           sing-box_1_12
+          github-actions-cache-server
           ;
       };
       packages = {
@@ -54,6 +55,9 @@
         attic-client_patched = pkgs.attic-client.overrideAttrs (oldAttrs: {
           patches = oldAttrs.patches ++ [ ./attic-client-graceful-shutdown.patch ];
         });
+        github-actions-cache-server = pkgs.callPackage (import ./github-actions-cache-server.nix) {
+          source = sources.github-actions-cache-server;
+        };
       };
     };
 
@@ -80,5 +84,12 @@
         "-X main.version=${version}"
       ];
     };
+
+    github-runner-cache-server-patched = final.github-runner.overrideAttrs (oldAttrs: {
+      postFixup = ''
+        sed -i 's/\x41\x00\x43\x00\x54\x00\x49\x00\x4F\x00\x4E\x00\x53\x00\x5F\x00\x52\x00\x45\x00\x53\x00\x55\x00\x4C\x00\x54\x00\x53\x00\x5F\x00\x55\x00\x52\x00\x4C\x00/\x41\x00\x43\x00\x54\x00\x49\x00\x4F\x00\x4E\x00\x53\x00\x5F\x00\x52\x00\x45\x00\x53\x00\x55\x00\x4C\x00\x54\x00\x53\x00\x5F\x00\x4F\x00\x52\x00\x4C\x00/g' \
+          $out/lib/github-runner/Runner.Worker.dll
+      '';
+    });
   };
 }
