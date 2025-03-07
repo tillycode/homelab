@@ -17,6 +17,8 @@ inputs:
       * gpg: setup GPG keys. Needed by sops (encryption).
       * devshell: setup development shell. Needed by sops (encryption) and terraform (run) and various commands.
       * terraform-cache: setup terraform cache. Needed by terraform
+
+      Note that AWS and Aliyun also requires the `id-token: write` permission.
     required: true
   ## ====== API TOKEN ======
   api-token:
