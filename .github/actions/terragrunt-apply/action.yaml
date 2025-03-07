@@ -21,4 +21,4 @@ runs:
       run: terragrunt run-all apply -auto-approve
       working-directory: ${{ inputs.working-directory }}
       env:
-        TERRAGRUNT_OUT_DIR: ${{ github.workspace }}/.data/tfplans
+        TG_OUT_DIR: ${{ github.workspace }}/.data/tfplans

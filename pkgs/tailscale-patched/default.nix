@@ -1,8 +1,8 @@
-{ tailscale, buildGo123Module }:
+{ tailscale, buildGoModule }:
 tailscale.override {
-  buildGo123Module =
+  buildGoModule =
     args:
-    buildGo123Module (
+    buildGoModule (
       args
       // {
         patches = (args.patches or [ ]) ++ [

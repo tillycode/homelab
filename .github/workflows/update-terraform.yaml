@@ -8,6 +8,8 @@ on:
 jobs:
   update-terraform:
     runs-on: nixos-x86_64-linux
+    permissions:
+      id-token: write # for AWS and Aliyun OIDC federation
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup
