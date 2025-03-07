@@ -224,6 +224,11 @@ resource "github_repository_ruleset" "master" {
         context        = "build"
         integration_id = 15368 # Github Actions
       }
+
+      required_check {
+        context        = "lint"
+        integration_id = 15368 # Github Actions
+      }
     }
   }
 }

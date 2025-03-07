@@ -31,8 +31,8 @@ runs:
         echo "$delimiter" >> "$GITHUB_OUTPUT"
 
         diff="$(terragrunt run-all show -json | jq -s '
-          [.[].resource_changes[].change.actions[]]
-          + [.[].output_changes[].actions[]]
+          [.[]?.resource_changes[]?.change.actions[]?]
+          + [.[]?.output_changes[]?.actions[]?]
           | any(. != "no-op")
         ')"
         echo "diff=$diff" >> "$GITHUB_OUTPUT"

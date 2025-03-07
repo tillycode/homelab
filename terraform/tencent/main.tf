@@ -20,25 +20,3 @@ resource "tencentcloud_lighthouse_instance" "sha0" {
   renew_flag    = "NOTIFY_AND_MANUAL_RENEW"
   instance_name = "sha0"
 }
-
-## -----------------------------------------------------------------------------
-## METADATA
-## -----------------------------------------------------------------------------
-module "host_sha0" {
-  source = "../modules/host_metadata"
-
-  boot   = "BIOS"
-  region = "cn"
-  reinstall_triggers = {
-    instance_id = tencentcloud_lighthouse_instance.sha0.id
-  }
-  public_ipv4 = tencentcloud_lighthouse_instance.sha0.public_addresses[0]
-  cpu         = 2
-  memory      = 4096
-  disks = [
-    {
-      name = "vda"
-      size = 70
-    }
-  ]
-}

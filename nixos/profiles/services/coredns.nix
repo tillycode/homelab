@@ -20,7 +20,6 @@ let
     home       IN CNAME hgh1.ts.szp.io.
     acme       IN CNAME hgh1.ts.szp.io.
     incus      IN CNAME desktop.ts.szp.io.
-    terraboard IN CNAME hgh1.ts.szp.io.
     auth       IN CNAME hgh1.ts.szp.io.
   '';
 in

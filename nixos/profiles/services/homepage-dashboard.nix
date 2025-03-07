@@ -131,12 +131,6 @@ in
               description = "Binary Cache";
             };
           }
-          {
-            Terraboard = {
-              href = "https://${config.domains.terraboard}";
-              description = "Terraform State Viewer";
-            };
-          }
         ];
       }
     ];
