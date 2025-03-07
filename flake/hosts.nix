@@ -151,7 +151,6 @@ let
               services.coredns
               services.step-ca
               services.homepage-dashboard
-              services.oauth2-proxy
             ]);
         }
       )
@@ -271,6 +270,7 @@ let
               system.systemd-boot
               services.nginx
               services.github-runner
+              services.gha-cache-server
               virtualization.incus
               virtualization.podman
               users.sun

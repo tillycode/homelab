@@ -1,4 +1,9 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   num = 5;
 
@@ -13,6 +18,8 @@ let
       (lib.map f)
       lib.listToAttrs
     ];
+
+  package = pkgs.github-runner-cache-server-patched;
 in
 {
   ## ---------------------------------------------------------------------------
@@ -22,6 +29,7 @@ in
     n:
     lib.nameValuePair n {
       enable = true;
+      package = package;
       name = "${config.networking.hostName}-${n}";
       url = "https://github.com/tillycode";
       tokenFile = config.sops.secrets."github-runner/token".path;
@@ -34,6 +42,9 @@ in
         "nixos-${config.nixpkgs.system}"
         config.networking.hostName
       ];
+      extraEnvironment = {
+        ACTIONS_RESULTS_URL = "https://${config.domains.gha-cache-server}/";
+      };
       serviceOverrides = {
         Restart = lib.mkForce "always";
       };

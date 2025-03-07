@@ -1,4 +1,26 @@
 {
+    "github-actions-cache-server": {
+        "cargoLocks": null,
+        "date": "2025-03-07",
+        "extract": null,
+        "name": "github-actions-cache-server",
+        "passthru": {
+            "pnpmDepsHash": "sha256-og8VtU+zkC5nKgDSm21qW7GuAVqByUa0JGxc5/MUnPM="
+        },
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "rev": "eaa039a4929650864bdddad1113e81b543ac3d44",
+            "sha256": "sha256-JBgcP/GloTdWT3DMM6cty3z8RXt8aArtwofPSO8RVgg=",
+            "sparseCheckout": [],
+            "type": "git",
+            "url": "https://github.com/falcondev-oss/github-actions-cache-server.git"
+        },
+        "version": "eaa039a4929650864bdddad1113e81b543ac3d44"
+    },
     "headscale-ui": {
         "cargoLocks": null,
         "date": null,
