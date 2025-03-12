@@ -33,6 +33,13 @@ in
           type = "ACME";
           name = "acme";
         }
+        {
+          type = "SSHPOP";
+          name = "sshpop";
+          claims = {
+            enableSSHCA = true;
+          };
+        }
       ];
       tls = {
         cipherSuites = [
@@ -42,6 +49,10 @@ in
         minVersion = 1.2;
         maxVersion = 1.3;
         renegotiation = false;
+      };
+      ssh = {
+        hostKey = "${home}/secrets/ssh_host_ca_key";
+        userKey = "${home}/secrets/ssh_user_ca_key";
       };
     };
   };
@@ -57,6 +68,7 @@ in
       ${lib.getExe pkgs.step-cli} ca init --deployment-type standalone --pki \
         --name ${lib.strings.escapeShellArg caName} \
         --dns ${lib.strings.escapeShellArg domain} \
+        --ssh \
         --password-file "''${CREDENTIALS_DIRECTORY}/intermediate_password"
     fi
 

@@ -1,7 +1,7 @@
 {
     "github-actions-cache-server": {
         "cargoLocks": null,
-        "date": "2025-03-07",
+        "date": null,
         "extract": null,
         "name": "github-actions-cache-server",
         "passthru": {
@@ -13,13 +13,14 @@
             "fetchSubmodules": false,
             "leaveDotGit": false,
             "name": null,
-            "rev": "eaa039a4929650864bdddad1113e81b543ac3d44",
-            "sha256": "sha256-JBgcP/GloTdWT3DMM6cty3z8RXt8aArtwofPSO8RVgg=",
+            "owner": "falcondev-oss",
+            "repo": "github-actions-cache-server",
+            "rev": "v7.0.0",
+            "sha256": "sha256-RoqYcZ3Ak1ai9m8jI3qLDPUP3QwuuWdaHfWcjjerehc=",
             "sparseCheckout": [],
-            "type": "git",
-            "url": "https://github.com/falcondev-oss/github-actions-cache-server.git"
+            "type": "github"
         },
-        "version": "eaa039a4929650864bdddad1113e81b543ac3d44"
+        "version": "v7.0.0"
     },
     "headscale-ui": {
         "cargoLocks": null,
@@ -48,7 +49,7 @@
         "extract": null,
         "name": "sing-box",
         "passthru": {
-            "vendorHash": "sha256-SLTrWUl73B/rqfEppM/O3LchEc/bHifAbvY+cM7d7dc="
+            "vendorHash": "sha256-iWhPeoE0MkGMmHEwMmblRaGXNM7RrBq8Vm+/PHSJqKo="
         },
         "pinned": false,
         "src": {
@@ -58,12 +59,12 @@
             "name": null,
             "owner": "SagerNet",
             "repo": "sing-box",
-            "rev": "v1.12.0-alpha.13",
-            "sha256": "sha256-bMG6Kn+s7v+hWLMoo5T1m9hnqdNJ/w4Iqcj+w8r4Rn8=",
+            "rev": "v1.12.0-alpha.14",
+            "sha256": "sha256-JdHgXZVOupSpfj+NENM33vIjDbut/5eIVNZCFVi0En4=",
             "sparseCheckout": [],
             "type": "github"
         },
-        "version": "v1.12.0-alpha.13"
+        "version": "v1.12.0-alpha.14"
     },
     "terraboard": {
         "cargoLocks": null,
