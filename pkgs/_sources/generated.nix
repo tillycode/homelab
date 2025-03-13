@@ -3,18 +3,15 @@
 {
   github-actions-cache-server = {
     pname = "github-actions-cache-server";
-    version = "eaa039a4929650864bdddad1113e81b543ac3d44";
-    src = fetchgit {
-      url = "https://github.com/falcondev-oss/github-actions-cache-server.git";
-      rev = "eaa039a4929650864bdddad1113e81b543ac3d44";
+    version = "v7.0.0";
+    src = fetchFromGitHub {
+      owner = "falcondev-oss";
+      repo = "github-actions-cache-server";
+      rev = "v7.0.0";
       fetchSubmodules = false;
-      deepClone = false;
-      leaveDotGit = false;
-      sparseCheckout = [ ];
-      sha256 = "sha256-JBgcP/GloTdWT3DMM6cty3z8RXt8aArtwofPSO8RVgg=";
+      sha256 = "sha256-RoqYcZ3Ak1ai9m8jI3qLDPUP3QwuuWdaHfWcjjerehc=";
     };
     pnpmDepsHash = "sha256-og8VtU+zkC5nKgDSm21qW7GuAVqByUa0JGxc5/MUnPM=";
-    date = "2025-03-07";
   };
   headscale-ui = {
     pname = "headscale-ui";
@@ -29,15 +26,15 @@
   };
   sing-box = {
     pname = "sing-box";
-    version = "v1.12.0-alpha.13";
+    version = "v1.12.0-alpha.14";
     src = fetchFromGitHub {
       owner = "SagerNet";
       repo = "sing-box";
-      rev = "v1.12.0-alpha.13";
+      rev = "v1.12.0-alpha.14";
       fetchSubmodules = false;
-      sha256 = "sha256-bMG6Kn+s7v+hWLMoo5T1m9hnqdNJ/w4Iqcj+w8r4Rn8=";
+      sha256 = "sha256-JdHgXZVOupSpfj+NENM33vIjDbut/5eIVNZCFVi0En4=";
     };
-    vendorHash = "sha256-SLTrWUl73B/rqfEppM/O3LchEc/bHifAbvY+cM7d7dc=";
+    vendorHash = "sha256-iWhPeoE0MkGMmHEwMmblRaGXNM7RrBq8Vm+/PHSJqKo=";
   };
   terraboard = {
     pname = "terraboard";

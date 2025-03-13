@@ -8,6 +8,7 @@
       deploy-rs.deploy-rs
       sops
       jq
+      openssh
       ssh-to-age
       nix-fast-build
       gnupg

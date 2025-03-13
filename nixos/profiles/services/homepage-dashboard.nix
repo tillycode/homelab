@@ -131,6 +131,13 @@ in
               description = "Binary Cache";
             };
           }
+          {
+            "GHA Cache Server" = {
+              href = "https://${config.domains.gha-cache-server}";
+              description = "GitHub Actions Cache Server";
+              siteMonitor = "https://${config.domains.gha-cache-server}";
+            };
+          }
         ];
       }
     ];

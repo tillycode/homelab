@@ -12,18 +12,10 @@ src.github_tag = "SagerNet/sing-box"
 fetch.github = "SagerNet/sing-box"
 src.include_regex = "v.*"
 [sing-box.passthru]
-vendorHash = "sha256-SLTrWUl73B/rqfEppM/O3LchEc/bHifAbvY+cM7d7dc="
+vendorHash = "sha256-iWhPeoE0MkGMmHEwMmblRaGXNM7RrBq8Vm+/PHSJqKo="
 
-# [github-actions-cache-server]
-# src.github = "falcondev-oss/github-actions-cache-server"
-# fetch.github = "falcondev-oss/github-actions-cache-server"
-# [github-actions-cache-server.passthru]
-# pnpmDepsHash = "sha256-qG9SJJPOVKOUlO4nhXTbiKOH4eNn68ZJ6oeFqBfajas="
-
-# fetch dev version
 [github-actions-cache-server]
-src.git = "https://github.com/falcondev-oss/github-actions-cache-server.git"
-src.branch = "dev"
-fetch.git = "https://github.com/falcondev-oss/github-actions-cache-server.git"
+src.github = "falcondev-oss/github-actions-cache-server"
+fetch.github = "falcondev-oss/github-actions-cache-server"
 [github-actions-cache-server.passthru]
 pnpmDepsHash = "sha256-og8VtU+zkC5nKgDSm21qW7GuAVqByUa0JGxc5/MUnPM="
