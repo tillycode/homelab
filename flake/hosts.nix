@@ -305,6 +305,7 @@ let
             ++ suites.desktop
             ++ suites.domestic
             ++ (with profiles; [
+              services.power-profiles-daemon
               system.systemd-boot
               system.disko
               users.sun
