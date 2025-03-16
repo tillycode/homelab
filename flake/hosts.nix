@@ -236,7 +236,7 @@ let
           device = "/dev/vda";
           swapSize = "1G";
         };
-        # sops.defaultSopsFile = ../secrets/nodes/sin0.yaml;
+        sops.defaultSopsFile = ../secrets/nodes/sin0.yaml;
         networking.hostName = "sin0";
         nixpkgs.system = "x86_64-linux";
         system.stateVersion = "24.11";
@@ -247,6 +247,10 @@ let
           imports =
             suites.base
             ++ (with profiles; [
+              services.headscale-global
+              services.nginx
+              services.xray
+              services.xray-nginx
               system.kernel.qemu-guest
               system.disko
             ]);

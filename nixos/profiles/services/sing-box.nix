@@ -38,6 +38,9 @@
           "aliyuncs.com"
           # GNUPG
           "keys.openpgp.org"
+          # My Websites
+          "szp15.com"
+          "eh578599.xyz"
         ];
         server = "local";
       }
