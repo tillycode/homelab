@@ -2,20 +2,20 @@
 # Manual edits may be lost in future updates.
 
 provider "registry.opentofu.org/aliyun/alicloud" {
-  version     = "1.244.0"
+  version     = "1.245.0"
   constraints = "~> 1.0"
   hashes = [
-    "h1:rDZsHzEnffNRDw0ksnmVkVvSS9sFQ9jkwm079g9NT3M=",
-    "zh:0c3e87434ed8932a15ed476d22bf4ed973b0ba954d65be0a3dd790127bd0f131",
-    "zh:14d0f2275a7ea8229a0ef4d05ab9749ac34529e2310e76e1b73ee48f2cb13dba",
-    "zh:15106aacbc5278da306997f4380e385c9338490a7308c99c85ecab7c47f47b38",
-    "zh:158527e66ea2d14b5cbee8991c74d433a8da818211b89c47b5a8d00577a553f4",
-    "zh:5af1709b38c7dc0b1a7cbf5c6c4ece574a80b0f758f6dd9f5877449fd1a797ee",
-    "zh:7ee72956f3d4a81f5234e878ba3ffe14421c334640a575f075f527083a6e0f6f",
-    "zh:91268ef074dd3eb3b4f8bf4e2626b578cae244a3f06a249fbee70fe1040bebdf",
-    "zh:a05a2e6fffa5b5c9ad35e5acbb82709c6f2925bc9f74c51b2d90520f33d0428b",
-    "zh:b9ef4fb8049610a1e6d1f12ce731e7ecc7a0e724496a13dace32cba2e3625f2a",
-    "zh:ee431d0b44d94d4a2384fe7ca1fe50ca887ad48d80ce14547379b35270a78ed6",
-    "zh:ffa51e54411c8e203cac6e688892b87e1817b7766d6183f9d864ca5f2870774d",
+    "h1:N7NpGcnCXPfTh8FX1YLipWB02L/vKxKxYUJ6KJBvA+w=",
+    "zh:04464c8c3d05e200b1e94ff86bd9eec53413eefa0cd4373b992b3845bdc34fc6",
+    "zh:2f21208b3c93eacaf65e838d4af52024e34748094b87148b1d9bc1b7ff28a354",
+    "zh:33c4a44f260cd53fb6cee2ee76e1e7e9cdb67302e85cc0bf1d8b2cb3514725f0",
+    "zh:38621142a8629c526912cb19dbf4bddf021f57ea21f1de37dbfea5ce2ad096ea",
+    "zh:846119fcd2118d24de5abbccf0233c29fcda2300297eec846c373b8106f7b792",
+    "zh:8a9e2bf2a81939403010b51a9bafcf6830c15d20060903a1d6ea58780c479d8c",
+    "zh:9d2f4928bad5e5c7f5588cd1aa8b97c5196fa5bb2e9a8d4a63f3cf4b1e9d89d9",
+    "zh:a88b78045df49c64a14993aadb33385c072d2dc726e7043d710cdd43fe3693cf",
+    "zh:b1e6876d283e38e478a0be86bd03c232cf6efb2c756f1237974be4dfad094b02",
+    "zh:e4a330e7ba79424fbfaa47bad3dd56768a50fea96a309913ec3a231b3b7b60fd",
+    "zh:e5b0515bf259ae6f6457f5e448f588e84ceadcbc74e66e6d492c4463e65579a3",
   ]
 }
