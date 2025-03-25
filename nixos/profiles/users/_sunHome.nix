@@ -82,7 +82,6 @@
     k3s
     k9s
     kubernetes-helm
-    zed-editor
   ];
 
   home.stateVersion = "23.11";
