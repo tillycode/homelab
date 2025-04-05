@@ -114,8 +114,6 @@ let
               system.systemd-boot
               system.kernel.qemu-guest
               system.disko
-              services.nginx
-              services.atticd
             ]);
         }
       )
@@ -146,13 +144,6 @@ let
               system.systemd-boot
               system.kernel.qemu-guest
               system.disko
-              services.postgresql
-              services.nginx
-              services.zitadel
-              services.headscale
-              services.coredns
-              services.step-ca
-              services.homepage-dashboard
             ]);
         }
       )
@@ -177,9 +168,20 @@ let
         { profiles, suites, ... }:
         {
           imports =
-            suites.base
+            [
+              ../nixos/hosts/hgh2
+            ]
+            ++ suites.base
             ++ suites.domestic
             ++ (with profiles; [
+              services.atticd
+              services.coredns
+              services.headscale
+              services.homepage-dashboard
+              services.nginx
+              services.postgresql
+              services.step-ca
+              services.zitadel
               system.systemd-boot
               system.kernel.qemu-guest
               system.disko

@@ -210,6 +210,6 @@ in
   ## DECLARATIVE PREDEFINED IP
   ## ---------------------------------------------------------------------------
   systemd.services.headscale.preStart = ''
-    ${lib.getExe pkgs.hschip} ${config.networking.hostName} 100.71.0.1
+    ${lib.getExe pkgs.hschip} hgh2 100.71.0.1
   '';
 }

@@ -17,8 +17,8 @@ let
     @     IN NS ns.svc.szp.io.
     ns    IN A 100.71.0.1
 
-    home       IN CNAME hgh1.ts.szp.io.
-    acme       IN CNAME hgh1.ts.szp.io.
+    home       IN CNAME hgh2.ts.szp.io.
+    acme       IN CNAME hgh2.ts.szp.io.
     incus      IN CNAME desktop.ts.szp.io.
     gha-cache  IN CNAME desktop.ts.szp.io.
   '';
