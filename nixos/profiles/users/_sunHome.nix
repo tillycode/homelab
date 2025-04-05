@@ -54,6 +54,7 @@
     # Use `ssh-add -l` to add host keys to sshcontrol file. In this way, when the
     # card is unplugged, the host key will come before the card key.
     enableSshSupport = true;
+    enableExtraSocket = true;
     pinentryPackage = pkgs.pinentry-gnome3;
   };
 
