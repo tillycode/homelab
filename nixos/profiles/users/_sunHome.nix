@@ -62,13 +62,6 @@
   programs.neovim.viAlias = true;
 
   programs.vscode.enable = true;
-  # FIXME: ms-vscode.cpptools contains dynamically linked OpenDebugAD7.
-  programs.vscode.extensions = with pkgs.vscode-extensions; [
-    ms-vscode.cpptools
-  ];
-
-  services.vscode-server.enable = true;
-  services.vscode-server.enableFHS = true;
 
   xdg = {
     enable = true;

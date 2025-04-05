@@ -43,6 +43,7 @@ let
       services.pcscd
       services.xfce
       services.gnome-keyring
+      programs.nix-ld
       programs.steam
       programs."1password"
     ];
