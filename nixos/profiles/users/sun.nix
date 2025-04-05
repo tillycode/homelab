@@ -29,6 +29,7 @@
       ".npm"
       ".vscode-server"
       ".vscode"
+      ".factorio"
       "Documents"
       "Downloads"
       "Projects"
