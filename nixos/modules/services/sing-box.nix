@@ -120,6 +120,7 @@ in
             tag = "remote";
             type = "tls";
             server = "8.8.8.8";
+            detour = "proxy";
           }
           {
             tag = "local";
@@ -159,6 +160,22 @@ in
               server = "remote";
             }
           ])
+          ++ [
+            {
+              query_type = [
+                "PTR"
+              ];
+              domain_suffix = [
+                "18.198.in-addr.arpa"
+                "19.198.in-addr.arpa"
+                "0.0.0.c.f.ip6.arpa"
+                "1.0.0.c.f.ip6.arpa"
+                "2.0.0.c.f.ip6.arpa"
+                "3.0.0.c.f.ip6.arpa"
+              ];
+              action = "reject";
+            }
+          ]
           ++ cfg.dnsRules
           ++ [
             {

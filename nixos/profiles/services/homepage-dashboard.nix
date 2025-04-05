@@ -116,7 +116,7 @@ in
         Virtualization = [
           {
             Incus = {
-              href = "https://${config.domains.incus}";
+              href = "https://${config.domains.incus}/ui/login";
               description = "System container and VM manager";
             };
           }
