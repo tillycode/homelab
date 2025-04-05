@@ -82,6 +82,7 @@
     k3s
     k9s
     kubernetes-helm
+    mise
   ];
 
   home.stateVersion = "23.11";

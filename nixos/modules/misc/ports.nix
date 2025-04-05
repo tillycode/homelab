@@ -43,6 +43,10 @@ in
       oauth2-proxy = 30080;
 
       gha-cache-server = 30090;
+
+      xray-nginx-https = 30100;
+
+      headscale-global = 30110;
     };
   };
 }

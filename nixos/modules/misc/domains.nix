@@ -12,6 +12,8 @@
       tailnet = "tailnet.szp15.com";
       atticd = "cache.szp15.com";
 
+      tailnet-global = "tailnet.szp.io";
+
       homepage-dashboard = "home.svc.szp.io";
       incus = "incus.svc.szp.io";
       step-ca = "acme.svc.szp.io";
