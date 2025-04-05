@@ -35,7 +35,6 @@ in
           style = "row";
           columns = 4;
         };
-
       };
     };
     bookmarks = [
@@ -141,6 +140,9 @@ in
         ];
       }
     ];
+  };
+  systemd.services.homepage-dashboard.environment = {
+    HOMEPAGE_ALLOWED_HOSTS = config.domains.homepage-dashboard;
   };
 
   ## ---------------------------------------------------------------------------

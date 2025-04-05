@@ -24,7 +24,7 @@ resource "alicloud_route_entry" "hgh" {
   route_table_id        = module.vpc.route_table_id
   destination_cidrblock = "0.0.0.0/0"
   nexthop_type          = "Instance"
-  nexthop_id            = alicloud_instance.hgh0.id
+  nexthop_id            = alicloud_instance.hgh2.id
 }
 
 
@@ -73,7 +73,7 @@ resource "alicloud_eip_address" "hgh0" {
 resource "alicloud_eip_association" "hgh0" {
   allocation_id = alicloud_eip_address.hgh0.id
   instance_type = "EcsInstance"
-  instance_id   = alicloud_instance.hgh0.id
+  instance_id   = alicloud_instance.hgh2.id
 }
 
 resource "alicloud_instance" "hgh0" {
@@ -83,6 +83,7 @@ resource "alicloud_instance" "hgh0" {
   image_id        = "ubuntu_22_04_uefi_x64_20G_alibase_20230515.vhd"
   security_groups = [module.sg.security_group_id]
   vswitch_id      = module.vpc.vswitch_ids[0]
+  renewal_status  = "NotRenewal"
 
   tags = {
     Terraform = "true"
@@ -100,6 +101,7 @@ resource "alicloud_instance" "hgh1" {
   image_id        = "ubuntu_22_04_uefi_x64_20G_alibase_20230515.vhd"
   security_groups = [module.sg.security_group_id]
   vswitch_id      = module.vpc.vswitch_ids[0]
+  renewal_status  = "NotRenewal"
 
   tags = {
     Terraform = "true"
