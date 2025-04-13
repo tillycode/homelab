@@ -12,8 +12,3 @@ module "nixos_deploy" {
   node              = each.key
   working_directory = var.project_root
 }
-
-moved {
-  from = module.nixos_deploy_hgh0
-  to   = module.nixos_deploy["hgh0"]
-}

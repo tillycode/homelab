@@ -45,4 +45,8 @@
       );
     })
   ];
+
+  environment.persistence.default.directories = [
+    "/var/lib/systemd/backlight"
+  ];
 }

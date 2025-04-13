@@ -67,49 +67,13 @@ module "sg" {
 }
 
 
-resource "alicloud_eip_address" "hgh0" {
+resource "alicloud_eip_address" "hgh2" {
 }
 
-resource "alicloud_eip_association" "hgh0" {
-  allocation_id = alicloud_eip_address.hgh0.id
+resource "alicloud_eip_association" "hgh2" {
+  allocation_id = alicloud_eip_address.hgh2.id
   instance_type = "EcsInstance"
   instance_id   = alicloud_instance.hgh2.id
-}
-
-resource "alicloud_instance" "hgh0" {
-  instance_name = "hgh0"
-
-  instance_type   = "ecs.e-c1m4.large"
-  image_id        = "ubuntu_22_04_uefi_x64_20G_alibase_20230515.vhd"
-  security_groups = [module.sg.security_group_id]
-  vswitch_id      = module.vpc.vswitch_ids[0]
-  renewal_status  = "NotRenewal"
-
-  tags = {
-    Terraform = "true"
-  }
-
-  lifecycle {
-    prevent_destroy = true
-  }
-}
-
-resource "alicloud_instance" "hgh1" {
-  instance_name = "hgh1"
-
-  instance_type   = "ecs.e-c1m1.large"
-  image_id        = "ubuntu_22_04_uefi_x64_20G_alibase_20230515.vhd"
-  security_groups = [module.sg.security_group_id]
-  vswitch_id      = module.vpc.vswitch_ids[0]
-  renewal_status  = "NotRenewal"
-
-  tags = {
-    Terraform = "true"
-  }
-
-  lifecycle {
-    prevent_destroy = true
-  }
 }
 
 resource "alicloud_instance" "hgh2" {

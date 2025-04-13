@@ -86,69 +86,6 @@ let
   ## HOSTS
   ## ---------------------------------------------------------------------------
   hosts = {
-    hgh0 = mkHost [
-      {
-        users.users.root.openssh.authorizedKeys.keys = [
-          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAamaMcCAc7DhTJjDqBwXTWhewX0OI8vAuXLvc17yqK/"
-          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBIO4wL3BzfaMDOpbT/U/99MVQERjtzH2YxA6KAs7lwM"
-          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHNlekmLqIMn8zTkjU2sU4StemRV+wQvoMMvqmIIJxT6"
-        ];
-        profiles.disko = {
-          device = "/dev/vda";
-          swapSize = "4G";
-        };
-        sops.defaultSopsFile = ../secrets/nodes/hgh0.yaml;
-        networking.hostName = "hgh0";
-        nixpkgs.system = "x86_64-linux";
-        system.stateVersion = "24.11";
-      }
-      (
-        { profiles, suites, ... }:
-        {
-          imports =
-            [
-              ../nixos/hosts/hgh0
-            ]
-            ++ suites.base
-            ++ suites.domestic
-            ++ (with profiles; [
-              system.systemd-boot
-              system.kernel.qemu-guest
-              system.disko
-            ]);
-        }
-      )
-    ];
-    hgh1 = mkHost [
-      {
-        users.users.root.openssh.authorizedKeys.keys = [
-          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAamaMcCAc7DhTJjDqBwXTWhewX0OI8vAuXLvc17yqK/"
-          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBIO4wL3BzfaMDOpbT/U/99MVQERjtzH2YxA6KAs7lwM"
-          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHNlekmLqIMn8zTkjU2sU4StemRV+wQvoMMvqmIIJxT6"
-        ];
-        profiles.disko = {
-          device = "/dev/vda";
-          swapSize = "2G";
-        };
-        sops.defaultSopsFile = ../secrets/nodes/hgh1.yaml;
-        networking.hostName = "hgh1";
-        nixpkgs.system = "x86_64-linux";
-        system.stateVersion = "24.11";
-      }
-      (
-        { profiles, suites, ... }:
-        {
-          imports =
-            suites.base
-            ++ suites.domestic
-            ++ (with profiles; [
-              system.systemd-boot
-              system.kernel.qemu-guest
-              system.disko
-            ]);
-        }
-      )
-    ];
     hgh2 = mkHost [
       {
         users.users.root.openssh.authorizedKeys.keys = [
