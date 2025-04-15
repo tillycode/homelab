@@ -27,25 +27,6 @@
 
   hardware.graphics.extraPackages = with pkgs; [ intel-media-driver ];
 
-  nixpkgs.overlays = [
-    (self: super: {
-      linux-firmware = super.linux-firmware.overrideAttrs (
-        oldAttrs:
-        assert self.lib.assertOneOf "old linux-firmware version" oldAttrs.version [
-          "20250311"
-        ];
-        rec {
-          version = "20250211";
-
-          src = self.fetchzip {
-            url = "https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/snapshot/linux-firmware-${version}.tar.gz";
-            hash = "sha256-ZEXCMz789MtJLBjf4PjUJygURbZVV1XNZoG+5QHpHCQ=";
-          };
-        }
-      );
-    })
-  ];
-
   environment.persistence.default.directories = [
     "/var/lib/systemd/backlight"
   ];
