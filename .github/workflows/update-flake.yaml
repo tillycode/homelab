@@ -2,7 +2,7 @@ name: "Update flake.lock"
 on:
   workflow_dispatch:
   schedule:
-    # every day 01:00 +08:00
+    # every day 18:00 +08:00
     - cron: "0 17 * * *"
 
 jobs:

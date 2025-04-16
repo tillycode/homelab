@@ -2,8 +2,8 @@ name: "Update terraform.lock.hcl"
 on:
   workflow_dispatch:
   schedule:
-    # every day 00:00 +08:00
-    - cron: "0 16 * * *"
+    # every Friday 19:00 +08:00
+    - cron: "0 11 * * 5"
 
 jobs:
   update-terraform:
