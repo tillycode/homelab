@@ -18,10 +18,12 @@
           terraboard
           sing-box_1_12
           github-actions-cache-server
+          github-runner-patched
           ;
       };
       packages = {
         tailscale-patched = pkgs.callPackage (import ./tailscale-patched) { };
+        github-runner-patched = pkgs.callPackage (import ./github-runner-patched) { };
         terraboard = pkgs.callPackage (import ./terraboard) {
           source = sources.terraboard;
         };
@@ -84,12 +86,5 @@
         "-X main.version=${version}"
       ];
     };
-
-    github-runner-cache-server-patched = final.github-runner.overrideAttrs (oldAttrs: {
-      postFixup = ''
-        sed -i 's/\x41\x00\x43\x00\x54\x00\x49\x00\x4F\x00\x4E\x00\x53\x00\x5F\x00\x52\x00\x45\x00\x53\x00\x55\x00\x4C\x00\x54\x00\x53\x00\x5F\x00\x55\x00\x52\x00\x4C\x00/\x41\x00\x43\x00\x54\x00\x49\x00\x4F\x00\x4E\x00\x53\x00\x5F\x00\x52\x00\x45\x00\x53\x00\x55\x00\x4C\x00\x54\x00\x53\x00\x5F\x00\x4F\x00\x52\x00\x4C\x00/g' \
-          $out/lib/github-runner/Runner.Worker.dll
-      '';
-    });
   };
 }
