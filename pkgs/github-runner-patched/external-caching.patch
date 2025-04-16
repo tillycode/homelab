@@ -1,0 +1,62 @@
+From b8839626bdae2e2861a3516073580e8e4879fccc Mon Sep 17 00:00:00 2001
+From: "Taillon, Benjamin" <BENJAMIN_TAILLON@homedepot.com>
+Date: Tue, 12 Nov 2024 15:32:10 -0600
+Subject: [PATCH] Added support for external caching
+
+---
+ src/Runner.Common/Constants.cs     |  1 +
+ src/Runner.Worker/ActionManager.cs | 12 ++++++++++--
+ 2 files changed, 11 insertions(+), 2 deletions(-)
+
+diff --git a/src/Runner.Common/Constants.cs b/src/Runner.Common/Constants.cs
+index a9f9122..a342f96 100644
+--- a/src/Runner.Common/Constants.cs
++++ b/src/Runner.Common/Constants.cs
+@@ -257,6 +257,7 @@ namespace GitHub.Runner.Common
+                 public static readonly string ForcedActionsNodeVersion = "ACTIONS_RUNNER_FORCE_ACTIONS_NODE_VERSION";
+                 public static readonly string PrintLogToStdout = "ACTIONS_RUNNER_PRINT_LOG_TO_STDOUT";
+                 public static readonly string ActionArchiveCacheDirectory = "ACTIONS_RUNNER_ACTION_ARCHIVE_CACHE";
++                public static readonly string ActionArchiveExternalCachingEnabled = "ACTIONS_RUNNER_ACTION_ARCHIVE_EXTERNAL_CACHING_ENABLED";
+             }
+ 
+             public static class System
+diff --git a/src/Runner.Worker/ActionManager.cs b/src/Runner.Worker/ActionManager.cs
+index 47a66dd..2a6d42d 100644
+--- a/src/Runner.Worker/ActionManager.cs
++++ b/src/Runner.Worker/ActionManager.cs
+@@ -807,15 +807,17 @@ namespace GitHub.Runner.Worker
+                 var useActionArchiveCache = false;
+                 var hasActionArchiveCache = false;
+                 var actionArchiveCacheDir = Environment.GetEnvironmentVariable(Constants.Variables.Agent.ActionArchiveCacheDirectory);
++                var externalCachingEnabled = Convert.ToBoolean(Environment.GetEnvironmentVariable(Constants.Variables.Agent.ActionArchiveExternalCachingEnabled) ?? "false");
++                string cacheArchiveFile = null;
+                 if (!string.IsNullOrEmpty(actionArchiveCacheDir) &&
+                     Directory.Exists(actionArchiveCacheDir))
+                 {
+                     hasActionArchiveCache = true;
+                     Trace.Info($"Check if action archive '{downloadInfo.ResolvedNameWithOwner}@{downloadInfo.ResolvedSha}' already exists in cache directory '{actionArchiveCacheDir}'");
+ #if OS_WINDOWS
+-                    var cacheArchiveFile = Path.Combine(actionArchiveCacheDir, downloadInfo.ResolvedNameWithOwner.Replace(Path.DirectorySeparatorChar, '_').Replace(Path.AltDirectorySeparatorChar, '_'), $"{downloadInfo.ResolvedSha}.zip");
++                    cacheArchiveFile = Path.Combine(actionArchiveCacheDir, downloadInfo.ResolvedNameWithOwner.Replace(Path.DirectorySeparatorChar, '_').Replace(Path.AltDirectorySeparatorChar, '_'), $"{downloadInfo.ResolvedSha}.zip");
+ #else
+-                    var cacheArchiveFile = Path.Combine(actionArchiveCacheDir, downloadInfo.ResolvedNameWithOwner.Replace(Path.DirectorySeparatorChar, '_').Replace(Path.AltDirectorySeparatorChar, '_'), $"{downloadInfo.ResolvedSha}.tar.gz");
++                    cacheArchiveFile = Path.Combine(actionArchiveCacheDir, downloadInfo.ResolvedNameWithOwner.Replace(Path.DirectorySeparatorChar, '_').Replace(Path.AltDirectorySeparatorChar, '_'), $"{downloadInfo.ResolvedSha}.tar.gz");
+ #endif
+                     if (File.Exists(cacheArchiveFile))
+                     {
+@@ -842,6 +844,12 @@ namespace GitHub.Runner.Worker
+                 if (!useActionArchiveCache)
+                 {
+                     await DownloadRepositoryArchive(executionContext, link, downloadInfo.Authentication?.Token, archiveFile);
++                    if (!string.IsNullOrEmpty(cacheArchiveFile) && externalCachingEnabled)
++                    {
++                        executionContext.Output($"Saving archive file to cache at '{cacheArchiveFile}'");
++                        Directory.CreateDirectory(Path.GetDirectoryName(cacheArchiveFile));
++                        File.Copy(archiveFile, cacheArchiveFile, true);
++                    }
+                 }
+ 
+                 var stagingDirectory = Path.Combine(tempDirectory, "_staging");
+-- 
+2.48.1
+

@@ -19,7 +19,7 @@ let
       lib.listToAttrs
     ];
 
-  package = pkgs.github-runner-cache-server-patched;
+  package = pkgs.github-runner-patched;
 in
 {
   ## ---------------------------------------------------------------------------
@@ -44,6 +44,8 @@ in
       ];
       extraEnvironment = {
         ACTIONS_RESULTS_URL = "https://${config.domains.gha-cache-server}/";
+        ACTIONS_RUNNER_ACTION_ARCHIVE_CACHE = "/var/cache/github-runner/actions";
+        ACTIONS_RUNNER_ACTION_ARCHIVE_EXTERNAL_CACHING_ENABLED = "true";
       };
       serviceOverrides = {
         Restart = lib.mkForce "always";
@@ -56,6 +58,9 @@ in
       n:
       lib.nameValuePair "github-runner-${n}" {
         after = [ "sing-box.service" ];
+        serviceConfig = {
+          CacheDirectory = "github-runner/actions";
+        };
       }
     )
   );
@@ -75,4 +80,16 @@ in
   };
   users.groups.${group} = { };
   nix.settings.trusted-users = [ user ];
+
+  ## ---------------------------------------------------------------------------
+  ## PERSISTENCE
+  ## ---------------------------------------------------------------------------
+  environment.persistence.default.directories = [
+    {
+      directory = "/var/cache/github-runner";
+      inherit user group;
+      mode = "0700";
+    }
+  ];
+
 }
