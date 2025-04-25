@@ -21,6 +21,8 @@
       terraboard = "terraboard.svc.szp.io";
       oauth2-proxy = "auth.svc.szp.io";
       gha-cache-server = "gha-cache.svc.szp.io";
+      minio = "minio.svc.szp.io";
+      acme-dns = "acme-dns.svc.szp.io";
     };
   };
 }

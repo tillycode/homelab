@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 let
   interface = "tailscale0";
   # TODO: use nix to manage CNAMEs
@@ -17,10 +17,14 @@ let
     @     IN NS ns.svc.szp.io.
     ns    IN A 100.71.0.1
 
-    home       IN CNAME hgh2.ts.szp.io.
-    acme       IN CNAME hgh2.ts.szp.io.
-    incus      IN CNAME desktop.ts.szp.io.
-    gha-cache  IN CNAME desktop.ts.szp.io.
+    home                  IN CNAME hgh2.ts.szp.io.
+    acme                  IN CNAME hgh2.ts.szp.io.
+    incus                 IN CNAME desktop.ts.szp.io.
+    gha-cache             IN CNAME desktop.ts.szp.io.
+    minio                 IN CNAME desktop.ts.szp.io.
+    *.minio               IN CNAME minio.svc.szp.io.
+    acme-dns              IN CNAME hgh2.ts.szp.io.
+    _acme-challenge.minio IN CNAME 47f2e892-8271-443a-a9c7-43c14873b066.acme-challenge.svc.szp.io.
   '';
 in
 {
@@ -47,6 +51,12 @@ in
         import snip
         file ${zone}
         cache 60
+      }
+      acme-challenge.svc.szp.io:53 {
+        import snip
+        forward . [::1]:${toString config.ports.acme-dns-dns}
+        cache 5
+        rewrite name suffix .acme-challenge.svc.szp.io .acme-dns answer auto
       }
     '';
   };

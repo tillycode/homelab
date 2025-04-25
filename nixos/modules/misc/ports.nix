@@ -47,6 +47,12 @@ in
       xray-nginx-https = 30100;
 
       headscale-global = 30110;
+
+      minio = 30120;
+      minio-console = 30121;
+
+      acme-dns = 30130;
+      acme-dns-dns = 30131;
     };
   };
 }

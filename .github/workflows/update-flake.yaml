@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   schedule:
     # every day 18:00 +08:00
-    - cron: "0 17 * * *"
+    - cron: "0 10 * * *"
 
 jobs:
   update-flake:

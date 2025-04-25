@@ -13,7 +13,6 @@
       jq
       sops
       ssh-to-age
-      vault
       nvfetcher
       go-task
       python3

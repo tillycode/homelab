@@ -113,6 +113,7 @@ let
             ++ suites.domestic
             ++ (with profiles; [
               services.atticd
+              services.acme-dns
               services.coredns
               services.headscale
               services.homepage-dashboard
@@ -220,6 +221,7 @@ let
               services.nginx
               services.github-runner
               services.gha-cache-server
+              services.minio
               virtualization.incus
               virtualization.podman
               users.sun

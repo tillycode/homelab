@@ -112,7 +112,4 @@ in
     server = "https://127.0.0.1:${toString config.ports.step-ca}/acme/acme/directory";
     extraLegoFlags = [ "--tls-skip-verify" ];
   };
-  # FIXME: lego 4.20.2 added a new flag --tls-skip-verify,
-  #   but nixos-unstable currently uses 4.19. We packaged 4.21 in our flake.
-  systemd.services."acme-${domain}".path = lib.mkBefore [ pkgs.lego_4_21 ];
 }

@@ -77,6 +77,8 @@
     k9s
     kubernetes-helm
     mise
+    awscli2
+    minio-client
   ];
 
   home.stateVersion = "23.11";
