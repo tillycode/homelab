@@ -22,6 +22,7 @@
     binutils
     pciutils
     usbutils
+    pwgen
 
     ## compression
     unzip

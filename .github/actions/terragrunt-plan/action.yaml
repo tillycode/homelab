@@ -45,9 +45,14 @@ runs:
         cat <<'EOF' >> "$GITHUB_STEP_SUMMARY"
         ### Terragrunt Plan :memo:
 
+        <details>
+        <summary>Terragrunt Log/summary>
+
         ```text
         ${{ steps.plan.outputs.plan }}
         ```
+
+        </details>
 
         **Status**: ${{ steps.plan.outputs.diff == 'true' && 'out of sync :warning:' || 'no changes :ok_hand:' }}
         EOF

@@ -4,5 +4,6 @@
     nixd
     nixfmt-rfc-style
     nvd
+    vulnix
   ];
 }

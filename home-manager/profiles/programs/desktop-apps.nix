@@ -48,5 +48,6 @@
     man-pages
     man-pages-posix
     xclip
+    bruno
   ];
 }
