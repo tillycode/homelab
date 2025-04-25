@@ -24,6 +24,7 @@ in
     enable = true;
     listenPort = config.ports.homepage-dashboard;
     package = package;
+    allowedHosts = config.domains.homepage-dashboard;
     settings = {
       title = "Sun's Homelab";
       description = "A homepage dashboard for my homelab.";
@@ -140,9 +141,6 @@ in
         ];
       }
     ];
-  };
-  systemd.services.homepage-dashboard.environment = {
-    HOMEPAGE_ALLOWED_HOSTS = config.domains.homepage-dashboard;
   };
 
   ## ---------------------------------------------------------------------------
