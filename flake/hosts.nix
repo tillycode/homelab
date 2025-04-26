@@ -118,11 +118,13 @@ let
               services.grafana
               services.headscale
               services.homepage-dashboard
+              services.loki
               services.nginx
               services.node-exporter
               services.postgresql
               services.prometheus
               services.step-ca
+              services.vector
               services.zitadel
               system.systemd-boot
               system.kernel.qemu-guest
@@ -155,6 +157,7 @@ let
             ++ suites.domestic
             ++ (with profiles; [
               services.node-exporter
+              services.vector
               system.kernel.qemu-guest
               system.disko
             ]);
@@ -227,6 +230,7 @@ let
               services.github-runner
               services.gha-cache-server
               services.minio
+              services.vector
               virtualization.incus
               virtualization.podman
               users.sun

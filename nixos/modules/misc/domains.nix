@@ -25,6 +25,7 @@
       acme-dns = "acme-dns.svc.szp.io";
       prometheus = "prometheus.svc.szp.io";
       grafana = "grafana.svc.szp.io";
+      loki = "loki.svc.szp.io";
     };
   };
 }
