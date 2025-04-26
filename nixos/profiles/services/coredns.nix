@@ -27,6 +27,7 @@ let
     acme-dns              IN CNAME hgh2.ts.szp.io.
     prometheus            IN CNAME hgh2.ts.szp.io.
     grafana               IN CNAME hgh2.ts.szp.io.
+    loki                  IN CNAME hgh2.ts.szp.io.
   '';
 in
 {

@@ -62,6 +62,9 @@ in
       grafana = 30160;
 
       coredns-metrics = 30170;
+
+      loki = 30180;
+      loki-grpc = 30181;
     };
   };
 }
