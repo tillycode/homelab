@@ -27,6 +27,7 @@
       ".kube"
       ".local"
       ".npm"
+      ".mc"
       ".vscode-server"
       ".vscode"
       ".factorio"

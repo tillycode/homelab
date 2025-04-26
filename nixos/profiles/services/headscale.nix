@@ -95,7 +95,7 @@ in
     settings = lib.mkForce {
       server_url = "https://${config.domains.tailnet}";
       listen_addr = "127.0.0.1:${toString config.ports.headscale}";
-      metrics_listen_addr = "127.0.0.1:${toString config.ports.headscale-metrics}";
+      metrics_listen_addr = "[::]:${toString config.ports.headscale-metrics}";
 
       noise = {
         private_key_path = "${stateDir}/noise_private.key";

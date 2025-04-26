@@ -23,6 +23,8 @@
       gha-cache-server = "gha-cache.svc.szp.io";
       minio = "minio.svc.szp.io";
       acme-dns = "acme-dns.svc.szp.io";
+      prometheus = "prometheus.svc.szp.io";
+      grafana = "grafana.svc.szp.io";
     };
   };
 }

@@ -25,6 +25,7 @@ in
       config = {
         "core.https_address" = "127.0.0.1:${toString httpsPort}";
         "oidc.audience" = zitadelResourceID;
+        "core.metrics_authentication" = false;
         "oidc.client.id" = zitadelClientID;
         "oidc.issuer" = "https://login.szp15.com";
       };
