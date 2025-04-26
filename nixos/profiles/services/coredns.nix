@@ -23,8 +23,10 @@ let
     gha-cache             IN CNAME desktop.ts.szp.io.
     minio                 IN CNAME desktop.ts.szp.io.
     *.minio               IN CNAME minio.svc.szp.io.
-    acme-dns              IN CNAME hgh2.ts.szp.io.
     _acme-challenge.minio IN CNAME 47f2e892-8271-443a-a9c7-43c14873b066.acme-challenge.svc.szp.io.
+    acme-dns              IN CNAME hgh2.ts.szp.io.
+    prometheus            IN CNAME hgh2.ts.szp.io.
+    grafana               IN CNAME hgh2.ts.szp.io.
   '';
 in
 {
@@ -35,6 +37,7 @@ in
         bind ${interface}
         log
         errors
+        prometheus [::]:${toString config.ports.coredns-metrics}
       }
       ts.szp.io:53 {
         import snip

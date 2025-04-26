@@ -54,6 +54,7 @@ in
         hostKey = "${home}/secrets/ssh_host_ca_key";
         userKey = "${home}/secrets/ssh_user_ca_key";
       };
+      metricsAddress = "[::]:${toString config.ports.step-ca-metrics}";
     };
   };
 

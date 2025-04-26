@@ -32,6 +32,7 @@ in
       incus-https = 30030;
 
       step-ca = 30040;
+      step-ca-metrics = 30041;
 
       homepage-dashboard = 30050;
 
@@ -53,6 +54,14 @@ in
 
       acme-dns = 30130;
       acme-dns-dns = 30131;
+
+      prometheus = 30140;
+
+      node-exporter = 30150;
+
+      grafana = 30160;
+
+      coredns-metrics = 30170;
     };
   };
 }

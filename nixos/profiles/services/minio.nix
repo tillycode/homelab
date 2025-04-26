@@ -25,6 +25,8 @@ in
       MINIO_IDENTITY_OPENID_CONFIG_URL = "https://login.szp15.com/.well-known/openid-configuration";
       MINIO_IDENTITY_OPENID_CLAIM_NAME = "groups";
       MINIO_IDENTITY_OPENID_DISPLAY_NAME = "SSO (login.szp15.com)";
+
+      MINIO_PROMETHEUS_AUTH_TYPE = "public";
     };
   };
 

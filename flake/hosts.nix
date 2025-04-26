@@ -115,10 +115,13 @@ let
               services.atticd
               services.acme-dns
               services.coredns
+              services.grafana
               services.headscale
               services.homepage-dashboard
               services.nginx
+              services.node-exporter
               services.postgresql
+              services.prometheus
               services.step-ca
               services.zitadel
               system.systemd-boot
@@ -151,6 +154,7 @@ let
             suites.base
             ++ suites.domestic
             ++ (with profiles; [
+              services.node-exporter
               system.kernel.qemu-guest
               system.disko
             ]);
@@ -219,6 +223,7 @@ let
             ++ (with profiles; [
               system.systemd-boot
               services.nginx
+              services.node-exporter
               services.github-runner
               services.gha-cache-server
               services.minio
