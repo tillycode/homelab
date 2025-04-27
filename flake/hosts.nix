@@ -115,6 +115,7 @@ let
               services.atticd
               services.acme-dns
               services.coredns
+              services.firefly-iii
               services.grafana
               services.headscale
               services.homepage-dashboard

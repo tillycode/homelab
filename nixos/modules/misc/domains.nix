@@ -11,6 +11,7 @@
       netbird = "netbird.szp15.com";
       tailnet = "tailnet.szp15.com";
       atticd = "cache.szp15.com";
+      firefly-iii = "firefly.szp15.com";
 
       tailnet-global = "tailnet.szp.io";
 
