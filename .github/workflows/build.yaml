@@ -48,6 +48,8 @@ jobs:
     permissions:
       id-token: write # for AWS and Aliyun OIDC federation
       pull-requests: write # for updating the PR comment
+    outputs:
+      diff-hosts: ${{ steps.plan.outputs.diff-hosts }}
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup
@@ -63,7 +65,6 @@ jobs:
         id: plan
         with:
           skip-upload: "true"
-      # Update the comment
       - uses: peter-evans/find-comment@v3
         id: find-comment
         with:
@@ -77,10 +78,83 @@ jobs:
           body: |
             ### Terragrunt Plan :memo:
 
+            <details>
+            <summary>Terragrunt Plan Logs</summary>
+
             ```text
             ${{ steps.plan.outputs.plan }}
             ```
 
+            </details>
+
             **Status**: ${{ steps.plan.outputs.diff == 'true' && 'out of sync :warning:' || 'no changes :ok_hand:' }}
+            **Hosts to deploy**: ${{ join(fromJSON(steps.plan.outputs.diff-hosts), ', ') }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          edit-mode: replace
+
+  diff:
+    runs-on: nixos-x86_64-linux
+    needs: plan
+    strategy:
+      matrix:
+        host: ${{ fromJson(needs.plan.outputs.diff-hosts) }}
+    permissions:
+      pull-requests: write # for updating the PR comment
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+        with:
+          components: api-token,attic,ssh,devshell
+          api-token: ${{ secrets.GITHUB_TOKEN }}
+          attic-token: ${{ secrets.ATTIC_TOKEN }}
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      - name: Push and diff "${{ matrix.host }}"
+        shell: bash
+        id: diff
+        run: |
+          deployment=$(nix eval ".#deploy" --impure --json --apply 'd:
+            (n: n // { profiles = null; } // n.profiles.system)
+            (d // { nodes = null; } // d.nodes."${builtins.getEnv "HOST"}")')
+          deploy --ssh-opts "-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" \
+            --skip-checks --debug-logs --dry-activate ".#$HOST"
+          readarray -d '' ssh_opts < <(
+            jq --raw-output0 '.sshOpts[]?, "\(.sshUser // "root")@\(.hostname)"' <<<"$deployment")
+          new_system=$(nix derivation show ".#nixosConfigurations.$HOST.config.system.build.toplevel" |
+            jq -rc '.[].outputs.out.path')
+          delimiter="$({ tr -dc A-Za-z0-9 </dev/urandom || true; } | head -c 13)"
+
+          echo "diff<<$delimiter" >> "$GITHUB_OUTPUT"
+          ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null "${ssh_opts[@]}" -- \
+            nix store diff-closures /run/current-system "$new_system" |& tee \
+            >(sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g' >> "$GITHUB_OUTPUT")
+          echo "$delimiter" >> "$GITHUB_OUTPUT"
+        env:
+          HOST: ${{ matrix.host }}
+      - name: Summarize diff
+        shell: bash
+        run: |
+          cat <<'EOF' >> "$GITHUB_STEP_SUMMARY"
+          ### Changes for Host ${{ matrix.host }} :rocket:
+
+          ```text
+          ${{ steps.diff.outputs.diff }}
+          ```
+          EOF
+      - uses: peter-evans/find-comment@v3
+        id: find-comment
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: "github-actions[bot]"
+          body-includes: "### Changes for Host ${{ matrix.host }}"
+      - uses: peter-evans/create-or-update-comment@v4
+        with:
+          comment-id: ${{ steps.find-comment.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            ### Changes for Host ${{ matrix.host }} :rocket:
+
+            ```text
+            ${{ steps.diff.outputs.diff }}
+            ```
           token: ${{ secrets.GITHUB_TOKEN }}
           edit-mode: replace

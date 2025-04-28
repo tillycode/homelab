@@ -3,5 +3,5 @@ set -euo pipefail
 
 cd "$WORKING_DIRECTORY"
 deploy --ssh-opts "-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" \
-  --skip-checks --auto-rollback false "$FLAKE#$NODE" -- --print-build-logs
+  --skip-checks --debug-logs --auto-rollback false "$FLAKE#$NODE"
 echo -n '{"done": true}'
