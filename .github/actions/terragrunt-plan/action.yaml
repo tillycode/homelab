@@ -16,6 +16,9 @@ outputs:
   diff:
     description: "Whether the plan is out of sync"
     value: ${{ steps.plan.outputs.diff }}
+  diff-hosts:
+    description: "The hosts that are out of sync"
+    value: ${{ steps.plan.outputs.diff-hosts }}
 
 runs:
   using: "composite"
@@ -30,12 +33,24 @@ runs:
           >(sed 's/\x1B\[[0-9;]\{1,\}[A-Za-z]//g' >> "$GITHUB_OUTPUT")
         echo "$delimiter" >> "$GITHUB_OUTPUT"
 
-        diff="$(terragrunt run-all show -json | jq -s '
+        diff_file="$(mktemp)"
+        trap 'rm -f "$diff_file"' EXIT
+        terragrunt run-all show -json > "$diff_file"
+
+        diff="$(jq -s '
           [.[].resource_changes[]?.change.actions[]?]
           + [.[].output_changes[]?.actions[]?]
           | any(. != "no-op")
-        ')"
+        ' < "$diff_file")"
+        diff_hosts="$(jq -sc '
+          [.[].resource_changes[]?
+          | select([.change.actions[]?] | any(. != "no-op"))
+          | .address
+          | capture("^module\\.nixos_deploy\\[\"(?<host>\\w+)\"\\].shell_script.deploy$")
+          | .host]
+        ' < "$diff_file")"
         echo "diff=$diff" >> "$GITHUB_OUTPUT"
+        echo "diff-hosts=$diff_hosts" >> "$GITHUB_OUTPUT"
       working-directory: ${{ inputs.working-directory }}
       env:
         TG_OUT_DIR: ${{ github.workspace }}/.data/tfplans
@@ -46,7 +61,7 @@ runs:
         ### Terragrunt Plan :memo:
 
         <details>
-        <summary>Terragrunt Log/summary>
+        <summary>Terragrunt Plan Log</summary>
 
         ```text
         ${{ steps.plan.outputs.plan }}
@@ -55,6 +70,7 @@ runs:
         </details>
 
         **Status**: ${{ steps.plan.outputs.diff == 'true' && 'out of sync :warning:' || 'no changes :ok_hand:' }}
+        **Hosts to deploy**: ${{ join(fromJSON(steps.plan.outputs.diff-hosts), ', ') }}
         EOF
     - name: Pack tfplans
       if: steps.plan.outputs.diff == 'true' && inputs.skip-upload != 'true'
