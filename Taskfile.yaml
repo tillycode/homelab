@@ -39,7 +39,7 @@ tasks:
 
   diff:
     cmds:
-      - deploy --skip-checks --fast-connection true ".#{{.NODE}}" --dry-activate -- --print-build-logs
+      - deploy --skip-checks ".#{{.NODE}}" --dry-activate -- --print-build-logs
       - >-
         uv run scripts/ssh.py --node={{.NODE}}
         nix run --extra-experimental-features '"nix-command flakes"'
@@ -51,9 +51,7 @@ tasks:
   infect:
     desc: "Infect the node with nixos-anywhere"
     cmds:
-      - uv run scripts/infect.py --node={{.NODE}} {{.CLI_ARGS}}
-    requires:
-      vars: [NODE]
+      - scripts/infect.sh {{.CLI_ARGS}}
 
   keyscan:
     desc: "Scan the SSH keys of the node"
@@ -94,10 +92,10 @@ tasks:
     requires:
       vars: [SOURCE]
 
-  secrets:encrypt:
-    desc: "Encrypt the secrets in the sources"
+  secrets:decrypt:
+    desc: "Decrypt the secrets in the sources"
     cmds:
-      - sops encrypt --in-place secrets/sources/{{.SOURCE}}.yaml
+      - sops decrypt secrets/sources/{{.SOURCE}}.yaml
     requires:
       vars: [SOURCE]
 

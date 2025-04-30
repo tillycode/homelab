@@ -13,6 +13,8 @@
       atticd = "cache.szp15.com";
       firefly-iii = "firefly.szp15.com";
 
+      xray = "${config.networking.hostName}.eh578599.xyz";
+
       tailnet-global = "tailnet.szp.io";
 
       homepage-dashboard = "home.svc.szp.io";

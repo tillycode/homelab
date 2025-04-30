@@ -7,6 +7,7 @@
 let
   cfg = config.services.xray;
   credentialsDirectory = "/run/credentials/xray.service";
+  domain = config.domains.xray;
 in
 {
   ## ---------------------------------------------------------------------------
@@ -38,7 +39,7 @@ in
           realitySettings = {
             dest = "[::1]:${toString config.ports.xray-nginx-https}";
             xver = 2;
-            serverNames = [ "tailnet.szp.io" ];
+            serverNames = [ domain ];
             privateKey = {
               _secret = "${credentialsDirectory}/private-key";
             };
@@ -93,4 +94,18 @@ in
       ];
     };
   };
+
+  ## ---------------------------------------------------------------------------
+  ## INGRESS
+  ## ---------------------------------------------------------------------------
+  services.nginx.virtualHosts."${domain}" = {
+    forceSSL = true;
+    enableACME = true;
+    locations."/" = {
+      root = "/var/www/xray/non-existent";
+    };
+  };
+  systemd.tmpfiles.rules = [
+    "d /var/www/xray 0755 nginx nginx - -"
+  ];
 }

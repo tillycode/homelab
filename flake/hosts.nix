@@ -112,6 +112,7 @@ let
             ++ suites.base
             ++ suites.domestic
             ++ (with profiles; [
+              config.bbr
               services.atticd
               services.acme-dns
               services.coredns
@@ -157,6 +158,7 @@ let
             suites.base
             ++ suites.domestic
             ++ (with profiles; [
+              config.bbr
               services.node-exporter
               services.vector
               system.kernel.qemu-guest
@@ -196,7 +198,52 @@ let
           imports =
             suites.base
             ++ (with profiles; [
+              config.bbr
               services.headscale-global
+              services.nginx
+              services.xray
+              services.xray-nginx
+              system.kernel.qemu-guest
+              system.disko
+            ]);
+        }
+      )
+    ];
+    hkg0 = mkHost [
+      {
+        users.users.root.openssh.authorizedKeys.keys = [
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAamaMcCAc7DhTJjDqBwXTWhewX0OI8vAuXLvc17yqK/"
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBIO4wL3BzfaMDOpbT/U/99MVQERjtzH2YxA6KAs7lwM"
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHNlekmLqIMn8zTkjU2sU4StemRV+wQvoMMvqmIIJxT6"
+        ];
+        profiles.disko = {
+          device = "/dev/sda";
+          swapSize = "2G";
+        };
+        networking.hostName = "hkg0";
+        nixpkgs.system = "x86_64-linux";
+        system.stateVersion = "24.11";
+        systemd.network.networks."10-eth0" = {
+          name = "ens18";
+          DHCP = "yes";
+          address = [ "46.232.54.69/32" ];
+          dns = [ "1.1.1.1" ];
+          routes = [
+            {
+              Gateway = [ "100.100.0.0" ];
+              GatewayOnLink = "yes";
+            }
+          ];
+        };
+        sops.defaultSopsFile = ../secrets/nodes/hkg0.yaml;
+      }
+      (
+        { profiles, suites, ... }:
+        {
+          imports =
+            suites.base
+            ++ (with profiles; [
+              config.bbr
               services.nginx
               services.xray
               services.xray-nginx
@@ -289,6 +336,10 @@ let
       ssh_host = "194.114.138.186";
       bastion_host = null;
     };
+    hkg0 = {
+      ssh_host = "46.232.54.69";
+      bastion_host = null;
+    };
   };
   mkNode =
     name: cfg:
@@ -300,8 +351,8 @@ let
       hostname = if node == null || node.ssh_host == null then name else node.ssh_host;
       sshUser = "root";
       sshOpts = lib.optionals (node != null && node.bastion_host != null) [
-        "-J"
-        "root@${node.bastion_host}"
+        "-o"
+        "ProxyJump=root@${node.bastion_host}"
       ];
       profiles.system = {
         path = inputs.deploy-rs.lib.${system}.activate.nixos cfg;
