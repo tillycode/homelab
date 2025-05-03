@@ -33,13 +33,13 @@ tasks:
   deploy:
     desc: "Deploy to the a node (identified by `NODE` variable)"
     cmds:
-      - deploy --skip-checks --auto-rollback false ".#{{.NODE}}" -- --print-build-logs
+      - deploy --skip-checks --auto-rollback false ".#{{.NODE}}" --debug-logs {{.CLI_ARGS}}
     requires:
       vars: [NODE]
 
   diff:
     cmds:
-      - deploy --skip-checks ".#{{.NODE}}" --dry-activate -- --print-build-logs
+      - deploy --skip-checks ".#{{.NODE}}" --dry-activate --debug-logs {{.CLI_ARGS}}
       - >-
         uv run scripts/ssh.py --node={{.NODE}}
         nix run --extra-experimental-features '"nix-command flakes"'

@@ -1,21 +1,24 @@
-{ pkgs, config, ... }:
+{ config, ... }:
 {
-  ## ---------------------------------------------------------------------------
-  ## INGRESS
-  ## ---------------------------------------------------------------------------
-  services.nginx.virtualHosts.${config.domains.tailnet-global} = {
-    enableACME = true;
-    forceSSL = true;
-    locations."/web/" = {
-      alias = "${pkgs.headscale-ui}/";
-      tryFiles = "$uri $uri/index.html =404";
-    };
-    locations."/" = {
-      proxyPass = "http://127.0.0.1:${toString config.ports.headscale-global}";
-      proxyWebsockets = true;
-    };
-    locations."= /" = {
-      return = "301 $scheme://$host/web/";
+  imports = [
+    ./_headscale-impl.nix
+  ];
+
+  services.headscale = {
+    publicDomain = config.domains.tailnet-global;
+    baseDomain = config.domains.base-tailnet-global;
+    prefixV4 = config.CIDRs.tailnet-global-v4;
+    prefixV6 = config.CIDRs.tailnet-global-v6;
+
+    nameserver = config.IPs.coredns;
+    nameserverDomains = with config.domains; [
+      base-tailnet
+      base-incus
+      base-service
+    ];
+
+    predefinedIPs = {
+      hkg0 = config.IPs.coredns-global;
     };
   };
 }

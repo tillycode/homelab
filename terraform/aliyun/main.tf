@@ -24,7 +24,7 @@ resource "alicloud_route_entry" "hgh" {
   route_table_id        = module.vpc.route_table_id
   destination_cidrblock = "0.0.0.0/0"
   nexthop_type          = "Instance"
-  nexthop_id            = alicloud_instance.hgh2.id
+  nexthop_id            = alicloud_instance.hgh0.id
 }
 
 
@@ -67,17 +67,17 @@ module "sg" {
 }
 
 
-resource "alicloud_eip_address" "hgh2" {
+resource "alicloud_eip_address" "hgh0" {
 }
 
-resource "alicloud_eip_association" "hgh2" {
-  allocation_id = alicloud_eip_address.hgh2.id
+resource "alicloud_eip_association" "hgh0" {
+  allocation_id = alicloud_eip_address.hgh0.id
   instance_type = "EcsInstance"
-  instance_id   = alicloud_instance.hgh2.id
+  instance_id   = alicloud_instance.hgh0.id
 }
 
-resource "alicloud_instance" "hgh2" {
-  instance_name = "hgh2"
+resource "alicloud_instance" "hgh0" {
+  instance_name = "hgh0"
 
   instance_type   = "ecs.t6-c1m4.xlarge"
   image_id        = "ubuntu_22_04_uefi_x64_20G_alibase_20230515.vhd"

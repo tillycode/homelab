@@ -37,6 +37,7 @@ in
 {
   options = {
     services.sing-box = {
+      enableCustom = lib.mkEnableOption "Enable sing-box";
       enableClashApi = lib.mkEnableOption "Enable clash api";
       openFirewall = lib.mkOption {
         type = lib.types.bool;
@@ -79,9 +80,13 @@ in
         type = lib.types.listOf lib.types.str;
         default = [ ];
       };
+      tunExtraRoutes = lib.mkOption {
+        type = lib.types.listOf lib.types.str;
+        default = [ ];
+      };
     };
   };
-  config = lib.mkIf cfg.enable {
+  config = lib.mkIf cfg.enableCustom {
     assertions = [
       {
         assertion = cfg.outboundsFile != null;
@@ -203,7 +208,7 @@ in
           route_address = [
             fakeipCfg.inet4_range
             fakeipCfg.inet6_range
-          ];
+          ] ++ cfg.tunExtraRoutes;
           auto_route = true;
         }
         {
@@ -217,15 +222,7 @@ in
         auto_detect_interface = true;
         default_domain_resolver = "local";
         final = lib.mkIf (cfg.defaultOutbound != null) cfg.defaultOutbound;
-        rules = [
-          {
-            action = "sniff";
-          }
-          {
-            protocol = "dns";
-            action = "hijack-dns";
-          }
-        ] ++ cfg.routeRules;
+        rules = cfg.routeRules;
         rule_set =
           cfg.ruleSet
           ++ (lib.map mkGeoipRuleSet cfg.geoipRuleSet)

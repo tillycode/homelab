@@ -47,7 +47,7 @@ in
 
       xray-nginx-https = 30100;
 
-      headscale-global = 30110;
+      # headscale-global = 30110;
 
       minio = 30120;
       minio-console = 30121;

@@ -17,17 +17,17 @@ let
     @     IN NS ns.svc.szp.io.
     ns    IN A 100.71.0.1
 
-    home                  IN CNAME hgh2.ts.szp.io.
-    acme                  IN CNAME hgh2.ts.szp.io.
+    home                  IN CNAME hgh0.ts.szp.io.
+    acme                  IN CNAME hgh0.ts.szp.io.
     incus                 IN CNAME desktop.ts.szp.io.
     gha-cache             IN CNAME desktop.ts.szp.io.
     minio                 IN CNAME desktop.ts.szp.io.
     *.minio               IN CNAME minio.svc.szp.io.
     _acme-challenge.minio IN CNAME 47f2e892-8271-443a-a9c7-43c14873b066.acme-challenge.svc.szp.io.
-    acme-dns              IN CNAME hgh2.ts.szp.io.
-    prometheus            IN CNAME hgh2.ts.szp.io.
-    grafana               IN CNAME hgh2.ts.szp.io.
-    loki                  IN CNAME hgh2.ts.szp.io.
+    acme-dns              IN CNAME hgh0.ts.szp.io.
+    prometheus            IN CNAME hgh0.ts.szp.io.
+    grafana               IN CNAME hgh0.ts.szp.io.
+    loki                  IN CNAME hgh0.ts.szp.io.
   '';
 in
 {
@@ -38,11 +38,18 @@ in
         bind ${interface}
         log
         errors
+        loadbalance
+        loop
         prometheus [::]:${toString config.ports.coredns-metrics}
       }
       ts.szp.io:53 {
         import snip
         forward . 100.100.100.100
+        cache 60
+      }
+      tsg.szp.io:53 {
+        import snip
+        forward . 100.72.0.1
         cache 60
       }
       vm.szp.io:53 {

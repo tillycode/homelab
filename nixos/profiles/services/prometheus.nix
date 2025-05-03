@@ -26,8 +26,10 @@ in
           {
             targets = [
               "desktop.ts.szp.io:${toString config.ports.node-exporter}"
-              "hgh2.ts.szp.io:${toString config.ports.node-exporter}"
+              "hgh0.ts.szp.io:${toString config.ports.node-exporter}"
               "sha0.ts.szp.io:${toString config.ports.node-exporter}"
+              "hkg0.tsg.szp.io:${toString config.ports.node-exporter}"
+              "sin0.tsg.szp.io:${toString config.ports.node-exporter}"
             ];
           }
         ];
@@ -35,13 +37,20 @@ in
       {
         job_name = "coredns";
         static_configs = [
-          { targets = [ "100.71.0.1:${toString config.ports.coredns-metrics}" ]; }
+          {
+            targets = [ "${config.IPs.coredns}:${toString config.ports.coredns-metrics}" ];
+          }
         ];
       }
       {
         job_name = "headscale";
         static_configs = [
-          { targets = [ "100.71.0.1:${toString config.ports.headscale-metrics}" ]; }
+          {
+            targets = [
+              "100.71.0.1:${toString config.ports.headscale-metrics}"
+              "100.72.0.1:${toString config.ports.headscale-metrics}"
+            ];
+          }
         ];
       }
       {
