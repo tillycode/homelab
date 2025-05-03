@@ -2,6 +2,7 @@
 {
   services.sing-box = {
     enable = true;
+    enableCustom = true;
     package = pkgs.sing-box_1_12;
     # outboundsFile = config.sops.secrets."sing-box/outbounds.json".path;
     dnsRules = [
@@ -60,6 +61,21 @@
     ];
     routeRules = [
       {
+        action = "route";
+        ip_cidr = [
+          "100.72.0.0/16"
+        ];
+        outbound = "proxy";
+      }
+      {
+        action = "sniff";
+      }
+      {
+        action = "hijack-dns";
+        protocol = "dns";
+      }
+      {
+        action = "route";
         rule_set = "geosite-openai";
         outbound = "us";
       }
@@ -70,6 +86,9 @@
       "geosite-geolocation-cn"
     ];
     outboundsFile = config.sops.secrets."sing-box/outbounds.json".path;
+    tunExtraRoutes = [
+      "100.72.0.0/16"
+    ];
   };
 
   sops.secrets."sing-box/outbounds.json" = { };

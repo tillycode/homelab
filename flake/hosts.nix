@@ -86,7 +86,7 @@ let
   ## HOSTS
   ## ---------------------------------------------------------------------------
   hosts = {
-    hgh2 = mkHost [
+    hgh0 = mkHost [
       {
         users.users.root.openssh.authorizedKeys.keys = [
           "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAamaMcCAc7DhTJjDqBwXTWhewX0OI8vAuXLvc17yqK/"
@@ -97,19 +97,22 @@ let
           device = "/dev/vda";
           swapSize = "4G";
         };
-        sops.defaultSopsFile = ../secrets/nodes/hgh2.yaml;
-        networking.hostName = "hgh2";
+        sops.defaultSopsFile = ../secrets/nodes/hgh0.yaml;
+        networking.hostName = "hgh0";
         nixpkgs.system = "x86_64-linux";
         system.stateVersion = "24.11";
+
+        networking.nat = {
+          enable = true;
+          internalInterfaces = [ "ens5" ];
+          externalInterface = "ens5";
+        };
       }
       (
         { profiles, suites, ... }:
         {
           imports =
-            [
-              ../nixos/hosts/hgh2
-            ]
-            ++ suites.base
+            suites.base
             ++ suites.domestic
             ++ (with profiles; [
               config.bbr
@@ -127,6 +130,7 @@ let
               services.prometheus
               services.step-ca
               services.vector
+              services.xray
               services.zitadel
               system.systemd-boot
               system.kernel.qemu-guest
@@ -199,10 +203,12 @@ let
             suites.base
             ++ (with profiles; [
               config.bbr
-              services.headscale-global
               services.nginx
-              services.xray
-              services.xray-nginx
+              services.node-exporter
+              services.sing-box-global
+              services.tailscale-global
+              services.xray-global
+              services.vector
               system.kernel.qemu-guest
               system.disko
             ]);
@@ -244,9 +250,13 @@ let
             suites.base
             ++ (with profiles; [
               config.bbr
+              services.headscale-global
               services.nginx
-              services.xray
-              services.xray-nginx
+              services.node-exporter
+              services.sing-box-global
+              services.tailscale-global
+              services.xray-global
+              services.vector
               system.kernel.qemu-guest
               system.disko
             ]);
@@ -333,11 +343,11 @@ let
   ## ---------------------------------------------------------------------------
   nodeDeployOverrides = {
     sin0 = {
-      ssh_host = "194.114.138.186";
+      ssh_host = "sin0.eh578599.xyz";
       bastion_host = null;
     };
     hkg0 = {
-      ssh_host = "46.232.54.69";
+      ssh_host = "hkg0.eh578599.xyz";
       bastion_host = null;
     };
   };
@@ -359,7 +369,7 @@ let
       };
     };
   nodes = lib.pipe self.nixosConfigurations [
-    (lib.filterAttrs (name: cfg: name != "desktop"))
+    (lib.filterAttrs (name: cfg: name != "desktop" && name != "laptop"))
     (lib.mapAttrs mkNode)
   ];
 
@@ -400,7 +410,6 @@ in
   };
 
   flake.checks = lib.pipe self.nixosConfigurations [
-    (lib.filterAttrs (name: cfg: name != "desktop"))
     (lib.mapAttrsToList mkHostCheck)
     (lib.fold lib.recursiveUpdate { })
   ];
