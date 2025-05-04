@@ -21,7 +21,7 @@ let
 
     offlineCache = fetchYarnDeps {
       yarnLock = "${src}/static/terraboard-vuejs/yarn.lock";
-      hash = "sha256-KbetB8S8MBJyvzl4Dl87uxRrOLEa6padD5LLHAUz/SI=";
+      hash = source.yarnDepsHash;
     };
 
     installPhase = ''
@@ -41,7 +41,7 @@ in
 buildGoModule {
   inherit pname version src;
 
-  vendorHash = "sha256-GarFrn/0x26KTxrUQwXtNYb/rttzT3f94iiWm6/dsHA=";
+  vendorHash = source.vendorHash;
 
   nativeBuildInputs = [ makeWrapper ];
   doCheck = false;

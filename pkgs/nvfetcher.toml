@@ -1,10 +1,15 @@
 [headscale-ui]
 src.github = "gurucomputing/headscale-ui"
 fetch.github = "gurucomputing/headscale-ui"
+[headscale-ui.passthru]
+npmDepsHash = "sha256-+03TEWNM7A6hNfirTqG5t+mUjoS8axZUnpQfWv7dVUI="
 
 [terraboard]
 src.github = "camptocamp/terraboard"
 fetch.github = "camptocamp/terraboard"
+[terraboard.passthru]
+yarnDepsHash = "sha256-KbetB8S8MBJyvzl4Dl87uxRrOLEa6padD5LLHAUz/SI="
+vendorHash = "sha256-GarFrn/0x26KTxrUQwXtNYb/rttzT3f94iiWm6/dsHA="
 
 # fetch alpha release
 [sing-box]
@@ -12,7 +17,7 @@ src.github_tag = "SagerNet/sing-box"
 fetch.github = "SagerNet/sing-box"
 src.include_regex = "v.*"
 [sing-box.passthru]
-vendorHash = "sha256-iWhPeoE0MkGMmHEwMmblRaGXNM7RrBq8Vm+/PHSJqKo="
+vendorHash = "sha256-84NX+I3Wn+uJzBdo8jAWmRF1edp6lBvzBL0caEI87Ac="
 
 [github-actions-cache-server]
 src.github = "falcondev-oss/github-actions-cache-server"
