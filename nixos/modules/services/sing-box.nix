@@ -131,7 +131,6 @@ in
             tag = "local";
             type = "udp";
             server = "223.5.5.5";
-            detour = "direct";
           }
           {
             tag = "proxy";
