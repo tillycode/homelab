@@ -3,38 +3,39 @@
 {
   github-actions-cache-server = {
     pname = "github-actions-cache-server";
-    version = "v7.0.0";
+    version = "v8.0.0";
     src = fetchFromGitHub {
       owner = "falcondev-oss";
       repo = "github-actions-cache-server";
-      rev = "v7.0.0";
+      rev = "v8.0.0";
       fetchSubmodules = false;
-      sha256 = "sha256-RoqYcZ3Ak1ai9m8jI3qLDPUP3QwuuWdaHfWcjjerehc=";
+      sha256 = "sha256-XE3hcydotbrJ5vEFEgmCj9UQ9qcvItxAcGhTf7h6BUk=";
     };
     pnpmDepsHash = "sha256-og8VtU+zkC5nKgDSm21qW7GuAVqByUa0JGxc5/MUnPM=";
   };
   headscale-ui = {
     pname = "headscale-ui";
-    version = "2025.01.20";
+    version = "2025.03.21";
     src = fetchFromGitHub {
       owner = "gurucomputing";
       repo = "headscale-ui";
-      rev = "2025.01.20";
+      rev = "2025.03.21";
       fetchSubmodules = false;
-      sha256 = "sha256-I+kPzVxLwZ3Gw0oLro8j6p7D+n81mbPZ5t2wDcNP0lA=";
+      sha256 = "sha256-dnh0OIsNIe7lHIR6T4TZKtzom3ZUoWTjRgq0pFpxRv8=";
     };
+    npmDepsHash = "sha256-+03TEWNM7A6hNfirTqG5t+mUjoS8axZUnpQfWv7dVUI=";
   };
   sing-box = {
     pname = "sing-box";
-    version = "v1.12.0-alpha.14";
+    version = "v1.12.0-beta.9";
     src = fetchFromGitHub {
       owner = "SagerNet";
       repo = "sing-box";
-      rev = "v1.12.0-alpha.14";
+      rev = "v1.12.0-beta.9";
       fetchSubmodules = false;
-      sha256 = "sha256-JdHgXZVOupSpfj+NENM33vIjDbut/5eIVNZCFVi0En4=";
+      sha256 = "sha256-HfGR/Fw7aQnrFjWlvdUJGuEA9mae9pCdEmKeP6qFF1U=";
     };
-    vendorHash = "sha256-iWhPeoE0MkGMmHEwMmblRaGXNM7RrBq8Vm+/PHSJqKo=";
+    vendorHash = "sha256-84NX+I3Wn+uJzBdo8jAWmRF1edp6lBvzBL0caEI87Ac=";
   };
   terraboard = {
     pname = "terraboard";
@@ -46,5 +47,7 @@
       fetchSubmodules = false;
       sha256 = "sha256-BkvGOE1ElETp4NLgMC9s8BtzNkskkvFt6/nVgmJNRww=";
     };
+    yarnDepsHash = "sha256-KbetB8S8MBJyvzl4Dl87uxRrOLEa6padD5LLHAUz/SI=";
+    vendorHash = "sha256-GarFrn/0x26KTxrUQwXtNYb/rttzT3f94iiWm6/dsHA=";
   };
 }

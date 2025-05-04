@@ -55,7 +55,7 @@
     # card is unplugged, the host key will come before the card key.
     enableSshSupport = true;
     enableExtraSocket = true;
-    pinentryPackage = pkgs.pinentry-gnome3;
+    pinentry.package = pkgs.pinentry-gnome3;
   };
 
   programs.neovim.enable = true;
