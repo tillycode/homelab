@@ -67,6 +67,8 @@ in
       loki-grpc = 30181;
 
       cloudreve = 30190;
+
+      aria2-rpc = 30200;
     };
   };
 }

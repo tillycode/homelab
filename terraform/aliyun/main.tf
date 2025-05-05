@@ -56,12 +56,15 @@ module "sg" {
     {
       protocol = "tcp"
       cidrs    = ["0.0.0.0/0", "::/0"]
-      ports    = [22, 80, 443, 25565]
+      ports    = [22, 80, 443]
     },
     {
       protocol = "udp"
       cidrs    = ["0.0.0.0/0", "::/0"]
-      ports    = [3478]
+      ports    = [3478, 41641]
+      port_ranges = [
+        [6881, 6999]
+      ]
     }
   ]
 }

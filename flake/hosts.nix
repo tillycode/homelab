@@ -116,6 +116,7 @@ let
             ++ suites.domestic
             ++ (with profiles; [
               config.bbr
+              services.aria2
               services.atticd
               services.acme-dns
               services.coredns

@@ -98,6 +98,7 @@ jobs:
     strategy:
       matrix:
         host: ${{ fromJson(needs.plan.outputs.diff-hosts) }}
+    if: needs.plan.outputs.diff-hosts != '[]'
     permissions:
       pull-requests: write # for updating the PR comment
     steps:

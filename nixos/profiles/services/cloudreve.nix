@@ -33,12 +33,11 @@ in
     wantedBy = [ "multi-user.target" ];
     serviceConfig = {
       ExecStart = [
-        "${lib.getExe package} server -c ${config.sops.templates."cloudreve.ini".path}"
+        "${lib.getExe package} server -c ${config.sops.templates."cloudreve.ini".path} -w ${stateDir}"
       ];
       StateDirectory = "cloudreve";
       User = "cloudreve";
       Group = "cloudreve";
-      DynamicUser = true;
       WorkingDirectory = stateDir;
       Restart = "on-abnormal";
       RestartSec = "5s";
@@ -49,6 +48,7 @@ in
   users.users.cloudreve = {
     isSystemUser = true;
     group = "cloudreve";
+    extraGroups = [ "aria2" ];
     home = stateDir;
   };
   users.groups.cloudreve = { };
@@ -82,7 +82,7 @@ in
   ## ---------------------------------------------------------------------------
   environment.persistence.default.directories = [
     {
-      directory = "/var/lib/private/cloudreve";
+      directory = "/var/lib/cloudreve";
       mode = "0700";
     }
   ];
