@@ -15,6 +15,7 @@
           github-actions-cache-server
           github-runner-patched
           attic-client_patched
+          cloudreve
           ;
       };
       packages = {
@@ -45,6 +46,9 @@
         attic-client_patched = pkgs.attic-client.overrideAttrs (oldAttrs: {
           patches = oldAttrs.patches ++ [ ./attic-client-graceful-shutdown.patch ];
         });
+        cloudreve = pkgs.callPackage (import ./cloudreve) {
+          source = sources.cloudreve;
+        };
       };
     };
 }

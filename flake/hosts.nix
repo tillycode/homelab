@@ -119,6 +119,7 @@ let
               services.atticd
               services.acme-dns
               services.coredns
+              services.cloudreve
               services.firefly-iii
               services.grafana
               services.headscale
@@ -319,8 +320,10 @@ let
             ++ suites.domestic
             ++ (with profiles; [
               services.power-profiles-daemon
+              services.vector
               system.systemd-boot
               system.disko
+              virtualization.podman
               users.sun
             ]);
         }
