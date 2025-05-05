@@ -20,9 +20,10 @@ variable "tags" {
 
 variable "ingress_rules" {
   type = list(object({
-    protocol = string
-    cidrs    = list(string)
-    ports    = list(number)
+    protocol    = string
+    cidrs       = list(string)
+    ports       = optional(list(number), [])
+    port_ranges = optional(list(tuple([number, number])), [])
   }))
   default = []
 }
