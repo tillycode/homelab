@@ -17,6 +17,7 @@
       atticd = "cache.szp15.com";
       firefly-iii = "firefly.szp15.com";
       tailnet = "tailnet.szp15.com";
+      cloudreve = "file.szp15.com";
       xray = "${config.networking.hostName}.szp15.com";
 
       # global domains

@@ -24,3 +24,11 @@ src.github = "falcondev-oss/github-actions-cache-server"
 fetch.github = "falcondev-oss/github-actions-cache-server"
 [github-actions-cache-server.passthru]
 pnpmDepsHash = "sha256-og8VtU+zkC5nKgDSm21qW7GuAVqByUa0JGxc5/MUnPM="
+
+[cloudreve]
+src.github_tag = "cloudreve/Cloudreve"
+fetch.github = "cloudreve/Cloudreve"
+git.fetchSubmodules = true
+[cloudreve.passthru]
+yarnDepsHash = "sha256-5ZZyuFCQMRRfr2sEg1Vm2llHvrQexXyKJZWTOJ54x8c="
+vendorHash = "sha256-wEgT+9oL5w0LKpOGYTPo0rzUksFZdbEvO+44Oqt7jGg="

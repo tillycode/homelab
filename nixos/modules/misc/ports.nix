@@ -65,6 +65,8 @@ in
 
       loki = 30180;
       loki-grpc = 30181;
+
+      cloudreve = 30190;
     };
   };
 }

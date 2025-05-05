@@ -1,4 +1,28 @@
 {
+    "cloudreve": {
+        "cargoLocks": null,
+        "date": null,
+        "extract": null,
+        "name": "cloudreve",
+        "passthru": {
+            "vendorHash": "sha256-wEgT+9oL5w0LKpOGYTPo0rzUksFZdbEvO+44Oqt7jGg=",
+            "yarnDepsHash": "sha256-5ZZyuFCQMRRfr2sEg1Vm2llHvrQexXyKJZWTOJ54x8c="
+        },
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": true,
+            "leaveDotGit": false,
+            "name": null,
+            "owner": "cloudreve",
+            "repo": "Cloudreve",
+            "rev": "4.0.0-beta.8",
+            "sha256": "sha256-A+SirjmrCfTBlbTzzAOPYc7s8/KYkWY5MF1j+pTaRaY=",
+            "sparseCheckout": [],
+            "type": "github"
+        },
+        "version": "4.0.0-beta.8"
+    },
     "github-actions-cache-server": {
         "cargoLocks": null,
         "date": null,
