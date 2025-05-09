@@ -5,7 +5,7 @@
   ];
 
   services.tailscale = {
-    loginServer = config.domains.tailnet;
+    loginServer = "https://${config.domains.tailnet}";
     authKeySecretName = "authkey";
     prefixV4 = config.CIDRs.tailnet-v4;
   };

@@ -21,9 +21,9 @@ let
     hgh0 = "age1q93v8zc62mczmz30wy04n8erlfhhhjc3k7a3vspccjqpvehxadyqgrzrue";
     hkg0 = "age1gp0jvxqvjpz9gc6ewaggetxsp0phwyrrvagw57j9tzea507g2y3qpqwwa4";
     sha0 = "age1a46mp4kgk3jdvt520ng9ta45zv0ns0xts9xvjza04t3mpmrfjdqs52s6vh";
-    sin0 = "age1pf03m77v3wpz4qtzc6nrlkvj4pdxffpwtg789g8zjq753hj2ug8qnsnttt";
     desktop = "age1v6lnkm7prm0dpmcdpvn44v50rpfkzsed5uv3znxt4grsd5y6sv5qjru9qq";
     laptop = "age1kgcxdnuy9fxtcf6fp7camk6tqm0fset0jvvh9760rqmrkmx99v0q2c7w8e";
+    r2s = "age1qfp5p3h97anl95lal6c23zp38lp03ltdd7jnkmw6qtgu89e59vsq9t8z83";
   };
   sops_source_creation_rule = lib.map (path_regex: {
     path_regex = path_regex;

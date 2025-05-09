@@ -182,41 +182,6 @@ let
     #     mkswap -U clear /dev/zram0
     #     swapon --discard --priority 100 /dev/zram0
     #
-    sin0 = mkHost [
-      {
-        users.users.root.openssh.authorizedKeys.keys = [
-          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAamaMcCAc7DhTJjDqBwXTWhewX0OI8vAuXLvc17yqK/"
-          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBIO4wL3BzfaMDOpbT/U/99MVQERjtzH2YxA6KAs7lwM"
-          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHNlekmLqIMn8zTkjU2sU4StemRV+wQvoMMvqmIIJxT6"
-        ];
-        profiles.disko = {
-          device = "/dev/vda";
-          swapSize = "1G";
-        };
-        sops.defaultSopsFile = ../secrets/nodes/sin0.yaml;
-        networking.hostName = "sin0";
-        nixpkgs.system = "x86_64-linux";
-        system.stateVersion = "24.11";
-      }
-      (
-        { profiles, suites, ... }:
-        {
-          imports =
-            suites.base
-            ++ (with profiles; [
-              config.bbr
-              services.nginx
-              services.node-exporter
-              services.sing-box-global
-              services.tailscale-global
-              services.xray-global
-              services.vector
-              system.kernel.qemu-guest
-              system.disko
-            ]);
-        }
-      )
-    ];
     hkg0 = mkHost [
       {
         users.users.root.openssh.authorizedKeys.keys = [
@@ -273,6 +238,7 @@ let
         networking.hostName = "desktop";
         nixpkgs.system = "x86_64-linux";
         system.stateVersion = "24.11";
+        boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
       }
       (
         { profiles, suites, ... }:
@@ -284,6 +250,7 @@ let
             ++ suites.desktop
             ++ suites.domestic
             ++ (with profiles; [
+              config.bbr
               system.systemd-boot
               services.nginx
               services.node-exporter
@@ -330,6 +297,37 @@ let
         }
       )
     ];
+    r2s = mkHost [
+      {
+        time.timeZone = "Asia/Shanghai";
+        sops.defaultSopsFile = ../secrets/nodes/r2s.yaml;
+        networking.hostName = "r2s";
+        nixpkgs.system = "aarch64-linux";
+        system.stateVersion = "25.05";
+        users.users.root.openssh.authorizedKeys.keys = [
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAamaMcCAc7DhTJjDqBwXTWhewX0OI8vAuXLvc17yqK/"
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBIO4wL3BzfaMDOpbT/U/99MVQERjtzH2YxA6KAs7lwM"
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHNlekmLqIMn8zTkjU2sU4StemRV+wQvoMMvqmIIJxT6"
+        ];
+        networking.wireless.iwd.enable = true;
+
+      }
+      (
+        { suites, profiles, ... }:
+        {
+          imports =
+            [
+              ../nixos/hosts/r2s
+            ]
+            ++ suites.base
+            ++ suites.domestic
+            ++ (with profiles; [
+              services.node-exporter
+              services.vector
+            ]);
+        }
+      )
+    ];
   };
   mkHost =
     modules:
@@ -346,10 +344,6 @@ let
   ## DEPLOY
   ## ---------------------------------------------------------------------------
   nodeDeployOverrides = {
-    sin0 = {
-      ssh_host = "sin0.eh578599.xyz";
-      bastion_host = null;
-    };
     hkg0 = {
       ssh_host = "hkg0.eh578599.xyz";
       bastion_host = null;
