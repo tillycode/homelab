@@ -16,6 +16,7 @@
           github-runner-patched
           attic-client_patched
           cloudreve
+          uboot-nanopi-r2s
           ;
       };
       packages = {
@@ -49,6 +50,7 @@
         cloudreve = pkgs.callPackage (import ./cloudreve) {
           source = sources.cloudreve;
         };
+        uboot-nanopi-r2s = pkgs.callPackage (import ./uboot-nanopi-r2s) { };
       };
     };
 }
