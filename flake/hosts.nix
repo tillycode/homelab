@@ -121,6 +121,7 @@ let
               services.acme-dns
               services.coredns
               services.cloudreve
+              services.cloudreve-cname
               services.firefly-iii
               services.grafana
               services.headscale
