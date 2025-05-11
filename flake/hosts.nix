@@ -131,6 +131,7 @@ let
               services.node-exporter
               services.postgresql
               services.prometheus
+              services.restic
               services.step-ca
               services.vector
               services.xray

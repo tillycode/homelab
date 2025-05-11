@@ -5,6 +5,9 @@
   ...
 }:
 {
+  ## ---------------------------------------------------------------------------
+  ## CONFIGURATION
+  ## ---------------------------------------------------------------------------
   services.postgresql.enable = true;
   services.postgresql.package = pkgs.postgresql_15;
   services.postgresql.authentication = lib.mkForce ''
@@ -14,6 +17,9 @@
     host     all        all    ::1/128        scram-sha-256
   '';
 
+  ## ---------------------------------------------------------------------------
+  ## PERSISTENCE
+  ## ---------------------------------------------------------------------------
   environment.persistence.default.directories = [
     {
       directory = config.services.postgresql.dataDir;
@@ -21,5 +27,12 @@
       group = "postgres";
       mode = "0750";
     }
+  ];
+
+  ## ---------------------------------------------------------------------------
+  ## BACKUP
+  ## ---------------------------------------------------------------------------
+  services.restic.backups.default.paths = [
+    "/var/lib/postgresql"
   ];
 }
