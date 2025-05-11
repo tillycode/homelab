@@ -11,6 +11,7 @@
   hardware.nvidia.open = false;
 
   boot.loader.systemd-boot.memtest86.enable = true;
+  boot.kernelPackages = pkgs.linuxPackages_latest;
 
   # boot.kernelParams = [
   #   "intel_iommu=on"
