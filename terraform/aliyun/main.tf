@@ -56,14 +56,22 @@ module "sg" {
     {
       protocol = "tcp"
       cidrs    = ["0.0.0.0/0", "::/0"]
-      ports    = [22, 80, 443]
+      ports = [
+        22,    # SSH
+        80,    # HTTP
+        443,   # HTTPS
+        25565, # Minecraft
+      ]
     },
     {
       protocol = "udp"
       cidrs    = ["0.0.0.0/0", "::/0"]
-      ports    = [3478, 41641]
+      ports = [
+        3478,  # STUN (used by tailscale)
+        41641, # Tailscale
+      ]
       port_ranges = [
-        [6881, 6999]
+        [6881, 6999] # BitTorrent
       ]
     }
   ]

@@ -53,6 +53,11 @@
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
+    nix-minecraft.url = "github:Infinidoge/nix-minecraft";
+    nix-minecraft.inputs.nixpkgs.follows = "nixpkgs";
+    nix-minecraft.inputs.flake-utils.follows = "flake-utils";
+    nix-minecraft.inputs.flake-compat.follows = "flake-compat";
+
     # home-manger modules
 
     vscode-server.url = "github:nix-community/nixos-vscode-server";
