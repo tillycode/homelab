@@ -50,7 +50,7 @@ in
   ## ---------------------------------------------------------------------------
   environment.persistence.default.directories = [
     {
-      directory = "/src/minecraft";
+      directory = "/srv/minecraft";
       user = "minecraft";
       group = "minecraft";
       mode = "0700";
