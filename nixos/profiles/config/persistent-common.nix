@@ -10,5 +10,6 @@
     "/var/log"
     "/var/lib/nixos"
     "/var/lib/systemd/coredump"
+    "/var/lib/systemd/timers"
   ];
 }
