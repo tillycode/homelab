@@ -28,6 +28,7 @@ let
     prometheus            IN CNAME hgh0.ts.szp.io.
     grafana               IN CNAME hgh0.ts.szp.io.
     loki                  IN CNAME hgh0.ts.szp.io.
+    mc                    IN CNAME desktop.ts.szp.io.
   '';
 in
 {

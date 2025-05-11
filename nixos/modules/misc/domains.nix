@@ -21,6 +21,7 @@
       cloudreve-cname = "downloads.szp15.com";
       blog = "szp15.com";
       xray = "${config.networking.hostName}.szp15.com";
+      mc = "mc.szp15.com";
 
       # global domains
       tailnet-global = "tailnet.szp.io";
@@ -51,6 +52,7 @@
       prometheus = "prometheus.svc.szp.io";
       grafana = "grafana.svc.szp.io";
       loki = "loki.svc.szp.io";
+      mc-internal = "mc.svc.szp.io";
 
       # well-known private domains
       acme = config.domains.step-ca;

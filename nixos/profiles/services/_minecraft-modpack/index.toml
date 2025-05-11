@@ -1,0 +1,51 @@
+hash-format = "sha256"
+
+[[files]]
+file = "mods/carpet-tis-addition.pw.toml"
+hash = "5c0d7c628f33deacf8e385fa119e8a7a7b731d6e8993d7442930105e4f40ba70"
+metafile = true
+
+[[files]]
+file = "mods/carpet.pw.toml"
+hash = "13cd4e9e1d7a596072ce69a9bafd97e3f04bebc137d220ac062fe90968286453"
+metafile = true
+
+[[files]]
+file = "mods/cloth-config.pw.toml"
+hash = "df15648dd4d4e27dd0c45ab4e78277c45886b77a698b129f4ce2d2bc337f7044"
+metafile = true
+
+[[files]]
+file = "mods/dynmapforge.pw.toml"
+hash = "ca7d1f5bcde0322a9fd1646aa88cb4682f69eadcb27adfdba4e0f2cfb165ef51"
+metafile = true
+
+[[files]]
+file = "mods/fabric-api.pw.toml"
+hash = "687d9f69912b725a879bf3b4da8fb3f63eead93e4ce3e719c2be67d56b70c0b5"
+metafile = true
+
+[[files]]
+file = "mods/ferrite-core.pw.toml"
+hash = "1ef554f7a8d5f7ed4bc21316e034eeef3430dc306012c0a706bd4c3e4ac253aa"
+metafile = true
+
+[[files]]
+file = "mods/krypton.pw.toml"
+hash = "c4e45594c8d1ab3dacc3b49142f16fb253178dd31d97cc917bf4a4d54f21e081"
+metafile = true
+
+[[files]]
+file = "mods/lithium.pw.toml"
+hash = "df9d69dc784ef61e99064407952d34c294f62fe1155b5260f825bd9a82e2f3a2"
+metafile = true
+
+[[files]]
+file = "mods/modernfix.pw.toml"
+hash = "a874985359eaa4317b3242136fe65b86207a6d5ab55e0b4aa8f37b90727f0487"
+metafile = true
+
+[[files]]
+file = "mods/servux.pw.toml"
+hash = "b6114e701544879f0049963e08f47b305c02c9203aad10b2f73f17e998245a36"
+metafile = true

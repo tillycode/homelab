@@ -264,6 +264,32 @@
         "type": "github"
       }
     },
+    "nix-minecraft": {
+      "inputs": {
+        "flake-compat": [
+          "flake-compat"
+        ],
+        "flake-utils": [
+          "flake-utils"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1746842210,
+        "narHash": "sha256-bGJ3q4BEJEEz9MNo2QwXgQULmSUItxn52lMQLNImZ+w=",
+        "owner": "Infinidoge",
+        "repo": "nix-minecraft",
+        "rev": "9acdd362e10b50cb36234544b5b80b3d0372456d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Infinidoge",
+        "repo": "nix-minecraft",
+        "type": "github"
+      }
+    },
     "nixago": {
       "inputs": {
         "flake-utils": [
@@ -390,6 +416,7 @@
         "haumea": "haumea",
         "home-manager": "home-manager",
         "impermanence": "impermanence",
+        "nix-minecraft": "nix-minecraft",
         "nixago": "nixago",
         "nixago-exts": "nixago-exts",
         "nixpkgs": "nixpkgs",

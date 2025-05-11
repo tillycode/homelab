@@ -55,6 +55,7 @@ let
     inputs.impermanence.nixosModules.impermanence
     inputs.home-manager.nixosModules.home-manager
     inputs.disko.nixosModules.disko
+    inputs.nix-minecraft.nixosModules.minecraft-servers
     (
       { config, ... }:
       {
@@ -128,6 +129,7 @@ let
               services.headscale
               services.homepage-dashboard
               services.loki
+              services.minecraft-gate
               services.nginx
               services.node-exporter
               services.postgresql
@@ -255,11 +257,13 @@ let
             ++ (with profiles; [
               config.bbr
               system.systemd-boot
+              services.minecraft
               services.nginx
               services.node-exporter
               services.github-runner
               services.gha-cache-server
               services.minio
+              services.restic
               services.vector
               virtualization.incus
               virtualization.podman
