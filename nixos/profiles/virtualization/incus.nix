@@ -48,7 +48,7 @@ in
           driver = "btrfs";
           description = "";
           config = {
-            size = "100GiB";
+            size = "500GiB";
           };
         }
       ];
