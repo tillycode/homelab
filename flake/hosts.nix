@@ -119,6 +119,7 @@ let
               services.aria2
               services.atticd
               services.acme-dns
+              services.blog
               services.coredns
               services.cloudreve
               services.cloudreve-cname
