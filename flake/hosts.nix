@@ -257,6 +257,7 @@ let
             ++ (with profiles; [
               config.bbr
               system.systemd-boot
+              services.dnsmasq
               services.minecraft
               services.nginx
               services.node-exporter
@@ -264,6 +265,7 @@ let
               services.gha-cache-server
               services.minio
               services.restic
+              services.rke2-server
               services.vector
               virtualization.incus
               virtualization.podman
@@ -294,6 +296,7 @@ let
             ++ suites.desktop
             ++ suites.domestic
             ++ (with profiles; [
+              config.bbr
               services.power-profiles-daemon
               services.vector
               system.systemd-boot
@@ -329,6 +332,7 @@ let
             ++ suites.base
             ++ suites.domestic
             ++ (with profiles; [
+              config.bbr
               services.node-exporter
               services.vector
             ]);
