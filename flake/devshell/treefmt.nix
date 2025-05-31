@@ -9,16 +9,15 @@
       "*.{gitignore,tfstate,lock,lock.hcl,tftpl,gitkeep,python-version}"
 
       # generated files
-      "lib/data/**.json"
-      "lib/secrets/**.yaml"
+      "secrets/*"
       "pkgs/_sources/*"
+      "manifests/flux-system/gotk-*.yaml"
 
       # treefmt reports error for symlinks
       ".sops.yaml"
 
       # legacy generated files
       "generated/*"
-      "secrets/*"
 
       # symlinks
       ".github/actions/with-post-step/post.js"
