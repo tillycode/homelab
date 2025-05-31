@@ -61,6 +61,7 @@ module "sg" {
         80,    # HTTP
         443,   # HTTPS
         25565, # Minecraft
+        5201,  # iperf
       ]
     },
     {

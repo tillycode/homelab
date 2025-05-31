@@ -1,6 +1,5 @@
 locals {
   nodes = [
-    "r2s",
     "hgh0",
     "sha0",
     "hkg0",

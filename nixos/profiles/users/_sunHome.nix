@@ -73,9 +73,10 @@
   };
 
   home.packages = with pkgs; [
-    k3s
     k9s
+    kubectl
     kubernetes-helm
+    cilium-cli
     mise
     awscli2
     minio-client

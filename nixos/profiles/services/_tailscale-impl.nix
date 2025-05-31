@@ -70,5 +70,11 @@ in
   #   See https://github.com/tailscale/tailscale/blob/v1.70.0/util/linuxfw/iptables_runner.go#L327-L330.
   #   So we patched tailscale to allow customizing the CGNAT range.
   config.services.tailscale.package = pkgs.tailscale-patched;
-  config.systemd.services.tailscaled.environment.TS_CGNAT_RANGE = cfg.prefixV4;
+  config.systemd.services.tailscaled.environment = {
+    TS_CGNAT_RANGE = cfg.prefixV4;
+    TS_DEBUG_MTU = "1330"; # 1280 (minimum MTU) + 50 (vxlan overhead)
+  };
+  config.systemd.services.tailscaled.serviceConfig = {
+    RestrictNetworkInterfaces = "~sing0 incusbr0 cilium_host";
+  };
 }
