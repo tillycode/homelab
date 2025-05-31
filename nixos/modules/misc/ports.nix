@@ -71,6 +71,9 @@ in
       aria2-rpc = 30200;
 
       minecraft-dynmap = 30210;
+
+      rke2-ingress-http = 30220;
+      rke2-ingress-https = 30221;
     };
   };
 }

@@ -34,6 +34,8 @@
       coredns-global = "100.72.0.1";
       sing-box-dns-v4 = "172.18.0.2";
       sing-box-dns-v6 = "fdfe:dcba:9876::2";
+      # for kubelet to use systemd-resolved
+      local-dns = "169.254.20.20";
     };
   };
 }

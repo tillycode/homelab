@@ -29,6 +29,7 @@ let
     grafana               IN CNAME hgh0.ts.szp.io.
     loki                  IN CNAME hgh0.ts.szp.io.
     mc                    IN CNAME desktop.ts.szp.io.
+    k8s                   IN CNAME desktop.ts.szp.io.
   '';
 in
 {
