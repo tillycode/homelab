@@ -232,11 +232,32 @@ in
     # systemd.tmpfiles.rules = [
     #   "L+ /run/sing-box/zconfig.json - - - - ${staticConfigFile}"
     # ];
-    systemd.services.sing-box.preStart = ''
-      ln -sf ${staticConfigFile} /run/sing-box/zconfig.json
-    '';
-    systemd.services.sing-box.restartTriggers = [
-      staticConfigFile
-    ];
+    systemd.services.sing-box = {
+      preStart = ''
+        ln -sf ${staticConfigFile} /run/sing-box/zconfig.json
+      '';
+      restartTriggers = [ staticConfigFile ];
+      # Let sing-box not invoke resolvectl.
+      # It lacks the necessary permissions to do it.
+      environment.PATH = lib.mkForce (lib.makeBinPath [ pkgs.coreutils ]);
+    };
+
+    users.users.sing-box = {
+      isSystemUser = true;
+      group = "sing-box";
+    };
+    users.groups.sing-box = { };
+
+    systemd.network.networks."50-sing0" = {
+      name = "sing0";
+      linkConfig = {
+        ActivationPolicy = "manual";
+      };
+      networkConfig = {
+        DNS = "172.18.0.2";
+        Domains = "~.";
+        KeepConfiguration = true;
+      };
+    };
   };
 }
