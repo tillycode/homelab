@@ -5,5 +5,6 @@
     nixfmt-rfc-style
     nvd
     vulnix
+    nix-tree
   ];
 }

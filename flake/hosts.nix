@@ -13,6 +13,7 @@ let
   nixosSuites = with nixosProfiles; rec {
     # base should not require sops
     base = [
+      config.bbr
       config.bootloader
       config.home-manager
       config.persistent-common
@@ -116,7 +117,7 @@ let
             suites.base
             ++ suites.domestic
             ++ (with profiles; [
-              config.bbr
+              config.no-nixos-doc
               services.aria2
               services.atticd
               services.acme-dns
@@ -171,7 +172,7 @@ let
             suites.base
             ++ suites.domestic
             ++ (with profiles; [
-              config.bbr
+              config.no-nixos-doc
               services.node-exporter
               services.vector
               system.kernel.qemu-guest
@@ -223,7 +224,7 @@ let
           imports =
             suites.base
             ++ (with profiles; [
-              config.bbr
+              config.no-nixos-doc
               services.headscale-global
               services.nginx
               services.node-exporter
@@ -257,7 +258,6 @@ let
             ++ suites.desktop
             ++ suites.domestic
             ++ (with profiles; [
-              config.bbr
               system.systemd-boot
               services.minecraft
               services.nginx
@@ -298,7 +298,6 @@ let
             ++ suites.desktop
             ++ suites.domestic
             ++ (with profiles; [
-              config.bbr
               services.power-profiles-daemon
               services.vector
               system.systemd-boot
@@ -334,7 +333,7 @@ let
             ++ suites.base
             ++ suites.domestic
             ++ (with profiles; [
-              config.bbr
+              config.no-nixos-doc
               services.node-exporter
               services.vector
             ]);
