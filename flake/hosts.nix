@@ -136,6 +136,7 @@ let
               services.prometheus
               services.restic
               services.rke2-agent
+              services.rke2-ingress
               services.step-ca
               services.vector
               services.xray
@@ -266,6 +267,7 @@ let
               services.minio
               services.restic
               services.rke2-bootstrap
+              services.rke2-ingress
               services.vector
               virtualization.incus
               virtualization.podman

@@ -66,6 +66,7 @@ in
               security = "reality";
               realitySettings = {
                 dest = "[::1]:${toString config.ports.xray-nginx-https}";
+                # dest = "/run/nginx/nginx-xray.sock";
                 xver = 2;
                 serverNames = [ cfg.domain ];
                 privateKey = {
@@ -161,6 +162,13 @@ in
       };
     };
 
+    users.users.xray = {
+      isSystemUser = true;
+      group = "xray";
+      extraGroups = [ "nginx" ];
+    };
+    users.groups.xray = { };
+
     ## ---------------------------------------------------------------------------
     ## INGRESS
     ## ---------------------------------------------------------------------------
@@ -175,31 +183,17 @@ in
       "d /var/www/xray 0755 nginx nginx - -"
     ];
 
-    services.nginx.defaultListen = [
-      {
-        addr = "0.0.0.0";
-        ssl = false;
-      }
-      {
-        addr = "[::]";
-        ssl = false;
-      }
-      {
-        addr = "127.0.0.1";
-        ssl = true;
-        proxyProtocol = true;
-      }
-      {
-        addr = "[::1]";
-        ssl = true;
-        proxyProtocol = true;
-      }
-    ];
+    services.nginx.enableProxyProtocol = true;
     services.nginx.defaultSSLListenPort = config.ports.xray-nginx-https;
-    services.nginx.commonHttpConfig = ''
-      set_real_ip_from 127.0.0.1;
-      set_real_ip_from ::1;
-      real_ip_header proxy_protocol;
-    '';
+    services.nginx.defaultSSLListenAddresses = [
+      # FIXME: there seems to be a bug regarding unix sockets combined with
+      #    proxy protocol relay.
+      #
+      # "unix:/run/nginx/nginx-xray.sock"
+      "[::1]"
+    ];
+    services.nginx.proxyProtocolTrustedIPs = [
+      "::1"
+    ];
   };
 }
