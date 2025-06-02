@@ -64,13 +64,14 @@
   };
 
   systemd.services.sing-box = {
-    # let sing-box not invoke resolvectl
-    environment.PATH = lib.mkForce (
-      lib.makeBinPath [
-        pkgs.coreutils
-      ]
-    );
+    environment.PATH = lib.mkForce (lib.makeBinPath [ pkgs.coreutils ]);
   };
+
+  users.users.sing-box = {
+    isSystemUser = true;
+    group = "sing-box";
+  };
+  users.groups.sing-box = { };
 
   ## ---------------------------------------------------------------------------
   ## FIREWALL
