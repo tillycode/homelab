@@ -25,7 +25,6 @@ in
         static_configs = [
           {
             targets = [
-              "r2s.ts.szp.io:${toString config.ports.node-exporter}"
               "desktop.ts.szp.io:${toString config.ports.node-exporter}"
               "hgh0.ts.szp.io:${toString config.ports.node-exporter}"
               "sha0.ts.szp.io:${toString config.ports.node-exporter}"

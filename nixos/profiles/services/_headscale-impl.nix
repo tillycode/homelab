@@ -138,7 +138,7 @@ in
         mode = "file";
         path = jsonFormat.generate "policy.json" {
           groups = {
-            "group:admin" = [ "ziping-sun" ];
+            "group:admin" = [ "ziping-sun@" ];
           };
           acls = [
             {
@@ -180,6 +180,7 @@ in
           }))
           lib.listToAttrs
         ];
+        override_local_dns = false;
         search_domains = [ ];
       };
 
