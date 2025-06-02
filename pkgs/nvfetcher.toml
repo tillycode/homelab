@@ -2,7 +2,7 @@
 src.github = "gurucomputing/headscale-ui"
 fetch.github = "gurucomputing/headscale-ui"
 [headscale-ui.passthru]
-npmDepsHash = "sha256-+03TEWNM7A6hNfirTqG5t+mUjoS8axZUnpQfWv7dVUI="
+npmDepsHash = "sha256-r8MuY7yhjek2SZyJCv5Xhk9dJE2VgKx7RTdOBr0Bji4="
 
 [terraboard]
 src.github = "camptocamp/terraboard"
@@ -17,7 +17,7 @@ src.github_tag = "SagerNet/sing-box"
 fetch.github = "SagerNet/sing-box"
 src.include_regex = "v.*"
 [sing-box.passthru]
-vendorHash = "sha256-84NX+I3Wn+uJzBdo8jAWmRF1edp6lBvzBL0caEI87Ac="
+vendorHash = "sha256-c5/gZVwBeCpNkGRJMf0HjkQ0ttwWfDfNlb0PfuMVlwY="
 
 [github-actions-cache-server]
 src.github = "falcondev-oss/github-actions-cache-server"
