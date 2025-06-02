@@ -344,7 +344,7 @@ importpath: import
 webserver-bindaddress: 0.0.0.0
 
 # The TCP-port the webserver will listen on.
-webserver-port: 30210
+webserver-port: 40210
 
 # Maximum concurrent session on internal web server - limits resources used in Bukkit server
 max-sessions: 30

@@ -49,6 +49,7 @@ lib.mkMerge [
         "--disable-kube-proxy"
         "--disable-cloud-controller"
         "--tls-san=${config.domains.k8s}"
+        "--ingress-controller=traefik"
       ];
     };
   })

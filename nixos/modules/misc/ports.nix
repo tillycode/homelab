@@ -18,62 +18,62 @@ in
     ];
 
     ports = {
-      zitadel = 30000;
+      zitadel = 40000;
 
       netbird-signal = 10000;
-      netbird-management = 33073;
-      netbird-signal-metrics = 30010;
-      netbird-management-metrics = 30011;
+      netbird-management = 40012;
+      netbird-signal-metrics = 40010;
+      netbird-management-metrics = 40011;
       # TODO: coturn ports
 
-      headscale = 30020;
-      headscale-metrics = 30021;
+      headscale = 40020;
+      headscale-metrics = 40021;
 
-      incus-https = 30030;
+      incus-https = 40030;
 
-      step-ca = 30040;
-      step-ca-metrics = 30041;
+      step-ca = 40040;
+      step-ca-metrics = 40041;
 
-      homepage-dashboard = 30050;
+      homepage-dashboard = 40050;
 
-      atticd = 30060;
+      atticd = 40060;
 
-      terraboard = 30070;
-      terraboard-swagger = 30071;
+      terraboard = 40070;
+      terraboard-swagger = 40071;
 
-      oauth2-proxy = 30080;
+      oauth2-proxy = 40080;
 
-      gha-cache-server = 30090;
+      gha-cache-server = 40090;
 
-      xray-nginx-https = 30100;
+      xray-nginx-https = 40100;
 
-      # headscale-global = 30110;
+      # headscale-global = 40110;
 
-      minio = 30120;
-      minio-console = 30121;
+      minio = 40120;
+      minio-console = 40121;
 
-      acme-dns = 30130;
-      acme-dns-dns = 30131;
+      acme-dns = 40130;
+      acme-dns-dns = 40131;
 
-      prometheus = 30140;
+      prometheus = 40140;
 
-      node-exporter = 30150;
+      node-exporter = 40150;
 
-      grafana = 30160;
+      grafana = 40160;
 
-      coredns-metrics = 30170;
+      coredns-metrics = 40170;
 
-      loki = 30180;
-      loki-grpc = 30181;
+      loki = 40180;
+      loki-grpc = 40181;
 
-      cloudreve = 30190;
+      cloudreve = 40190;
 
-      aria2-rpc = 30200;
+      aria2-rpc = 40200;
 
-      minecraft-dynmap = 30210;
+      minecraft-dynmap = 40210;
 
-      rke2-ingress-http = 30220;
-      rke2-ingress-https = 30221;
+      rke2-ingress-http = 40220;
+      rke2-ingress-https = 40221;
     };
   };
 }
