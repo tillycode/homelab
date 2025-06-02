@@ -3,52 +3,52 @@
 {
   cloudreve = {
     pname = "cloudreve";
-    version = "4.0.0-beta.8";
+    version = "4.0.0-beta.13";
     src = fetchFromGitHub {
       owner = "cloudreve";
       repo = "Cloudreve";
-      rev = "4.0.0-beta.8";
+      rev = "4.0.0-beta.13";
       fetchSubmodules = true;
-      sha256 = "sha256-A+SirjmrCfTBlbTzzAOPYc7s8/KYkWY5MF1j+pTaRaY=";
+      sha256 = "sha256-lsio1disuBK6A53OwBuammGo3+5Tbh3C1Pp8M9EMzwU=";
     };
-    yarnDepsHash = "sha256-5ZZyuFCQMRRfr2sEg1Vm2llHvrQexXyKJZWTOJ54x8c=";
     vendorHash = "sha256-wEgT+9oL5w0LKpOGYTPo0rzUksFZdbEvO+44Oqt7jGg=";
+    yarnDepsHash = "sha256-5ZZyuFCQMRRfr2sEg1Vm2llHvrQexXyKJZWTOJ54x8c=";
   };
   github-actions-cache-server = {
     pname = "github-actions-cache-server";
-    version = "v8.0.0";
+    version = "v8.0.1";
     src = fetchFromGitHub {
       owner = "falcondev-oss";
       repo = "github-actions-cache-server";
-      rev = "v8.0.0";
+      rev = "v8.0.1";
       fetchSubmodules = false;
-      sha256 = "sha256-XE3hcydotbrJ5vEFEgmCj9UQ9qcvItxAcGhTf7h6BUk=";
+      sha256 = "sha256-KD0UE94PrYb8RlxWXVkPmo6E+AgCUapFrhWFaKrA0/I=";
     };
     pnpmDepsHash = "sha256-og8VtU+zkC5nKgDSm21qW7GuAVqByUa0JGxc5/MUnPM=";
   };
   headscale-ui = {
     pname = "headscale-ui";
-    version = "2025.03.21";
+    version = "2025.05.22";
     src = fetchFromGitHub {
       owner = "gurucomputing";
       repo = "headscale-ui";
-      rev = "2025.03.21";
+      rev = "2025.05.22";
       fetchSubmodules = false;
-      sha256 = "sha256-dnh0OIsNIe7lHIR6T4TZKtzom3ZUoWTjRgq0pFpxRv8=";
+      sha256 = "sha256-/wDk/ENZSgffDEEat13Yob+NmVuJF4bOPeE0XhwgC9Y=";
     };
-    npmDepsHash = "sha256-+03TEWNM7A6hNfirTqG5t+mUjoS8axZUnpQfWv7dVUI=";
+    npmDepsHash = "sha256-r8MuY7yhjek2SZyJCv5Xhk9dJE2VgKx7RTdOBr0Bji4=";
   };
   sing-box = {
     pname = "sing-box";
-    version = "v1.12.0-beta.9";
+    version = "v1.12.0-beta.19";
     src = fetchFromGitHub {
       owner = "SagerNet";
       repo = "sing-box";
-      rev = "v1.12.0-beta.9";
+      rev = "v1.12.0-beta.19";
       fetchSubmodules = false;
-      sha256 = "sha256-HfGR/Fw7aQnrFjWlvdUJGuEA9mae9pCdEmKeP6qFF1U=";
+      sha256 = "sha256-Il3vjTLDR7F7hn1ZLvHoS2EWKy6AOZ5Nt5oQ+1PI6HQ=";
     };
-    vendorHash = "sha256-84NX+I3Wn+uJzBdo8jAWmRF1edp6lBvzBL0caEI87Ac=";
+    vendorHash = "sha256-c5/gZVwBeCpNkGRJMf0HjkQ0ttwWfDfNlb0PfuMVlwY=";
   };
   terraboard = {
     pname = "terraboard";
@@ -60,7 +60,7 @@
       fetchSubmodules = false;
       sha256 = "sha256-BkvGOE1ElETp4NLgMC9s8BtzNkskkvFt6/nVgmJNRww=";
     };
-    yarnDepsHash = "sha256-KbetB8S8MBJyvzl4Dl87uxRrOLEa6padD5LLHAUz/SI=";
     vendorHash = "sha256-GarFrn/0x26KTxrUQwXtNYb/rttzT3f94iiWm6/dsHA=";
+    yarnDepsHash = "sha256-KbetB8S8MBJyvzl4Dl87uxRrOLEa6padD5LLHAUz/SI=";
   };
 }
