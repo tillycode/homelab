@@ -80,9 +80,7 @@ let
   hmProfiles = loadProfiles ../home-manager/profiles;
 
   selfHmModules = loadModules ../home-manager/modules;
-  hmModules = selfHmModules ++ [
-    inputs.vscode-server.homeModules.default
-  ];
+  hmModules = selfHmModules;
 
   ## ---------------------------------------------------------------------------
   ## HOSTS

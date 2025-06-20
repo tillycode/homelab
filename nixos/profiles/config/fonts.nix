@@ -1,24 +1,41 @@
 { pkgs, ... }:
 {
-  fonts.enableDefaultPackages = false;
-  fonts.packages =
-    (with pkgs; [
-      noto-fonts
-      noto-fonts-cjk-sans
-      noto-fonts-cjk-serif
+  fonts.packages = (
+    with pkgs;
+    [
+      source-serif
+      source-sans
+      source-han-serif
+      source-han-sans
+
+      liberation_ttf
+      wqy_zenhei
+      wqy_microhei
+
+      corefonts
+      vistafonts
+
+      sarasa-gothic
+      nerd-fonts.jetbrains-mono
+
+      font-awesome
       noto-fonts-color-emoji
-    ])
-    ++ (with pkgs.nerd-fonts; [
-      jetbrains-mono
-    ]);
+    ]
+  );
   fonts.fontconfig.defaultFonts = {
     serif = [
-      "Noto Serif"
-      "Noto Serif CJK SC"
+      "Source Serif 4"
+      "Source Han Serif SC"
+      "Source Han Serif TC"
+      "Source Han Serif HW"
+      "Source Han Serif K"
     ];
     sansSerif = [
-      "Noto Sans"
-      "Noto Sans CJK SC"
+      "Source Sans 3"
+      "Source Han Sans SC"
+      "Source Han Sans TC"
+      "Source Han Sans HW"
+      "Source Han Sans K"
     ];
     monospace = [ "JetBrainsMono Nerd Font Mono" ];
     emoji = [ "Noto Color Emoji" ];
