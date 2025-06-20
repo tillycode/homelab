@@ -80,6 +80,7 @@
     mise
     awscli2
     minio-client
+    code-cursor
   ];
 
   home.stateVersion = "23.11";

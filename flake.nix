@@ -58,12 +58,6 @@
     nix-minecraft.inputs.flake-utils.follows = "flake-utils";
     nix-minecraft.inputs.flake-compat.follows = "flake-compat";
 
-    # home-manger modules
-
-    vscode-server.url = "github:nix-community/nixos-vscode-server";
-    vscode-server.inputs.nixpkgs.follows = "nixpkgs";
-    vscode-server.inputs.flake-utils.follows = "flake-utils";
-
     # libraries
 
     blank.url = "github:divnix/blank";

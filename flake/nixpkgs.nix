@@ -6,8 +6,8 @@
       _module.args.pkgs = import inputs.nixpkgs {
         inherit system;
         overlays = [
-          inputs.deploy-rs.overlay
-          inputs.nix-minecraft.overlay
+          inputs.deploy-rs.overlays.default
+          inputs.nix-minecraft.overlays.default
           self.overlays.default
           (final: prev: {
             fetchLocalPackwizModpack =
