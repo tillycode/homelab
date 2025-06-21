@@ -32,7 +32,7 @@ in
   };
   config = {
     disko.devices = {
-      disk.vda = {
+      disk.root = {
         device = cfg.device;
         type = "disk";
         content = {
