@@ -20,10 +20,14 @@ let
   node-keys = {
     hgh0 = "age1q93v8zc62mczmz30wy04n8erlfhhhjc3k7a3vspccjqpvehxadyqgrzrue";
     hkg0 = "age1gp0jvxqvjpz9gc6ewaggetxsp0phwyrrvagw57j9tzea507g2y3qpqwwa4";
-    sha0 = "age1a46mp4kgk3jdvt520ng9ta45zv0ns0xts9xvjza04t3mpmrfjdqs52s6vh";
+    sha0 = "age1cfyre76ucj4a7dw34w2ura5yc9wl9u2a6uj5gdyc82fyjm6mrdeqwn24l6";
     desktop = "age1v6lnkm7prm0dpmcdpvn44v50rpfkzsed5uv3znxt4grsd5y6sv5qjru9qq";
     laptop = "age1kgcxdnuy9fxtcf6fp7camk6tqm0fset0jvvh9760rqmrkmx99v0q2c7w8e";
     r2s = "age1qfp5p3h97anl95lal6c23zp38lp03ltdd7jnkmw6qtgu89e59vsq9t8z83";
+    router = "age1a2zxjefhj2dprsxjvdsaw8swlsxqvhznwql4eva9v7amw94glevs8p4qlz";
+    hasee01 = "age1zkg99svpjg99wnzp9qatvt6wufmcnwd6xlg8zj786sad8nv64ylsrkp0u5";
+    hasee02 = "age1dn753h8kvk48ncvvhqe954julnp5azecscpzpedr6nn0g9lydaws8s2dmd";
+    hasee03 = "age10dc0rdkjx7px07ruws2k68sm7apuuw72qvqc9n7eec7haxyx95gse36qc5";
   };
   sops_source_creation_rule = lib.map (path_regex: {
     path_regex = path_regex;

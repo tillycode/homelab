@@ -28,6 +28,10 @@ in
               "desktop.ts.szp.io:${toString config.ports.node-exporter}"
               "hgh0.ts.szp.io:${toString config.ports.node-exporter}"
               "sha0.ts.szp.io:${toString config.ports.node-exporter}"
+              "router.ts.szp.io:${toString config.ports.node-exporter}"
+              "hasee01.ts.szp.io:${toString config.ports.node-exporter}"
+              "hasee02.ts.szp.io:${toString config.ports.node-exporter}"
+              "hasee03.ts.szp.io:${toString config.ports.node-exporter}"
               "hkg0.tsg.szp.io:${toString config.ports.node-exporter}"
             ];
           }

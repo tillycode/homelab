@@ -318,8 +318,6 @@ let
           "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBIO4wL3BzfaMDOpbT/U/99MVQERjtzH2YxA6KAs7lwM"
           "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHNlekmLqIMn8zTkjU2sU4StemRV+wQvoMMvqmIIJxT6"
         ];
-        networking.wireless.iwd.enable = true;
-
       }
       (
         { suites, profiles, ... }:
@@ -338,7 +336,156 @@ let
         }
       )
     ];
+    router = mkHost [
+      {
+        time.timeZone = "Asia/Shanghai";
+        networking.hostName = "router";
+        nixpkgs.system = "x86_64-linux";
+        system.stateVersion = "25.05";
+        users.users.root.openssh.authorizedKeys.keys = [
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAamaMcCAc7DhTJjDqBwXTWhewX0OI8vAuXLvc17yqK/"
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBIO4wL3BzfaMDOpbT/U/99MVQERjtzH2YxA6KAs7lwM"
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHNlekmLqIMn8zTkjU2sU4StemRV+wQvoMMvqmIIJxT6"
+        ];
+        profiles.disko = {
+          device = "/dev/nvme0n1";
+          swapSize = "8G";
+        };
+        sops.defaultSopsFile = ../secrets/nodes/router.yaml;
+      }
+      (
+        { profiles, suites, ... }:
+        {
+          imports =
+            [
+              ../nixos/hosts/router
+            ]
+            ++ suites.base
+            ++ suites.domestic
+            ++ (with profiles; [
+              config.no-nixos-doc
+              services.iwd
+              services.node-exporter
+              services.vector
+              system.disko
+              system.systemd-boot
+            ]);
+        }
+      )
+    ];
+    hasee01 = mkHost [
+      {
+        time.timeZone = "Asia/Shanghai";
+        networking.hostName = "hasee01";
+        nixpkgs.system = "x86_64-linux";
+        system.stateVersion = "25.05";
+        users.users.root.openssh.authorizedKeys.keys = [
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAamaMcCAc7DhTJjDqBwXTWhewX0OI8vAuXLvc17yqK/"
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBIO4wL3BzfaMDOpbT/U/99MVQERjtzH2YxA6KAs7lwM"
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHNlekmLqIMn8zTkjU2sU4StemRV+wQvoMMvqmIIJxT6"
+        ];
+        profiles.disko = {
+          device = "/dev/nvme0n1";
+          swapSize = "32G";
+        };
+        sops.defaultSopsFile = ../secrets/nodes/hasee01.yaml;
+      }
+      (
+        { profiles, suites, ... }:
+        {
+          imports =
+            [
+              ../nixos/hosts/hasee
+            ]
+            ++ suites.base
+            ++ suites.domestic
+            ++ (with profiles; [
+              config.no-nixos-doc
+              services.iwd
+              services.node-exporter
+              services.vector
+              system.disko
+              system.systemd-boot
+            ]);
+        }
+      )
+    ];
+    hasee02 = mkHost [
+      {
+        time.timeZone = "Asia/Shanghai";
+        networking.hostName = "hasee02";
+        nixpkgs.system = "x86_64-linux";
+        system.stateVersion = "25.05";
+        users.users.root.openssh.authorizedKeys.keys = [
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAamaMcCAc7DhTJjDqBwXTWhewX0OI8vAuXLvc17yqK/"
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBIO4wL3BzfaMDOpbT/U/99MVQERjtzH2YxA6KAs7lwM"
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHNlekmLqIMn8zTkjU2sU4StemRV+wQvoMMvqmIIJxT6"
+        ];
+        profiles.disko = {
+          device = "/dev/nvme0n1";
+          swapSize = "32G";
+        };
+        sops.defaultSopsFile = ../secrets/nodes/hasee02.yaml;
+      }
+      (
+        { profiles, suites, ... }:
+        {
+          imports =
+            [
+              ../nixos/hosts/hasee
+            ]
+            ++ suites.base
+            ++ suites.domestic
+            ++ (with profiles; [
+              config.no-nixos-doc
+              services.iwd
+              services.node-exporter
+              services.vector
+              system.disko
+              system.systemd-boot
+            ]);
+        }
+      )
+    ];
+    hasee03 = mkHost [
+      {
+        time.timeZone = "Asia/Shanghai";
+        networking.hostName = "hasee03";
+        nixpkgs.system = "x86_64-linux";
+        system.stateVersion = "25.05";
+        users.users.root.openssh.authorizedKeys.keys = [
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAamaMcCAc7DhTJjDqBwXTWhewX0OI8vAuXLvc17yqK/"
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBIO4wL3BzfaMDOpbT/U/99MVQERjtzH2YxA6KAs7lwM"
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHNlekmLqIMn8zTkjU2sU4StemRV+wQvoMMvqmIIJxT6"
+        ];
+        profiles.disko = {
+          device = "/dev/nvme0n1";
+          swapSize = "32G";
+        };
+        sops.defaultSopsFile = ../secrets/nodes/hasee03.yaml;
+      }
+      (
+        { profiles, suites, ... }:
+        {
+          imports =
+            [
+              ../nixos/hosts/hasee
+            ]
+            ++ suites.base
+            ++ suites.domestic
+            ++ (with profiles; [
+              config.no-nixos-doc
+              services.iwd
+              services.node-exporter
+              services.vector
+              system.disko
+              system.systemd-boot
+            ]);
+        }
+      )
+    ];
   };
+
   mkHost =
     modules:
     inputs.nixpkgs.lib.nixosSystem {
@@ -356,7 +503,6 @@ let
   nodeDeployOverrides = {
     hkg0 = {
       ssh_host = "hkg0.eh578599.xyz";
-      bastion_host = null;
     };
   };
   mkNode =
@@ -367,8 +513,8 @@ let
     in
     {
       hostname = if node == null || node.ssh_host == null then name else node.ssh_host;
-      sshUser = "root";
-      sshOpts = lib.optionals (node != null && node.bastion_host != null) [
+      sshUser = node.ssh_user or "root";
+      sshOpts = lib.optionals (node != null && node.bastion_host or null != null) [
         "-o"
         "ProxyJump=root@${node.bastion_host}"
       ];
