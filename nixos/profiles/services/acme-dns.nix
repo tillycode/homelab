@@ -61,7 +61,7 @@ in
       proxyPass = "http://[::1]:${toString port}";
     };
     extraConfig = ''
-      allow 100.71.0.0/16;
+      allow 100.120.0.0/16;
       allow fd7a:115c:a1e0:7::/64;
       allow 10.75.0.0/16;
       allow fd42:e16c:cbc4::/48;

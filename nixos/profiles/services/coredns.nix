@@ -15,7 +15,7 @@ let
     )
 
     @     IN NS ns.svc.szp.io.
-    ns    IN A 100.71.0.1
+    ns    IN A 100.120.0.1
 
     home                  IN CNAME hgh0.ts.szp.io.
     acme                  IN CNAME hgh0.ts.szp.io.
@@ -51,7 +51,7 @@ in
       }
       tsg.szp.io:53 {
         import snip
-        forward . 100.72.0.1
+        forward . 100.121.0.1
         cache 60
       }
       vm.szp.io:53 {
