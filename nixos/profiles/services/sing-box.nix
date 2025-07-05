@@ -63,7 +63,7 @@
       {
         action = "route";
         ip_cidr = [
-          "100.72.0.0/16"
+          "100.121.0.0/16"
         ];
         outbound = "proxy";
       }
@@ -87,7 +87,7 @@
     ];
     outboundsFile = config.sops.secrets."sing-box/outbounds.json".path;
     tunExtraRoutes = [
-      "100.72.0.0/16"
+      "100.121.0.0/16"
     ];
   };
 

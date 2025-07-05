@@ -24,6 +24,7 @@
       ".aws"
       ".cache"
       ".config"
+      ".cursor"
       ".kube"
       ".local"
       ".npm"

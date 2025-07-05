@@ -22,6 +22,7 @@ in
     scrapeConfigs = [
       {
         job_name = "node";
+        scrape_interval = "15s";
         static_configs = [
           {
             targets = [
@@ -38,6 +39,20 @@ in
         ];
       }
       {
+        job_name = "minio-job";
+        scrape_interval = "15s";
+        static_configs = [
+          {
+            targets = [
+              "hasee01:9000"
+              "hasee02:9000"
+              "hasee03:9000"
+            ];
+          }
+        ];
+        metrics_path = "/minio/v2/metrics/cluster";
+      }
+      {
         job_name = "coredns";
         static_configs = [
           {
@@ -50,8 +65,8 @@ in
         static_configs = [
           {
             targets = [
-              "100.71.0.1:${toString config.ports.headscale-metrics}"
-              "100.72.0.1:${toString config.ports.headscale-metrics}"
+              "100.120.0.1:${toString config.ports.headscale-metrics}"
+              "100.121.0.1:${toString config.ports.headscale-metrics}"
             ];
           }
         ];
@@ -102,7 +117,7 @@ in
       proxyPass = "http://[::1]:${toString port}";
     };
     extraConfig = ''
-      allow 100.71.0.0/16;
+      allow 100.120.0.0/16;
       allow fd7a:115c:a1e0:7::/64;
       allow 10.75.0.0/16;
       allow fd42:e16c:cbc4::/48;

@@ -13,10 +13,10 @@
 
   config = {
     CIDRs = {
-      tailnet-v4 = "100.71.0.0/16";
+      tailnet-v4 = "100.120.0.0/16";
       tailnet-v6 = "fd7a:115c:a1e0:7::/64";
 
-      tailnet-global-v4 = "100.72.0.0/16";
+      tailnet-global-v4 = "100.121.0.0/16";
       tailnet-global-v6 = "fd7a:115c:a1e0:8::/64";
 
       incus-v4 = "10.75.0.0/16";
@@ -30,8 +30,8 @@
     };
 
     IPs = {
-      coredns = "100.71.0.1";
-      coredns-global = "100.72.0.1";
+      coredns = "100.120.0.1";
+      coredns-global = "100.121.0.1";
       sing-box-dns-v4 = "172.18.0.2";
       sing-box-dns-v6 = "fdfe:dcba:9876::2";
       # for kubelet to use systemd-resolved

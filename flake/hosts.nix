@@ -134,8 +134,6 @@ let
               services.postgresql
               services.prometheus
               services.restic
-              services.rke2-agent
-              services.rke2-ingress
               services.step-ca
               services.vector
               services.xray
@@ -361,12 +359,11 @@ let
               ../nixos/hosts/router
             ]
             ++ suites.base
-            ++ suites.domestic
             ++ (with profiles; [
               config.no-nixos-doc
-              services.iwd
+              services.tailscale
               services.node-exporter
-              services.vector
+              services.pppd
               system.disko
               system.systemd-boot
             ]);
@@ -401,9 +398,7 @@ let
             ++ suites.domestic
             ++ (with profiles; [
               config.no-nixos-doc
-              services.iwd
               services.node-exporter
-              services.vector
               system.disko
               system.systemd-boot
             ]);
@@ -438,9 +433,7 @@ let
             ++ suites.domestic
             ++ (with profiles; [
               config.no-nixos-doc
-              services.iwd
               services.node-exporter
-              services.vector
               system.disko
               system.systemd-boot
             ]);
@@ -475,9 +468,7 @@ let
             ++ suites.domestic
             ++ (with profiles; [
               config.no-nixos-doc
-              services.iwd
               services.node-exporter
-              services.vector
               system.disko
               system.systemd-boot
             ]);
