@@ -80,6 +80,7 @@
       };
       dhcpServerConfig = {
         ServerAddress = "192.168.22.1/24";
+        DNS = [ "192.168.22.1" ];
         PoolOffset = 100;
         PoolSize = 100;
       };
@@ -128,4 +129,5 @@
     '';
   };
   networking.firewall.allowedUDPPorts = [ 67 ];
+  networking.firewall.trustedInterfaces = [ "lan0" ];
 }

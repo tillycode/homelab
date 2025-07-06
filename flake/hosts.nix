@@ -227,7 +227,6 @@ let
               services.sing-box-global
               services.tailscale-global
               services.xray-global
-              services.vector
               system.kernel.qemu-guest
               system.disko
             ]);
@@ -252,22 +251,22 @@ let
               ../nixos/hosts/desktop
             ]
             ++ suites.desktop
-            ++ suites.domestic
             ++ (with profiles; [
-              system.systemd-boot
+              config.nix-cache
+              services.gha-cache-server
+              services.github-runner
               services.minecraft
+              services.minio
               services.nginx
               services.node-exporter
-              services.github-runner
-              services.gha-cache-server
-              services.minio
               services.restic
               services.rke2-bootstrap
               services.rke2-ingress
-              services.vector
+              services.tailscale
+              system.systemd-boot
+              users.sun
               virtualization.incus
               virtualization.podman
-              users.sun
             ]);
         }
       )
@@ -295,7 +294,6 @@ let
             ++ suites.domestic
             ++ (with profiles; [
               services.power-profiles-daemon
-              services.vector
               system.systemd-boot
               system.disko
               virtualization.podman
@@ -350,6 +348,7 @@ let
           swapSize = "8G";
         };
         sops.defaultSopsFile = ../secrets/nodes/router.yaml;
+        services.tailscale.extraSetFlags = [ "--accept-dns=false" ];
       }
       (
         { profiles, suites, ... }:
@@ -361,9 +360,11 @@ let
             ++ suites.base
             ++ (with profiles; [
               config.no-nixos-doc
-              services.tailscale
+              services.coredns-router
               services.node-exporter
               services.pppd
+              services.sing-box-router
+              services.tailscale
               system.disko
               system.systemd-boot
             ]);
@@ -395,10 +396,11 @@ let
               ../nixos/hosts/hasee
             ]
             ++ suites.base
-            ++ suites.domestic
             ++ (with profiles; [
+              config.nix-cache
               config.no-nixos-doc
               services.node-exporter
+              services.tailscale
               system.disko
               system.systemd-boot
             ]);
@@ -430,10 +432,11 @@ let
               ../nixos/hosts/hasee
             ]
             ++ suites.base
-            ++ suites.domestic
             ++ (with profiles; [
+              config.nix-cache
               config.no-nixos-doc
               services.node-exporter
+              services.tailscale
               system.disko
               system.systemd-boot
             ]);
@@ -465,10 +468,11 @@ let
               ../nixos/hosts/hasee
             ]
             ++ suites.base
-            ++ suites.domestic
             ++ (with profiles; [
+              config.nix-cache
               config.no-nixos-doc
               services.node-exporter
+              services.tailscale
               system.disko
               system.systemd-boot
             ]);
