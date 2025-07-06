@@ -2,39 +2,38 @@
 # Manual edits may be lost in future updates.
 
 provider "registry.opentofu.org/aliyun/alicloud" {
-  version     = "1.250.0"
+  version     = "1.253.0"
   constraints = "~> 1.0"
   hashes = [
-    "h1:MAUeZ1Id7pqW0F+AccvrcRpbl4hSgyOJPNIHNclto7U=",
-    "zh:1970997af4b65f9ab15c5ac882f2cfe0e9e7072bb97855311b13a74276a90f12",
-    "zh:23a5c26a5f1dcf93efb96104ea5b2da2b30052d3b9ed11e7ea293ab188a7596c",
-    "zh:3c5c7d71c117ee98ca0ce97c853327e8ad3ee33c734e553e2a223e773d40130f",
-    "zh:41a9ebe5b82d7cc2738b29722e466efd266cfcd0b7913560d674362deab9d75b",
-    "zh:53db7817eae093aebe752ca4c54019b95b0779594ce0e61a8ff19d489f18d0fd",
-    "zh:54e11caa84fbe86c02d09292b37c271f96fa02e9e6a3efa9459dfaf0710780e3",
-    "zh:75f6f7ec306393d276275f70ecc3e389f9aa5c255b9498e53b17b3eb31ffb176",
-    "zh:7ba9c1301d896d9661c588f1c5dfe9e512ed76cfb01ef3465ada44679ee852b0",
-    "zh:abe947cd4f5b85c10d0aecc32e822b1ee746b8761fd23324ea52a98832e265c3",
-    "zh:dc7875f7155150e920571dd60ba82ba330609ee0386cf9c0a41adf463eef7f5f",
-    "zh:e261ed300a6cfb89152e9f4c1d52a2848a08ba1a17a5ee500146df17ae375054",
+    "h1:I54SK/ZX+lgzVi/Q07QTqtJ6IgvxmTBEeVpudbPnHvE=",
+    "zh:058076b27322f4fdbd767fc4fbbe8a52a8f03b71208387f406d4fa56dfac6c9c",
+    "zh:070d3c31f50909b7899ccb26ca2f1377759e5562458e872ac40d19ae827c48cb",
+    "zh:24c472bef4bd2823585f0ddd7ef448eca54acc8e4e75fb56df420235414e7895",
+    "zh:5d977a5280b6a6c120f53460c3ad4771c4321e8a7c8f9a85310ac7fbd34526dc",
+    "zh:5ecd38a1484c1134eff91367193dfffc6aa0516d8241e1c83b86542a539d7ac7",
+    "zh:71fca9d40482d6baee03d0ee29f27c5dd26c3804fe65f005ea9548b4df32c6dd",
+    "zh:8de70defdc94ff212012c14abfd41d0f10b279ffbd5449af503705b3cc68bf02",
+    "zh:aa2ba220a2ac42de9cff489c39f62a9d96a3404d04551ff01dd7d277dad75ffb",
+    "zh:b1165929139c822f315030a2493c0da18fdb0a53102f9956150da950a331940a",
+    "zh:c12acaa352b5b3196bf8f6e6e10a301c92e2b5068ccf066d6a2e55652c2d4ee5",
+    "zh:c4a564de97170e4d8571e59871a911173811e3635a10921c516782f110849c81",
   ]
 }
 
 provider "registry.opentofu.org/hashicorp/aws" {
-  version     = "5.99.0"
-  constraints = "~> 5.0, >= 5.49.0"
+  version     = "6.2.0"
+  constraints = ">= 6.0.0, ~> 6.0"
   hashes = [
-    "h1:ZcInnF83vCjN6QYksq6dFmwAI/ZyeBK9+aE/7hf9+xU=",
-    "zh:08cde495f6580aab13299196de8e833038d05eb0a09d754c1d09b74b842635e4",
-    "zh:3eeec5ad1ed4221edc8c7f177227b24efb3fb3db75b848bf6d52aeaf82ae037c",
-    "zh:4f52c4ee689fea5a4ead15d951bfff0ad296ec7c1968644ee55573ece983abc0",
-    "zh:927443998b1afcb47cc97a89cbe804937e7843f276d3c86fcdd78606f8bd1965",
-    "zh:ae216473734c5ac00d48dde15d8cebd0d281d4bf9ee32b9bd20619a53a8b0499",
-    "zh:b1209d974b4d03fd88ebe3e2d653707851f85cd3719176e0de94d7e5a5a7fcbf",
-    "zh:bd71aedc9aacb3089de8d3dacba6b68ca4da8a8169ab801a9d6458b8ac65ffc9",
-    "zh:ea3a7ddf11114e792c64bb53cca3cc7d508ca8f569d178446428d5f44b30df5b",
-    "zh:ebce07acd223dcd34c91aa8f73d52535f9081e587603056170a87657be45c191",
-    "zh:f9f6b479c8d1b96dde159d8b14fcbaa1e865b0ae9d7661a4b9bc6bf7a75d44bf",
+    "h1:UcBl0SyNxOTHOa3Ske3ClmzA7V1S7e/I4+29DLGe85A=",
+    "zh:26072ed06da98bfeff0a9ef54edd215c7af005658a670e098dc6445c10bf2b55",
+    "zh:39aba613926547b289128a8c37baa0b8762dce974ed0e5859c1fd24afaa753b0",
+    "zh:3a97a68258a7cb707ae571a43cfb44142c00a4543689fea4dcbe2e9db2336310",
+    "zh:3af54af122ffc4477ee23dc855b27fdeb3682fff09ac8394b37eac3164faaa65",
+    "zh:4ab39e61f699b9189386b037ba8a6725634e99115a6d24946baae2f461ce519e",
+    "zh:98455edb4f11267c144f15eb36a25adec3121ac8af34754ebfac9e6e00fd5ec7",
+    "zh:b51e505cd73ddf015ce765f4df5ddc5f7e5a42eb596f57bcf0f1eae5338d4efa",
+    "zh:c132a00c0495ae62a14affd1f41bcd7d11f91cf559c6229aa168f326938aedbe",
+    "zh:e14ddc80f4ca1d394889e27d9188f4368ac7d3437e6a10490d1314da66039bf4",
   ]
 }
 
