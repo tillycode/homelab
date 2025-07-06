@@ -3,28 +3,28 @@
 {
   cloudreve = {
     pname = "cloudreve";
-    version = "4.0.0-beta.13";
+    version = "4.2.0";
     src = fetchFromGitHub {
       owner = "cloudreve";
       repo = "Cloudreve";
-      rev = "4.0.0-beta.13";
+      rev = "4.2.0";
       fetchSubmodules = true;
-      sha256 = "sha256-lsio1disuBK6A53OwBuammGo3+5Tbh3C1Pp8M9EMzwU=";
+      sha256 = "sha256-0x908FUVfKZUZ8c9errjuxJSMpNiY7AGs1yubb5I+Bc=";
     };
-    vendorHash = "sha256-wEgT+9oL5w0LKpOGYTPo0rzUksFZdbEvO+44Oqt7jGg=";
-    yarnDepsHash = "sha256-5ZZyuFCQMRRfr2sEg1Vm2llHvrQexXyKJZWTOJ54x8c=";
+    vendorHash = "sha256-InbI0Tx6tRn8lN+UlC/yM305aLdf9/3xALhNChExlhQ=";
+    yarnDepsHash = "sha256-zVGH8SiL6416yZdDg34AoxsuSmktJA82lzPlvt6E53M=";
   };
   github-actions-cache-server = {
     pname = "github-actions-cache-server";
-    version = "v8.0.1";
+    version = "v8.1.1";
     src = fetchFromGitHub {
       owner = "falcondev-oss";
       repo = "github-actions-cache-server";
-      rev = "v8.0.1";
+      rev = "v8.1.1";
       fetchSubmodules = false;
-      sha256 = "sha256-KD0UE94PrYb8RlxWXVkPmo6E+AgCUapFrhWFaKrA0/I=";
+      sha256 = "sha256-7TMwU5yYwkaE/y3MwvUX/XO/yPhL30NnzSS898CINGs=";
     };
-    pnpmDepsHash = "sha256-og8VtU+zkC5nKgDSm21qW7GuAVqByUa0JGxc5/MUnPM=";
+    pnpmDepsHash = "sha256-wDGFau1ZdgsjEbaDPBgTwDMYLvkXbyO7VCnZYf4xdsc=";
   };
   headscale-ui = {
     pname = "headscale-ui";
@@ -40,15 +40,15 @@
   };
   sing-box = {
     pname = "sing-box";
-    version = "v1.12.0-beta.19";
+    version = "v1.12.0-beta.31";
     src = fetchFromGitHub {
       owner = "SagerNet";
       repo = "sing-box";
-      rev = "v1.12.0-beta.19";
+      rev = "v1.12.0-beta.31";
       fetchSubmodules = false;
-      sha256 = "sha256-Il3vjTLDR7F7hn1ZLvHoS2EWKy6AOZ5Nt5oQ+1PI6HQ=";
+      sha256 = "sha256-WwwZePdEokhLIOMJLSZV5oIEuufr+1hPaiONYaz+Nzk=";
     };
-    vendorHash = "sha256-c5/gZVwBeCpNkGRJMf0HjkQ0ttwWfDfNlb0PfuMVlwY=";
+    vendorHash = "sha256-t76QBdgTprVM5g6ytl0nG+daO6WEnI1Q5gA3bPMRR9Y=";
   };
   terraboard = {
     pname = "terraboard";
