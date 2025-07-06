@@ -115,6 +115,7 @@ data "alicloud_ram_policy_document" "github" {
   statement {
     effect = "Allow"
     action = [
+      "ecs:DescribeInstanceAttachmentAttributes",
       "ecs:DescribeInstanceAttribute",
       "ecs:DescribeInstanceAutoRenewAttribute",
       "ecs:DescribeInstanceMaintenanceAttributes",
