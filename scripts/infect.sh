@@ -5,6 +5,8 @@ nixos_image_version=nixos-24.11
 push_image=false
 push_store=false
 use_cached_image=false
+ssh_user_override=""
+ssh_host_override=""
 
 show_help() {
   echo "Usage: $0 [options] NODE"
@@ -15,6 +17,8 @@ show_help() {
   echo "  --push-store                      Push the store to a remote server (default: $push_store)"
   echo "  --use-cached-image                Use the local cached image if available"
   echo "                                    Only works if --push-image is set (default: $use_cached_image)"
+  echo "  --ssh-user USER                   Override SSH user from configuration"
+  echo "  --ssh-host HOST                   Override SSH host from configuration"
   echo
   echo "Tips:"
   echo '  Specify "--push-image --push-store" if the target node has bad internet connectivity.'
@@ -40,6 +44,14 @@ while [[ $# -gt 0 ]]; do
   --use-cached-image)
     use_cached_image=true
     shift
+    ;;
+  --ssh-user)
+    ssh_user_override="$2"
+    shift 2
+    ;;
+  --ssh-host)
+    ssh_host_override="$2"
+    shift 2
     ;;
   *)
     positional_args+=("$1")
@@ -68,7 +80,11 @@ in
   p // { path = null; }
 ")
 readarray -d '' ssh_opts < <(jq --raw-output0 '.sshOpts[]?' <<<"$deployment")
-destination=$(jq -er '"\(.sshUser)@\(.hostname)"' <<<"$deployment")
+
+ssh_user="${ssh_user_override:-$(jq -er '.sshUser' <<<"$deployment")}"
+ssh_host="${ssh_host_override:-$(jq -er '.hostname' <<<"$deployment")}"
+destination="$ssh_user@$ssh_host"
+
 arch=$(ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null "${ssh_opts[@]}" "$destination" uname -m)
 nixos_anywhere_options=(--print-build-logs --no-disko-deps --flake ".#$node")
 while [[ ${#ssh_opts[@]} -gt 0 ]]; do
@@ -108,6 +124,8 @@ nixos_anywhere_options+=("$destination")
 # STEP 2: ask for confirmation
 echo "========================================================================="
 echo "node       $node"
+echo "ssh_user   $ssh_user"
+echo "ssh_host   $ssh_host"
 echo "options    ${nixos_anywhere_options[*]}"
 if [[ $push_image != true ]]; then
   echo "image      download remotely"
