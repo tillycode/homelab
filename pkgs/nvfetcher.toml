@@ -14,10 +14,11 @@ vendorHash = "sha256-GarFrn/0x26KTxrUQwXtNYb/rttzT3f94iiWm6/dsHA="
 # fetch alpha release
 [sing-box]
 src.github_tag = "SagerNet/sing-box"
-fetch.github = "SagerNet/sing-box"
+fetch.url = "https://github.com/SagerNet/sing-box/archive/v$ver.tar.gz"
 src.include_regex = "v.*"
+src.prefix = "v"
 [sing-box.passthru]
-vendorHash = "sha256-t76QBdgTprVM5g6ytl0nG+daO6WEnI1Q5gA3bPMRR9Y="
+vendorHash = "sha256-BNRAAfXUFV0CwRXvVu0Ix1yX9ISALsdrfJ0neM+ML9M="
 
 [github-actions-cache-server]
 src.github = "falcondev-oss/github-actions-cache-server"
@@ -30,7 +31,5 @@ src.github_tag = "cloudreve/Cloudreve"
 fetch.github = "cloudreve/Cloudreve"
 git.fetchSubmodules = true
 [cloudreve.passthru]
-# yarnDepsHash = "sha256-5ZZyuFCQMRRfr2sEg1Vm2llHvrQexXyKJZWTOJ54x8c="
-yarnDepsHash = "sha256-zVGH8SiL6416yZdDg34AoxsuSmktJA82lzPlvt6E53M="
-# vendorHash = "sha256-wEgT+9oL5w0LKpOGYTPo0rzUksFZdbEvO+44Oqt7jGg="
+yarnDepsHash = "sha256-HxXG72TzyzMY/swpydkfPD/h5NHO5ty5NdtDXV9WrFY="
 vendorHash = "sha256-InbI0Tx6tRn8lN+UlC/yM305aLdf9/3xALhNChExlhQ="

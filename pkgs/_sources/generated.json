@@ -6,7 +6,7 @@
         "name": "cloudreve",
         "passthru": {
             "vendorHash": "sha256-InbI0Tx6tRn8lN+UlC/yM305aLdf9/3xALhNChExlhQ=",
-            "yarnDepsHash": "sha256-zVGH8SiL6416yZdDg34AoxsuSmktJA82lzPlvt6E53M="
+            "yarnDepsHash": "sha256-HxXG72TzyzMY/swpydkfPD/h5NHO5ty5NdtDXV9WrFY="
         },
         "pinned": false,
         "src": {
@@ -16,12 +16,12 @@
             "name": null,
             "owner": "cloudreve",
             "repo": "Cloudreve",
-            "rev": "4.2.0",
-            "sha256": "sha256-0x908FUVfKZUZ8c9errjuxJSMpNiY7AGs1yubb5I+Bc=",
+            "rev": "4.3.0",
+            "sha256": "sha256-UNGUlc57dG3jpmsujSa6R0XwGvvpdPrpgwOyPnEB+aA=",
             "sparseCheckout": [],
             "type": "github"
         },
-        "version": "4.2.0"
+        "version": "4.3.0"
     },
     "github-actions-cache-server": {
         "cargoLocks": null,
@@ -62,12 +62,12 @@
             "name": null,
             "owner": "gurucomputing",
             "repo": "headscale-ui",
-            "rev": "2025.05.22",
-            "sha256": "sha256-/wDk/ENZSgffDEEat13Yob+NmVuJF4bOPeE0XhwgC9Y=",
+            "rev": "2025.07.12",
+            "sha256": "sha256-8hn7F3dw+kIHn9tq+BpEOisQElH6QwYg6n3knz/7r1c=",
             "sparseCheckout": [],
             "type": "github"
         },
-        "version": "2025.05.22"
+        "version": "2025.07.12"
     },
     "sing-box": {
         "cargoLocks": null,
@@ -75,22 +75,16 @@
         "extract": null,
         "name": "sing-box",
         "passthru": {
-            "vendorHash": "sha256-t76QBdgTprVM5g6ytl0nG+daO6WEnI1Q5gA3bPMRR9Y="
+            "vendorHash": "sha256-BNRAAfXUFV0CwRXvVu0Ix1yX9ISALsdrfJ0neM+ML9M="
         },
         "pinned": false,
         "src": {
-            "deepClone": false,
-            "fetchSubmodules": false,
-            "leaveDotGit": false,
             "name": null,
-            "owner": "SagerNet",
-            "repo": "sing-box",
-            "rev": "v1.12.0-beta.31",
-            "sha256": "sha256-WwwZePdEokhLIOMJLSZV5oIEuufr+1hPaiONYaz+Nzk=",
-            "sparseCheckout": [],
-            "type": "github"
+            "sha256": "sha256-AfadsLkBHBQUB++K86k5r4AJRxr/exBsrKcgq8QnZ3k=",
+            "type": "url",
+            "url": "https://github.com/SagerNet/sing-box/archive/v1.12.0-beta.33.tar.gz"
         },
-        "version": "v1.12.0-beta.31"
+        "version": "1.12.0-beta.33"
     },
     "terraboard": {
         "cargoLocks": null,
