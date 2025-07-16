@@ -1,3 +1,4 @@
+{ inputs, ... }:
 {
   perSystem =
     {
@@ -22,6 +23,7 @@
             github-runner-patched
             attic-client_patched
             cloudreve
+            rke2_1_32
             ;
         }
         // (
@@ -64,6 +66,12 @@
           cloudreve = pkgs.callPackage (import ./cloudreve) {
             source = sources.cloudreve;
           };
+          inherit
+            (pkgs.callPackage (import ./rke2) {
+              inherit (inputs) nixpkgs;
+            })
+            rke2_1_32
+            ;
         }
         // (
           if system == "aarch64-linux" then

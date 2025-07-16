@@ -38,15 +38,9 @@ tasks:
       vars: [NODE]
 
   diff:
+    desc: "Diff the current system with the new configuration"
     cmds:
-      - deploy --skip-checks ".#{{.NODE}}" --dry-activate --debug-logs {{.CLI_ARGS}}
-      - >-
-        uv run scripts/ssh.py --node={{.NODE}}
-        nix run --extra-experimental-features '"nix-command flakes"'
-        nixpkgs#nvd -- --color always diff /run/current-system
-        "$(nix build .#nixosConfigurations.{{.NODE}}.config.system.build.toplevel --print-out-paths)"
-    requires:
-      vars: [NODE]
+      - scripts/diff.sh {{.CLI_ARGS}}
 
   infect:
     desc: "Infect the node with nixos-anywhere"

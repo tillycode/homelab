@@ -57,7 +57,7 @@
     locations."/" = {
       proxyPass = "http://[::1]:${toString config.ports.atticd}";
       extraConfig = ''
-        client_max_body_size 800M;
+        client_max_body_size 0;
       '';
     };
   };
