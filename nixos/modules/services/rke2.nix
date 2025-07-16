@@ -103,24 +103,28 @@ in
       users.groups.etcd = { };
     })
     (lib.mkIf (cfg.enable && cfg.manifests != { } && cfg.role == "server") {
-      systemd.services."rke2-${cfg.role}" = {
+      systemd.services."rke2-${cfg.role}-update-manifests" = {
+        script = ''
+          mkdir -p ${cfg.dataDir}/server/manifests
+          ${lib.pipe cfg.manifests [
+            (lib.mapAttrs (name: value: if lib.isPath value then value else pkgs.writeText name value))
+            (lib.mapAttrsToList (
+              name: value:
+              "cp -f ${lib.escapeShellArg value} ${
+                lib.escapeShellArg (cfg.dataDir + "/server/manifests/" + name)
+              }"
+            ))
+            (lib.concatStringsSep "\n")
+          ]}
+        '';
         serviceConfig = {
-          ExecStartPre = [
-            (pkgs.writeShellScript "update-manifests.sh" ''
-              mkdir -p ${cfg.dataDir}/server/manifests
-              ${lib.pipe cfg.manifests [
-                (lib.mapAttrs (name: value: if lib.isPath value then value else pkgs.writeText name value))
-                (lib.mapAttrsToList (
-                  name: value:
-                  "cp -f ${lib.escapeShellArg value} ${
-                    lib.escapeShellArg (cfg.dataDir + "/server/manifests/" + name)
-                  }"
-                ))
-                (lib.concatStringsSep "\n")
-              ]}
-            '')
-          ];
+          Type = "oneshot";
+          RemainAfterExit = true;
         };
+      };
+      systemd.services."rke2-${cfg.role}" = {
+        requires = [ "rke2-${cfg.role}-update-manifests.service" ];
+        after = [ "rke2-${cfg.role}-update-manifests.service" ];
       };
     })
     (lib.mkIf (cfg.enable && cfg.useResolved) {

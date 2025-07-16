@@ -387,6 +387,8 @@ let
           swapSize = "32G";
         };
         sops.defaultSopsFile = ../secrets/nodes/hasee01.yaml;
+        systemd.network.networks."40-eth0".address = [ "192.168.22.10/24" ];
+        services.rke2.extraFlags = [ "--node-ip=192.168.22.10" ];
       }
       (
         { profiles, suites, ... }:
@@ -400,6 +402,7 @@ let
               config.nix-cache
               config.no-nixos-doc
               services.node-exporter
+              services.rke2-hasee-bootstrap
               services.tailscale
               system.disko
               system.systemd-boot
@@ -423,6 +426,8 @@ let
           swapSize = "32G";
         };
         sops.defaultSopsFile = ../secrets/nodes/hasee02.yaml;
+        systemd.network.networks."40-eth0".address = [ "192.168.22.11/24" ];
+        services.rke2.extraFlags = [ "--node-ip=192.168.22.11" ];
       }
       (
         { profiles, suites, ... }:
@@ -436,6 +441,7 @@ let
               config.nix-cache
               config.no-nixos-doc
               services.node-exporter
+              services.rke2-hasee-server
               services.tailscale
               system.disko
               system.systemd-boot
@@ -459,6 +465,8 @@ let
           swapSize = "32G";
         };
         sops.defaultSopsFile = ../secrets/nodes/hasee03.yaml;
+        systemd.network.networks."40-eth0".address = [ "192.168.22.12/24" ];
+        services.rke2.extraFlags = [ "--node-ip=192.168.22.12" ];
       }
       (
         { profiles, suites, ... }:
@@ -472,6 +480,7 @@ let
               config.nix-cache
               config.no-nixos-doc
               services.node-exporter
+              services.rke2-hasee-server
               services.tailscale
               system.disko
               system.systemd-boot
@@ -553,8 +562,6 @@ in
   flake.nixosConfigurations = hosts;
 
   flake.deploy = {
-    autoRollback = false;
-    magicRollback = false;
     inherit nodes;
   };
 

@@ -1,26 +1,21 @@
 {
   config,
   lib,
+  pkgs,
   ...
 }:
 let
   cfg = config.services.rke2;
+  pkg = pkgs.rke2_1_32;
 in
 lib.mkMerge [
   {
     services.rke2 = {
       enable = true;
       cisHardening = true;
-      nodeInterface = "tailscale0";
       useResolved = true;
+      package = pkg;
     };
-
-    # for cilium
-    networking.firewall.checkReversePath = "loose";
-    networking.firewall.trustedInterfaces = [
-      "cilium*"
-      "lxc*"
-    ];
 
     environment.persistence.default.directories = [
       cfg.dataDir
@@ -36,6 +31,7 @@ lib.mkMerge [
       extraFlags = [
         "--disable-kube-proxy"
         "--disable-cloud-controller"
+        "--tls-san=${config.domains.k8s}"
         "--ingress-controller=traefik"
       ];
     };
