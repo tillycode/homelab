@@ -260,8 +260,8 @@ let
               services.nginx
               services.node-exporter
               services.restic
-              services.rke2-bootstrap
-              services.rke2-ingress
+              services.rke2.bootstrap
+              services.rke2.ingress
               services.tailscale
               system.systemd-boot
               users.sun
@@ -387,8 +387,8 @@ let
           swapSize = "32G";
         };
         sops.defaultSopsFile = ../secrets/nodes/hasee01.yaml;
-        systemd.network.networks."40-eth0".address = [ "192.168.22.10/24" ];
-        services.rke2.extraFlags = [ "--node-ip=192.168.22.10" ];
+        systemd.network.networks."40-eth0".address = [ "192.168.22.11/24" ];
+        services.rke2.extraFlags = [ "--node-ip=192.168.22.11" ];
       }
       (
         { profiles, suites, ... }:
@@ -402,7 +402,7 @@ let
               config.nix-cache
               config.no-nixos-doc
               services.node-exporter
-              services.rke2-hasee-bootstrap
+              services.rke2-hasee.bootstrap
               services.tailscale
               system.disko
               system.systemd-boot
@@ -426,8 +426,8 @@ let
           swapSize = "32G";
         };
         sops.defaultSopsFile = ../secrets/nodes/hasee02.yaml;
-        systemd.network.networks."40-eth0".address = [ "192.168.22.11/24" ];
-        services.rke2.extraFlags = [ "--node-ip=192.168.22.11" ];
+        systemd.network.networks."40-eth0".address = [ "192.168.22.12/24" ];
+        services.rke2.extraFlags = [ "--node-ip=192.168.22.12" ];
       }
       (
         { profiles, suites, ... }:
@@ -441,7 +441,7 @@ let
               config.nix-cache
               config.no-nixos-doc
               services.node-exporter
-              services.rke2-hasee-server
+              services.rke2-hasee.server
               services.tailscale
               system.disko
               system.systemd-boot
@@ -465,8 +465,8 @@ let
           swapSize = "32G";
         };
         sops.defaultSopsFile = ../secrets/nodes/hasee03.yaml;
-        systemd.network.networks."40-eth0".address = [ "192.168.22.12/24" ];
-        services.rke2.extraFlags = [ "--node-ip=192.168.22.12" ];
+        systemd.network.networks."40-eth0".address = [ "192.168.22.13/24" ];
+        services.rke2.extraFlags = [ "--node-ip=192.168.22.13" ];
       }
       (
         { profiles, suites, ... }:
@@ -480,7 +480,7 @@ let
               config.nix-cache
               config.no-nixos-doc
               services.node-exporter
-              services.rke2-hasee-server
+              services.rke2-hasee.server
               services.tailscale
               system.disko
               system.systemd-boot

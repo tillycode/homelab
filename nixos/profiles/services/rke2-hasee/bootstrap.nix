@@ -1,14 +1,14 @@
 { lib, ... }:
 let
-  manifests = lib.pipe ./_rke2-manifests [
+  manifests = lib.pipe ./_manifests [
     builtins.readDir
     (lib.filterAttrs (k: v: v == "regular" && lib.hasSuffix ".yaml" k))
-    (lib.mapAttrs (k: v: builtins.readFile ./_rke2-manifests/${k}))
+    (lib.mapAttrs (k: v: builtins.readFile ./_manifests/${k}))
   ];
 in
 {
   imports = [
-    ./_rke2-common.nix
+    ./_common.nix
   ];
   services.rke2 = {
     role = "server";

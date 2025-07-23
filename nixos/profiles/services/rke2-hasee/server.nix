@@ -1,7 +1,7 @@
 { config, ... }:
 {
   imports = [
-    ./_rke2-common.nix
+    ./_common.nix
   ];
   services.rke2 = {
     role = "server";
