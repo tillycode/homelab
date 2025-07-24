@@ -12,6 +12,7 @@ in
   options.services.rke2 = {
     nodeInterface = lib.mkOption {
       type = lib.types.nullOr lib.types.str;
+      default = null;
       description = "Set --node-ip from interface.";
     };
     enableNodeInterfaceIPv6 = lib.mkOption {
@@ -94,6 +95,41 @@ in
           );
         };
       };
+    })
+    (lib.mkIf (cfg.enable == true && cfg.nodeInterface == null) {
+      systemd.services."rke2-${cfg.role}".serviceConfig.ExecStart =
+        lib.mkForce "${cfg.package}/bin/rke2 '${cfg.role}' ${
+          lib.escapeShellArgs (
+            (lib.optional (cfg.configPath != "/etc/rancher/rke2/config.yaml") "--config=${cfg.configPath}")
+            ++ (lib.optional cfg.debug "--debug")
+            ++ (lib.optional (cfg.dataDir != "/var/lib/rancher/rke2") "--data-dir=${cfg.dataDir}")
+            ++ (lib.optional (cfg.token != "") "--token=${cfg.token}")
+            ++ (lib.optional (cfg.tokenFile != null) "--token-file=${cfg.tokenFile}")
+            ++ (lib.optionals (cfg.role == "server" && cfg.disable != [ ]) (
+              map (d: "--disable=${d}") cfg.disable
+            ))
+            ++ (lib.optional (cfg.nodeName != null) "--node-name=${cfg.nodeName}")
+            ++ (lib.optionals (cfg.nodeLabel != [ ]) (map (l: "--node-label=${l}") cfg.nodeLabel))
+            ++ (lib.optionals (cfg.nodeTaint != [ ]) (map (t: "--node-taint=${t}") cfg.nodeTaint))
+            ++ (lib.optional (cfg.nodeIP != null) "--node-ip=${cfg.nodeIP}")
+            ++ (lib.optional (cfg.role == "server" && cfg.agentToken != "") "--agent-token=${cfg.agentToken}")
+            ++ (lib.optional (
+              cfg.role == "server" && cfg.agentTokenFile != null
+            ) "--agent-token-file=${cfg.agentTokenFile}")
+            ++ (lib.optional (cfg.serverAddr != "") "--server=${cfg.serverAddr}")
+            ++ (lib.optional cfg.selinux "--selinux")
+            ++ (lib.optional (cfg.role == "server" && cfg.cni != "canal") "--cni=${cfg.cni}")
+            ++ (lib.optional cfg.cisHardening "--profile=${
+              if cfg.package.version >= "1.27" then
+                "cis"
+              else if cfg.package.version >= "1.25" then
+                "cis-1.23"
+              else
+                "cis-1.6"
+            }")
+            ++ cfg.extraFlags
+          )
+        }";
     })
     (lib.mkIf (cfg.enable && cfg.cisHardening && cfg.role == "server") {
       users.users.etcd = {

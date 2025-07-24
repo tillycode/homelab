@@ -98,17 +98,17 @@
         {
           # hasee01
           MACAddress = "68:1d:ef:52:68:b7";
-          Address = "192.168.22.10";
+          Address = "192.168.22.11";
         }
         {
           # hasee02
           MACAddress = "68:1d:ef:52:5a:82";
-          Address = "192.168.22.11";
+          Address = "192.168.22.12";
         }
         {
           # hasee03
           MACAddress = "68:1d:ef:52:71:fe";
-          Address = "192.168.22.12";
+          Address = "192.168.22.13";
         }
       ];
     };
