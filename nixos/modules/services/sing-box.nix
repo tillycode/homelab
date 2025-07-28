@@ -207,7 +207,8 @@ in
           route_address = [
             fakeipCfg.inet4_range
             fakeipCfg.inet6_range
-          ] ++ cfg.tunExtraRoutes;
+          ]
+          ++ cfg.tunExtraRoutes;
           auto_route = true;
         }
         {

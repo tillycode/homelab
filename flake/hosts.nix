@@ -246,28 +246,27 @@ let
       (
         { profiles, suites, ... }:
         {
-          imports =
-            [
-              ../nixos/hosts/desktop
-            ]
-            ++ suites.desktop
-            ++ (with profiles; [
-              config.nix-cache
-              services.gha-cache-server
-              services.github-runner
-              services.minecraft
-              services.minio
-              services.nginx
-              services.node-exporter
-              services.restic
-              services.rke2.bootstrap
-              services.rke2.ingress
-              services.tailscale
-              system.systemd-boot
-              users.sun
-              virtualization.incus
-              virtualization.podman
-            ]);
+          imports = [
+            ../nixos/hosts/desktop
+          ]
+          ++ suites.desktop
+          ++ (with profiles; [
+            config.nix-cache
+            services.gha-cache-server
+            services.github-runner
+            services.minecraft
+            services.minio
+            services.nginx
+            services.node-exporter
+            services.restic
+            services.rke2.bootstrap
+            services.rke2.ingress
+            services.tailscale
+            system.systemd-boot
+            users.sun
+            virtualization.incus
+            virtualization.podman
+          ]);
         }
       )
     ];
@@ -286,19 +285,18 @@ let
       (
         { profiles, suites, ... }:
         {
-          imports =
-            [
-              ../nixos/hosts/laptop
-            ]
-            ++ suites.desktop
-            ++ suites.domestic
-            ++ (with profiles; [
-              services.power-profiles-daemon
-              system.systemd-boot
-              system.disko
-              virtualization.podman
-              users.sun
-            ]);
+          imports = [
+            ../nixos/hosts/laptop
+          ]
+          ++ suites.desktop
+          ++ suites.domestic
+          ++ (with profiles; [
+            services.power-profiles-daemon
+            system.systemd-boot
+            system.disko
+            virtualization.podman
+            users.sun
+          ]);
         }
       )
     ];
@@ -318,17 +316,16 @@ let
       (
         { suites, profiles, ... }:
         {
-          imports =
-            [
-              ../nixos/hosts/r2s
-            ]
-            ++ suites.base
-            ++ suites.domestic
-            ++ (with profiles; [
-              config.no-nixos-doc
-              services.node-exporter
-              services.vector
-            ]);
+          imports = [
+            ../nixos/hosts/r2s
+          ]
+          ++ suites.base
+          ++ suites.domestic
+          ++ (with profiles; [
+            config.no-nixos-doc
+            services.node-exporter
+            services.vector
+          ]);
         }
       )
     ];
@@ -353,21 +350,20 @@ let
       (
         { profiles, suites, ... }:
         {
-          imports =
-            [
-              ../nixos/hosts/router
-            ]
-            ++ suites.base
-            ++ (with profiles; [
-              config.no-nixos-doc
-              services.coredns-router
-              services.node-exporter
-              services.pppd
-              services.sing-box-router
-              services.tailscale
-              system.disko
-              system.systemd-boot
-            ]);
+          imports = [
+            ../nixos/hosts/router
+          ]
+          ++ suites.base
+          ++ (with profiles; [
+            config.no-nixos-doc
+            services.coredns-router
+            services.node-exporter
+            services.pppd
+            services.sing-box-router
+            services.tailscale
+            system.disko
+            system.systemd-boot
+          ]);
         }
       )
     ];
@@ -393,20 +389,19 @@ let
       (
         { profiles, suites, ... }:
         {
-          imports =
-            [
-              ../nixos/hosts/hasee
-            ]
-            ++ suites.base
-            ++ (with profiles; [
-              config.nix-cache
-              config.no-nixos-doc
-              services.node-exporter
-              services.rke2-hasee.bootstrap
-              services.tailscale
-              system.disko
-              system.systemd-boot
-            ]);
+          imports = [
+            ../nixos/hosts/hasee
+          ]
+          ++ suites.base
+          ++ (with profiles; [
+            config.nix-cache
+            config.no-nixos-doc
+            services.node-exporter
+            services.rke2-hasee.bootstrap
+            services.tailscale
+            system.disko
+            system.systemd-boot
+          ]);
         }
       )
     ];
@@ -432,20 +427,19 @@ let
       (
         { profiles, suites, ... }:
         {
-          imports =
-            [
-              ../nixos/hosts/hasee
-            ]
-            ++ suites.base
-            ++ (with profiles; [
-              config.nix-cache
-              config.no-nixos-doc
-              services.node-exporter
-              services.rke2-hasee.server
-              services.tailscale
-              system.disko
-              system.systemd-boot
-            ]);
+          imports = [
+            ../nixos/hosts/hasee
+          ]
+          ++ suites.base
+          ++ (with profiles; [
+            config.nix-cache
+            config.no-nixos-doc
+            services.node-exporter
+            services.rke2-hasee.server
+            services.tailscale
+            system.disko
+            system.systemd-boot
+          ]);
         }
       )
     ];
@@ -471,20 +465,19 @@ let
       (
         { profiles, suites, ... }:
         {
-          imports =
-            [
-              ../nixos/hosts/hasee
-            ]
-            ++ suites.base
-            ++ (with profiles; [
-              config.nix-cache
-              config.no-nixos-doc
-              services.node-exporter
-              services.rke2-hasee.server
-              services.tailscale
-              system.disko
-              system.systemd-boot
-            ]);
+          imports = [
+            ../nixos/hosts/hasee
+          ]
+          ++ suites.base
+          ++ (with profiles; [
+            config.nix-cache
+            config.no-nixos-doc
+            services.node-exporter
+            services.rke2-hasee.server
+            services.tailscale
+            system.disko
+            system.systemd-boot
+          ]);
         }
       )
     ];

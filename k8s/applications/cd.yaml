@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/tillycode/homelab.git
-    targetRevision: feat/argocd
+    targetRevision: master
     path: k8s/argocd
   destination:
     server: "https://kubernetes.default.svc"
@@ -21,7 +21,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/tillycode/homelab.git
-    targetRevision: feat/argocd
+    targetRevision: master
     path: k8s/applications
   destination:
     server: "https://kubernetes.default.svc"

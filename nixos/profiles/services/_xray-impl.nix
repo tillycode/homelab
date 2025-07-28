@@ -90,27 +90,26 @@ in
             };
           }
         ];
-        outbounds =
-          [
-            {
-              protocol = "freedom";
-              tag = "direct";
-              settings = {
-                domainStrategy = if cfg.nameserver != null then "UseIP" else "AsIs";
-              };
-            }
-            {
-              protocol = "blackhole";
-              tag = "blocked";
-            }
-          ]
-          ++ lib.optional (cfg.privateNameserver != null) {
+        outbounds = [
+          {
             protocol = "freedom";
-            tag = "private-dns";
+            tag = "direct";
             settings = {
-              redirect = "${cfg.privateNameserver}:53";
+              domainStrategy = if cfg.nameserver != null then "UseIP" else "AsIs";
             };
+          }
+          {
+            protocol = "blackhole";
+            tag = "blocked";
+          }
+        ]
+        ++ lib.optional (cfg.privateNameserver != null) {
+          protocol = "freedom";
+          tag = "private-dns";
+          settings = {
+            redirect = "${cfg.privateNameserver}:53";
           };
+        };
         routing.rules =
           lib.optionals (lib.length cfg.privateCIDRs != 0) [
             {
