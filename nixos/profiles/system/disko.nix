@@ -57,28 +57,27 @@ in
               content = {
                 type = "btrfs";
                 extraArgs = [ "-f" ];
-                subvolumes =
-                  {
-                    "@nix" = {
-                      mountpoint = "/nix";
-                      mountOptions = [
-                        "compress-force=zstd"
-                        "noatime"
-                      ];
-                    };
-                    "@persist" = {
-                      mountpoint = "/.persist";
-                      mountOptions = [ "compress-force=zstd" ];
-                    };
-                  }
-                  // lib.optionalAttrs (cfg.swapSize != null) {
-                    "@swap" = {
-                      mountpoint = "/.swap";
-                      swap = {
-                        swapfile.size = cfg.swapSize;
-                      };
+                subvolumes = {
+                  "@nix" = {
+                    mountpoint = "/nix";
+                    mountOptions = [
+                      "compress-force=zstd"
+                      "noatime"
+                    ];
+                  };
+                  "@persist" = {
+                    mountpoint = "/.persist";
+                    mountOptions = [ "compress-force=zstd" ];
+                  };
+                }
+                // lib.optionalAttrs (cfg.swapSize != null) {
+                  "@swap" = {
+                    mountpoint = "/.swap";
+                    swap = {
+                      swapfile.size = cfg.swapSize;
                     };
                   };
+                };
               };
             };
           };
