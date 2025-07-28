@@ -24,6 +24,7 @@ stdenv.mkDerivation (final: {
   pnpmDeps = pnpm.fetchDeps {
     inherit (final) pname version src;
     hash = source.pnpmDepsHash;
+    fetcherVersion = 1;
   };
 
   buildPhase = ''
