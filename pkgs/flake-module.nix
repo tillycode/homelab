@@ -23,6 +23,7 @@
           attic-client_patched
           cloudreve
           rke2_1_32
+          rke2_1_33
           ;
       }
       // (
@@ -69,6 +70,7 @@
             inherit (inputs) nixpkgs;
           })
           rke2_1_32
+          rke2_1_33
           ;
       }
       // (
