@@ -23,4 +23,13 @@ in
       ];
     }
   ) extraArgs;
+  rke2_1_33 = common (
+    (import ./1_33/versions.nix)
+    // {
+      updateScript = [
+        ./update-script.sh
+        "33"
+      ];
+    }
+  ) extraArgs;
 }

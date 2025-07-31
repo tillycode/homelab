@@ -6,7 +6,7 @@
 }:
 let
   cfg = config.services.rke2;
-  pkg = pkgs.rke2_1_32;
+  pkg = pkgs.rke2_1_33;
 in
 lib.mkMerge [
   {
