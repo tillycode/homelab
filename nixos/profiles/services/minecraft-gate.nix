@@ -62,7 +62,13 @@ in
   services.nginx.virtualHosts."mc.szp15.com" = {
     enableACME = true;
     forceSSL = true;
-    locations."/".proxyPass =
-      "http://${config.domains.mc-internal}:${toString config.ports.minecraft-dynmap}";
+    locations."/" = {
+      # avoid startup failure due to name resolution
+      extraConfig = ''
+        resolver 100.100.100.100;
+        set $mc_internal ${config.domains.mc-internal}:${toString config.ports.minecraft-dynmap};
+        proxy_pass http://$mc_internal;
+      '';
+    };
   };
 }

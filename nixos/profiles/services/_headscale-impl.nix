@@ -241,7 +241,7 @@ in
         proxyWebsockets = true;
       };
       locations."= /" = {
-        return = "301 /web/";
+        return = "301 https://${cfg.publicDomain}/web/";
       };
     };
 

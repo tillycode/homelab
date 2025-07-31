@@ -19,7 +19,7 @@ let
   ];
   node-keys = {
     hgh0 = "age1q93v8zc62mczmz30wy04n8erlfhhhjc3k7a3vspccjqpvehxadyqgrzrue";
-    hkg0 = "age1gp0jvxqvjpz9gc6ewaggetxsp0phwyrrvagw57j9tzea507g2y3qpqwwa4";
+    hkg0 = "age1luasnwh2kjtck7c25msmhy2k4dxw966609kt3r3sfj3yxlwgrdlqcgmmxn";
     sha0 = "age1cfyre76ucj4a7dw34w2ura5yc9wl9u2a6uj5gdyc82fyjm6mrdeqwn24l6";
     desktop = "age1v6lnkm7prm0dpmcdpvn44v50rpfkzsed5uv3znxt4grsd5y6sv5qjru9qq";
     laptop = "age1kgcxdnuy9fxtcf6fp7camk6tqm0fset0jvvh9760rqmrkmx99v0q2c7w8e";

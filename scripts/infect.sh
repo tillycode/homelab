@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-nixos_image_version=nixos-24.11
+nixos_image_version=nixos-25.05
 push_image=false
 push_store=false
 use_cached_image=false
