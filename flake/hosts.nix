@@ -357,9 +357,9 @@ let
           ++ (with profiles; [
             config.no-nixos-doc
             services.coredns-router
+            services.daed
             services.node-exporter
             services.pppd
-            services.sing-box-router
             services.tailscale
             system.disko
             system.systemd-boot
