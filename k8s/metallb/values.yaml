@@ -1,0 +1,7 @@
+# use experimental frr-k8s
+speaker:
+  frr:
+    enabled: false
+
+frrk8s:
+  enabled: true

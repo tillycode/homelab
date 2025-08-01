@@ -41,5 +41,5 @@ roleRef:
   name: system:kube-vip-role
 subjects:
   - kind: ServiceAccount
-    name: kube-vip
+    name: kube-vipExecStart=/nix/store/4an6q1khjy6mwvgmjyl8msch8ndpdssr-unit-script-rke2-server-update-manifests-start/bin/rke2-server-update-manifests-start
     namespace: kube-system

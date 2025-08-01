@@ -1,0 +1,34 @@
+deployment:
+  kind: DaemonSet
+ingressClass:
+  isDefaultClass: false
+  name: traefik
+gatewayClass:
+  name: traefik
+  # TODO: gateway missing tls cert
+ingressRoute:
+  dashboard:
+    enabled: true
+updateStrategy:
+  rollingUpdate:
+    maxUnavailable: 1
+    maxSurge: 0
+providers:
+  kubernetesCRD:
+    ingressClass: traefik
+  kubernetesIngress:
+    ingressClass: traefik
+  kubernetesGateway:
+    enabled: true
+ports:
+  web:
+    redirections:
+      entryPoint:
+        to: websecure
+        scheme: https
+        permanent: true
+service:
+  type: LoadBalancer
+securityContext:
+  seccompProfile:
+    type: RuntimeDefault

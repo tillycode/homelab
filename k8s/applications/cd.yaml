@@ -7,11 +7,10 @@ spec:
   project: default
   source:
     repoURL: https://github.com/tillycode/homelab.git
-    targetRevision: master
+    targetRevision: feat/metallb
     path: k8s/argocd
   destination:
-    server: "https://kubernetes.default.svc"
-    namespace: argocd
+    server: https://kubernetes.default.svc
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -21,8 +20,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/tillycode/homelab.git
-    targetRevision: master
+    targetRevision: feat/metallb
     path: k8s/applications
   destination:
-    server: "https://kubernetes.default.svc"
-    namespace: argocd
+    server: https://kubernetes.default.svc

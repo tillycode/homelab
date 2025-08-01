@@ -1,0 +1,14 @@
+---
+apiVersion: metallb.io/v1beta2
+kind: BGPPeer
+metadata:
+  name: router
+spec:
+  peerAddress: 192.168.22.1
+  peerASN: 65122
+  myASN: 65123
+---
+apiVersion: metallb.io/v1beta1
+kind: BGPAdvertisement
+metadata:
+  name: default
