@@ -18,6 +18,7 @@
       python3
       uv
       nix-fast-build
+      step-cli
     ];
     devshell.startup = {
       nixago.text = config.nixago.shellHook;

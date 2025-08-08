@@ -53,16 +53,14 @@ in
     }
   );
 
-  systemd.services = lib.mkIf config.services.sing-box.enable (
-    mkRunners (
-      n:
-      lib.nameValuePair "github-runner-${n}" {
-        after = [ "sing-box.service" ];
-        serviceConfig = {
-          CacheDirectory = "github-runner/actions";
-        };
-      }
-    )
+  systemd.services = mkRunners (
+    n:
+    lib.nameValuePair "github-runner-${n}" {
+      after = [ "sing-box.service" ];
+      serviceConfig = {
+        CacheDirectory = "github-runner/actions";
+      };
+    }
   );
 
   ## ---------------------------------------------------------------------------

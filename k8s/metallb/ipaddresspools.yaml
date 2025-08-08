@@ -1,0 +1,19 @@
+---
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: lan-pool-auto
+  namespace: metallb-system
+spec:
+  addresses:
+    - 192.168.23.64/26
+---
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: lan-pool-static
+  namespace: metallb-system
+spec:
+  addresses:
+    - 192.168.23.0/26
+  autoAssign: false

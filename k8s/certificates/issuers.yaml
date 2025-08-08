@@ -1,0 +1,10 @@
+# Prerequisites
+# - provision `k8s-intermediate-ca` using `scripts/provision-k8s-ca.sh`
+---
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: k8s-intermediate
+spec:
+  ca:
+    secretName: k8s-intermediate-ca
