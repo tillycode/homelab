@@ -358,6 +358,7 @@ let
             config.no-nixos-doc
             services.coredns-router
             services.daed
+            services.frr-router
             services.node-exporter
             services.pppd
             services.tailscale

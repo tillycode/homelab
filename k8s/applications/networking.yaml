@@ -1,0 +1,186 @@
+## -----------------------------------------------------------------------------
+## LOAD BALANCER
+## -----------------------------------------------------------------------------
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: metallb-chart
+spec:
+  project: default
+  sources:
+    - chart: metallb
+      repoURL: https://metallb.github.io/metallb
+      targetRevision: 0.15.2
+      helm:
+        releaseName: metallb
+        valueFiles:
+          - $values/k8s/metallb/values.yaml
+    - repoURL: https://github.com/tillycode/homelab.git
+      targetRevision: master
+      ref: values
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: metallb-system
+  syncPolicy:
+    managedNamespaceMetadata:
+      labels:
+        pod-security.kubernetes.io/enforce: privileged
+        pod-security.kubernetes.io/audit: privileged
+        pod-security.kubernetes.io/warn: privileged
+    syncOptions:
+      - CreateNamespace=true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: metallb-addons
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/tillycode/homelab.git
+    targetRevision: master
+    path: k8s/metallb
+  destination:
+    server: https://kubernetes.default.svc
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kube-vip
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/tillycode/homelab.git
+    targetRevision: master
+    path: k8s/kube-vip
+  destination:
+    server: https://kubernetes.default.svc
+## -----------------------------------------------------------------------------
+## CERTIFICATE AUTHORITY
+## -----------------------------------------------------------------------------
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cert-manager
+spec:
+  project: default
+  sources:
+    - chart: cert-manager
+      repoURL: quay.io/jetstack/charts
+      targetRevision: v1.18.2
+      helm:
+        valueFiles:
+          - $values/k8s/cert-manager/values.yaml
+    - repoURL: https://github.com/tillycode/homelab.git
+      targetRevision: master
+      ref: values
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: cert-manager
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: step-issuer
+spec:
+  project: default
+  sources:
+    - chart: step-issuer
+      repoURL: https://smallstep.github.io/helm-charts
+      targetRevision: 1.9.9
+      helm:
+        valueFiles:
+          - $values/k8s/step-issuer/values.yaml
+    - repoURL: https://github.com/tillycode/homelab.git
+      targetRevision: master
+      ref: values
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: step-issuer
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: certificates
+spec:
+  project: default
+  sources:
+    - repoURL: https://github.com/tillycode/homelab.git
+      targetRevision: master
+      path: k8s/certificates
+  destination:
+    server: https://kubernetes.default.svc
+## -----------------------------------------------------------------------------
+## INGRESS
+## -----------------------------------------------------------------------------
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: traefik
+spec:
+  project: default
+  sources:
+    - chart: traefik
+      repoURL: https://traefik.github.io/charts
+      targetRevision: 37.0.0
+      helm:
+        valueFiles:
+          - $values/k8s/traefik/values.yaml
+    - repoURL: https://github.com/tillycode/homelab.git
+      targetRevision: master
+      ref: values
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: traefik
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+## -----------------------------------------------------------------------------
+## DNS
+## -----------------------------------------------------------------------------
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: exdns-chart
+spec:
+  project: default
+  sources:
+    - chart: k8s-gateway
+      repoURL: https://k8s-gateway.github.io/k8s_gateway
+      targetRevision: 3.2.3
+      helm:
+        releaseName: exdns
+        valueFiles:
+          - $values/k8s/exdns/values.yaml
+    - repoURL: https://github.com/tillycode/homelab.git
+      targetRevision: master
+      ref: values
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: kube-system
+## -----------------------------------------------------------------------------
+## POLICY
+## -----------------------------------------------------------------------------
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: exdns-addons
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/tillycode/homelab.git
+    targetRevision: master
+    path: k8s/exdns
+  destination:
+    server: https://kubernetes.default.svc

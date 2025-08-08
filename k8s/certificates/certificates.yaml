@@ -1,0 +1,14 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: gateway
+  namespace: traefik
+spec:
+  secretName: gateway-tls
+  commonName: "*.k8s.szp.io"
+  dnsNames:
+    - "*.k8s.szp.io"
+  issuerRef:
+    name: k8s-intermediate
+    kind: ClusterIssuer

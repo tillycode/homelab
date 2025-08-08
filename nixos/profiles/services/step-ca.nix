@@ -2,12 +2,14 @@
   config,
   lib,
   pkgs,
+  utils,
   ...
 }:
 let
   caName = "szp.io";
   domain = config.domains.step-ca;
   home = config.users.users.step-ca.home;
+  cfg = config.services.step-ca;
 in
 {
   ## ---------------------------------------------------------------------------
@@ -40,6 +42,20 @@ in
             enableSSHCA = true;
           };
         }
+        {
+          type = "JWK";
+          name = "k8s";
+          key = {
+            _secret = "${home}/certs/k8s-jwk.pub.json";
+            quote = false;
+          };
+          encryptedKey = {
+            _secret = "${home}/secrets/k8s-jwk.token";
+          };
+          claims = {
+            enableSSHCA = false;
+          };
+        }
       ];
       tls = {
         cipherSuites = [
@@ -62,18 +78,33 @@ in
   ## INITIALIZATION
   ## ---------------------------------------------------------------------------
   systemd.services.step-ca.preStart = ''
-    set -o noclobber
-
     export STEPPATH=$HOME
-    if { >"$HOME/.init"; } &>/dev/null; then
+
+    if [[ ! -f "$HOME/.init" ]]; then
       ${lib.getExe pkgs.step-cli} ca init --deployment-type standalone --pki \
         --name ${lib.strings.escapeShellArg caName} \
         --dns ${lib.strings.escapeShellArg domain} \
         --ssh \
         --password-file "''${CREDENTIALS_DIRECTORY}/intermediate_password"
+      touch "$HOME/.init"
     fi
 
-    set +o noclobber
+    if [[ ! -f "$HOME/.init-k8s-provisioner" ]]; then
+      ${lib.getExe pkgs.step-cli} crypto jwk create \
+        --password-file "''${CREDENTIALS_DIRECTORY}/intermediate_password" \
+        "$HOME/certs/k8s-jwk.pub.json" "$HOME/secrets/k8s-jwk.json"
+      ${lib.getExe pkgs.jq} -r \
+        '"\(.protected).\(.encrypted_key).\(.iv).\(.ciphertext).\(.tag)"' \
+        "$HOME/secrets/k8s-jwk.json" > "$HOME/secrets/k8s-jwk.token"
+      touch "$HOME/.init-k8s-provisioner"
+    fi
+
+    ${utils.genJqSecretsReplacementSnippet (
+      cfg.settings
+      // {
+        address = cfg.address + ":" + toString cfg.port;
+      }
+    ) "/run/step-ca/config.json"}
   '';
 
   ## ---------------------------------------------------------------------------
@@ -112,5 +143,20 @@ in
   security.acme.certs.${domain} = {
     server = "https://127.0.0.1:${toString config.ports.step-ca}/acme/acme/directory";
     extraLegoFlags = [ "--tls-skip-verify" ];
+  };
+
+  ## ---------------------------------------------------------------------------
+  ## HACK
+  ## ---------------------------------------------------------------------------
+  # support template
+  environment.etc."smallstep/ca.json".enable = false;
+  systemd.services."step-ca" = {
+    serviceConfig = {
+      ExecStart = lib.mkForce [
+        ""
+        "${cfg.package}/bin/step-ca /run/step-ca/config.json --password-file \${CREDENTIALS_DIRECTORY}/intermediate_password"
+      ];
+      RuntimeDirectory = "step-ca";
+    };
   };
 }

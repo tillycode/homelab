@@ -1,0 +1,50 @@
+deployment:
+  kind: DaemonSet
+ingressClass:
+  enabled: false
+gateway:
+  listeners:
+    web:
+      port: 80
+      protocol: HTTP
+      namespacePolicy:
+        from: All
+    websecure:
+      port: 443
+      protocol: HTTPS
+      namespacePolicy:
+        from: All
+      mode: Terminate
+      certificateRefs:
+        - kind: Secret
+          name: gateway-tls
+          group: ""
+ingressRoute:
+  dashboard:
+    enabled: true
+updateStrategy:
+  rollingUpdate:
+    maxUnavailable: 1
+    maxSurge: 0
+providers:
+  kubernetesIngress:
+    enabled: false
+  kubernetesGateway:
+    enabled: true
+ports:
+  web:
+    port: 80
+    redirections:
+      entryPoint:
+        to: websecure
+        scheme: https
+        permanent: true
+  websecure:
+    port: 443
+service:
+  type: LoadBalancer
+  spec:
+    externalTrafficPolicy: Local
+securityContext:
+  seccompProfile:
+    type: RuntimeDefault

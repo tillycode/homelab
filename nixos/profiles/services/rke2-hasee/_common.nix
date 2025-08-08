@@ -33,7 +33,8 @@ lib.mkMerge [
         "--disable-cloud-controller"
         "--tls-san=${config.domains.k8s}"
         "--tls-san=192.168.22.10"
-        "--ingress-controller=traefik"
+        # install later
+        "--ingress-controller=none"
       ];
     };
   })

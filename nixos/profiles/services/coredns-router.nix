@@ -20,6 +20,10 @@ in
           policy sequential
         }
       }
+      k8s.szp.io {
+        import snip
+        forward . 192.168.23.10
+      }
     '';
   };
 
