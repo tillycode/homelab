@@ -380,7 +380,7 @@ let
           "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHNlekmLqIMn8zTkjU2sU4StemRV+wQvoMMvqmIIJxT6"
         ];
         profiles.disko = {
-          device = "/dev/nvme0n1";
+          device = "/dev/nvme1n1";
           swapSize = "32G";
         };
         sops.defaultSopsFile = ../secrets/nodes/hasee01.yaml;
@@ -418,7 +418,7 @@ let
           "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHNlekmLqIMn8zTkjU2sU4StemRV+wQvoMMvqmIIJxT6"
         ];
         profiles.disko = {
-          device = "/dev/nvme0n1";
+          device = "/dev/nvme1n1";
           swapSize = "32G";
         };
         sops.defaultSopsFile = ../secrets/nodes/hasee02.yaml;
@@ -456,7 +456,7 @@ let
           "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHNlekmLqIMn8zTkjU2sU4StemRV+wQvoMMvqmIIJxT6"
         ];
         profiles.disko = {
-          device = "/dev/nvme0n1";
+          device = "/dev/nvme1n1";
           swapSize = "32G";
         };
         sops.defaultSopsFile = ../secrets/nodes/hasee03.yaml;

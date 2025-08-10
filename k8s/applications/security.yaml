@@ -1,0 +1,26 @@
+## -----------------------------------------------------------------------------
+## SECRET MANAGEMENT
+## -----------------------------------------------------------------------------
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: sealed-secrets
+spec:
+  project: default
+  sources:
+    - chart: sealed-secrets
+      repoURL: https://bitnami-labs.github.io/sealed-secrets
+      targetRevision: 2.17.3
+      helm:
+        valueFiles:
+          - $values/k8s/sealed-secrets/values.yaml
+    - repoURL: https://github.com/tillycode/homelab.git
+      targetRevision: feat/sealed-secrets
+      ref: values
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: sealed-secrets
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
