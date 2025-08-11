@@ -1,0 +1,26 @@
+## -----------------------------------------------------------------------------
+## STORAGE
+## -----------------------------------------------------------------------------
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: rook-ceph
+spec:
+  project: default
+  sources:
+    - chart: rook-ceph
+      repoURL: https://charts.rook.io/release
+      targetRevision: v1.17.7
+      helm:
+        valueFiles:
+          - $values/k8s/rook-ceph/values.yaml
+    - repoURL: https://github.com/tillycode/homelab.git
+      targetRevision: feat/rook-ceph
+      ref: values
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: rook-ceph
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true

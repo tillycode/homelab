@@ -7,3 +7,4 @@ resources:
   - ci-cd.yaml
   - networking.yaml
   - security.yaml
+  - storage.yaml
