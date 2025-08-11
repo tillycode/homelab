@@ -28,7 +28,6 @@ in
             targets = [
               "desktop.ts.szp.io:${toString config.ports.node-exporter}"
               "hgh0.ts.szp.io:${toString config.ports.node-exporter}"
-              "sha0.ts.szp.io:${toString config.ports.node-exporter}"
               "router.ts.szp.io:${toString config.ports.node-exporter}"
               "hasee01.ts.szp.io:${toString config.ports.node-exporter}"
               "hasee02.ts.szp.io:${toString config.ports.node-exporter}"
