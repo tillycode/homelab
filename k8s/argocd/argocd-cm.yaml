@@ -14,5 +14,4 @@ data:
     - $argocd-secret-extra:oidc.szp15.audience
     skipAudienceCheckWhenTokenHasNoAudience: false
     requestedScopes: ["openid", "profile", "email"]
-    enablePKCEAuthentication: true
     logoutURL: https://login.szp15.com/oidc/v1/end_session?id_token_hint={{token}}&post_logout_redirect_uri={{logoutRedirectURL}}

@@ -16,7 +16,7 @@ spec:
         valueFiles:
           - $values/k8s/sealed-secrets/values.yaml
     - repoURL: https://github.com/tillycode/homelab.git
-      targetRevision: feat/sealed-secrets
+      targetRevision: master
       ref: values
   destination:
     server: https://kubernetes.default.svc
