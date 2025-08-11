@@ -19,6 +19,7 @@
       uv
       nix-fast-build
       step-cli
+      kubeseal
     ];
     devshell.startup = {
       nixago.text = config.nixago.shellHook;

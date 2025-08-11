@@ -6,6 +6,8 @@ namespace: argocd
 resources:
   - https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
   - ingress.yaml
+  # - secrets.yaml
 
 patches:
+  - path: argocd-cm.yaml
   - path: argocd-cmd-params-cm.yaml

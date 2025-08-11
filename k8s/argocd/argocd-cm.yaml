@@ -1,0 +1,18 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-cm
+data:
+  url: https://argocd.k8s.szp.io
+  oidc.config: |
+    name: login.szp15.com
+    issuer: https://login.szp15.com
+    clientID: $argocd-secret-extra:oidc.szp15.clientID
+    clientSecret: $argocd-secret-extra:oidc.szp15.clientSecret
+    allowedAudiences:
+    - $argocd-secret-extra:oidc.szp15.audience
+    skipAudienceCheckWhenTokenHasNoAudience: false
+    requestedScopes: ["openid", "profile", "email"]
+    enablePKCEAuthentication: true
+    logoutURL: https://login.szp15.com/oidc/v1/end_session?id_token_hint={{token}}&post_logout_redirect_uri={{logoutRedirectURL}}
