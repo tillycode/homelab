@@ -2,6 +2,13 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
+  name: argocd-cmd-params-cm
+data:
+  server.insecure: "true"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
   name: argocd-cm
 data:
   url: https://argocd.k8s.szp.io
@@ -15,3 +22,12 @@ data:
     skipAudienceCheckWhenTokenHasNoAudience: false
     requestedScopes: ["openid", "profile", "email"]
     logoutURL: https://login.szp15.com/oidc/v1/end_session?id_token_hint={{token}}&post_logout_redirect_uri={{logoutRedirectURL}}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-rbac-cm
+data:
+  policy.csv: |
+    g, admins, role:admin
+  scopes: "[groups]"

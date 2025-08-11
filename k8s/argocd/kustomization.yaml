@@ -9,5 +9,4 @@ resources:
   - secrets.yaml
 
 patches:
-  - path: argocd-cm.yaml
-  - path: argocd-cmd-params-cm.yaml
+  - path: configmaps.yaml
