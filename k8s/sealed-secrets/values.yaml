@@ -10,6 +10,3 @@ ingress:
   enabled: true
   ingressClassName: "traefik"
   hostname: sealed-secrets.k8s.szp.io
-  annotations:
-    cert-manager.io/cluster-issuer: k8s-intermediate
-  tls: true
