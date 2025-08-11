@@ -1,7 +1,9 @@
 deployment:
   kind: DaemonSet
 ingressClass:
-  enabled: false
+  enabled: true
+  isDefaultClass: false
+  name: "traefik"
 gateway:
   listeners:
     web:
@@ -27,8 +29,11 @@ updateStrategy:
     maxUnavailable: 1
     maxSurge: 0
 providers:
+  kubernetesCRD:
+    ingressClass: "traefik"
   kubernetesIngress:
-    enabled: false
+    enabled: true
+    ingressClass: "traefik"
   kubernetesGateway:
     enabled: true
 ports:

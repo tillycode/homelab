@@ -145,38 +145,6 @@ let
         }
       )
     ];
-    sha0 = mkHost [
-      {
-        users.users.root.openssh.authorizedKeys.keys = [
-          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAamaMcCAc7DhTJjDqBwXTWhewX0OI8vAuXLvc17yqK/"
-          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBIO4wL3BzfaMDOpbT/U/99MVQERjtzH2YxA6KAs7lwM"
-          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHNlekmLqIMn8zTkjU2sU4StemRV+wQvoMMvqmIIJxT6"
-        ];
-        profiles.disko = {
-          device = "/dev/vda";
-          swapSize = "2G";
-        };
-        sops.defaultSopsFile = ../secrets/nodes/sha0.yaml;
-        networking.hostName = "sha0";
-        nixpkgs.system = "x86_64-linux";
-        system.stateVersion = "24.11";
-      }
-      (
-        { profiles, suites, ... }:
-        {
-          imports =
-            suites.base
-            ++ suites.domestic
-            ++ (with profiles; [
-              config.no-nixos-doc
-              services.node-exporter
-              services.vector
-              system.kernel.qemu-guest
-              system.disko
-            ]);
-        }
-      )
-    ];
     # To make nixos-anywhere work, please manually turn on zramswap and increase
     # writable nix store size before the disko phase.
     #
@@ -380,7 +348,7 @@ let
           "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHNlekmLqIMn8zTkjU2sU4StemRV+wQvoMMvqmIIJxT6"
         ];
         profiles.disko = {
-          device = "/dev/nvme0n1";
+          device = "/dev/nvme1n1";
           swapSize = "32G";
         };
         sops.defaultSopsFile = ../secrets/nodes/hasee01.yaml;
@@ -418,7 +386,7 @@ let
           "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHNlekmLqIMn8zTkjU2sU4StemRV+wQvoMMvqmIIJxT6"
         ];
         profiles.disko = {
-          device = "/dev/nvme0n1";
+          device = "/dev/nvme1n1";
           swapSize = "32G";
         };
         sops.defaultSopsFile = ../secrets/nodes/hasee02.yaml;
@@ -456,7 +424,7 @@ let
           "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHNlekmLqIMn8zTkjU2sU4StemRV+wQvoMMvqmIIJxT6"
         ];
         profiles.disko = {
-          device = "/dev/nvme0n1";
+          device = "/dev/nvme1n1";
           swapSize = "32G";
         };
         sops.defaultSopsFile = ../secrets/nodes/hasee03.yaml;
