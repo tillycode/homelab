@@ -23,6 +23,7 @@ lib.mkMerge [
         directory = "/run/k3s";
         mode = "0711";
       }
+      "/var/lib/rook"
     ];
   }
   (lib.mkIf (cfg.role == "server") {
