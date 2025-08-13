@@ -1,3 +1,8 @@
 prometheus:
   annotations:
-    argocd.argoproj.io/ignore-healthcheck: "true"
+grafana:
+  ingress:
+    enabled: true
+    ingressClassName: traefik
+    hosts:
+      - grafana.k8s.szp.io
