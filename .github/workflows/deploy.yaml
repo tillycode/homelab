@@ -18,7 +18,7 @@ jobs:
     outputs:
       diff: ${{ steps.plan.outputs.diff }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: ./.github/actions/setup
         with:
           components: api-token,attic,ssh,gpg,aws,aliyun,devshell,terraform-cache
@@ -38,7 +38,7 @@ jobs:
     needs: plan
     if: needs.plan.outputs.diff == 'true'
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: ./.github/actions/setup
         with:
           components: api-token,attic,ssh,aws,aliyun,devshell,terraform-cache
