@@ -28,7 +28,7 @@ lib.mkMerge [
   }
   (lib.mkIf (cfg.role == "server") {
     services.rke2 = {
-      cni = "cilium";
+      cni = "none";
       extraFlags = [
         "--disable-kube-proxy"
         "--disable-cloud-controller"

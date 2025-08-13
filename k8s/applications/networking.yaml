@@ -1,4 +1,45 @@
 ## -----------------------------------------------------------------------------
+## CNI
+## -----------------------------------------------------------------------------
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cilium
+spec:
+  project: default
+  sources:
+    - chart: cilium
+      repoURL: https://helm.cilium.io/
+      targetRevision: 1.18.0
+      helm:
+        valueFiles:
+          - $values/k8s/cilium/values.yaml
+    - repoURL: https://github.com/tillycode/homelab.git
+      targetRevision: feat/monitoring
+      ref: values
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: kube-system
+  ignoreDifferences:
+    - kind: Secret
+      name: cilium-ca
+      jsonPointers:
+        - /data/ca.crt
+        - /data/ca.key
+    - kind: Secret
+      name: hubble-relay-client-certs
+      jsonPointers:
+        - /data/ca.crt
+        - /data/tls.crt
+        - /data/tls.key
+    - kind: Secret
+      name: hubble-server-certs
+      jsonPointers:
+        - /data/ca.crt
+        - /data/tls.crt
+        - /data/tls.key
+## -----------------------------------------------------------------------------
 ## LOAD BALANCER
 ## -----------------------------------------------------------------------------
 ---
@@ -175,12 +216,12 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: exdns-addons
+  name: network-policies
 spec:
   project: default
   source:
     repoURL: https://github.com/tillycode/homelab.git
-    targetRevision: master
-    path: k8s/exdns
+    targetRevision: feat/monitoring
+    path: k8s/network-policies
   destination:
     server: https://kubernetes.default.svc
