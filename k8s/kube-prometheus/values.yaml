@@ -1,0 +1,3 @@
+prometheus:
+  annotations:
+    argocd.argoproj.io/ignore-healthcheck: "true"
