@@ -1,5 +1,14 @@
+# prometheusOperator:
+#   networkPolicy:
+#     enabled: true
 prometheus:
   annotations:
+  networkPolicy:
+    enabled: true
+    ingress:
+      - {}
+    egress:
+      - {}
 grafana:
   ingress:
     enabled: true
