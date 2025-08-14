@@ -5,7 +5,7 @@ namespace: argocd
 
 resources:
   - ci-cd.yaml
-  - networking.yaml
+  - network.yaml
   - security.yaml
   - storage.yaml
   - monitoring.yaml
