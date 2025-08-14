@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - exdns.yaml
   - cilium.yaml
+  - monitoring.yaml

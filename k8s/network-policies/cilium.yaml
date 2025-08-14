@@ -6,7 +6,9 @@ metadata:
   namespace: kube-system
 spec:
   ingress:
-    - {}
+    - ports:
+        - port: http
+          protocol: TCP
   podSelector:
     matchLabels:
       app.kubernetes.io/name: hubble-ui

@@ -6,7 +6,9 @@ metadata:
   namespace: kube-system
 spec:
   ingress:
-    - {}
+    - ports:
+        - port: dns-udp
+          protocol: UDP
   podSelector:
     matchLabels:
       app.kubernetes.io/name: k8s-gateway

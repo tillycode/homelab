@@ -10,3 +10,7 @@ grafana:
     ingressClassName: traefik
     hosts:
       - grafana.k8s.szp.io
+
+# kubeProxyReplacement is turned on in cilium
+kubeProxy:
+  enabled: false
