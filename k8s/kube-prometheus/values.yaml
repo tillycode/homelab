@@ -1,14 +1,9 @@
-# prometheusOperator:
-#   networkPolicy:
-#     enabled: true
 prometheus:
-  annotations:
-  networkPolicy:
+  ingress:
     enabled: true
-    ingress:
-      - {}
-    egress:
-      - {}
+    ingressClassName: traefik
+    hosts:
+      - prometheus.k8s.szp.io
 grafana:
   ingress:
     enabled: true
