@@ -7,6 +7,13 @@
     # outboundsFile = config.sops.secrets."sing-box/outbounds.json".path;
     dnsRules = [
       {
+        domain_suffix = [
+          "k8s.szp.io"
+        ];
+        action = "route";
+        server = "local-router";
+      }
+      {
         # This is a trick to make sing-box return NXDOMAIN for a non-existent
         # domain instead of returning a FakeIP.
         #
