@@ -23,7 +23,14 @@ lib.mkMerge [
         directory = "/run/k3s";
         mode = "0711";
       }
-      "/var/lib/rook"
+      {
+        directory = "/var/lib/rook";
+        mode = "0700";
+      }
+      {
+        directory = "/var/lib/kubelet";
+        mode = "0700";
+      }
     ];
   }
   (lib.mkIf (cfg.role == "server") {
