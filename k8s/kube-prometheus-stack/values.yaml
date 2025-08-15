@@ -4,6 +4,15 @@ prometheus:
     ingressClassName: traefik
     hosts:
       - prometheus.k8s.szp.io
+  prometheusSpec:
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: rook-ceph-block
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 50Gi
 grafana:
   ingress:
     enabled: true
