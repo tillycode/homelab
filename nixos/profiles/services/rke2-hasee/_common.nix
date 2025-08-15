@@ -43,6 +43,9 @@ lib.mkMerge [
         "--tls-san=192.168.22.10"
         # install later
         "--ingress-controller=none"
+        "--etcd-arg=listen-metrics-urls=http://0.0.0.0:2381"
+        "--kube-scheduler-arg=--bind-address=0.0.0.0"
+        "--kube-controller-manager-arg=--bind-address=0.0.0.0"
       ];
     };
   })
