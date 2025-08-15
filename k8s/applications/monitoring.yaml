@@ -16,7 +16,7 @@ spec:
         valueFiles:
           - $values/k8s/kube-prometheus-stack/values.yaml
     - repoURL: https://github.com/tillycode/homelab.git
-      targetRevision: feat/monitoring
+      targetRevision: master
       ref: values
   destination:
     server: https://kubernetes.default.svc

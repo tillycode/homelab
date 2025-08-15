@@ -16,7 +16,7 @@ spec:
         valueFiles:
           - $values/k8s/cilium/values.yaml
     - repoURL: https://github.com/tillycode/homelab.git
-      targetRevision: feat/monitoring
+      targetRevision: master
       ref: values
   destination:
     server: https://kubernetes.default.svc
@@ -221,7 +221,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/tillycode/homelab.git
-    targetRevision: feat/monitoring
+    targetRevision: master
     path: k8s/network-policies
   destination:
     server: https://kubernetes.default.svc
