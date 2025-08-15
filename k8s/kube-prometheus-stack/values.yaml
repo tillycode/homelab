@@ -1,0 +1,62 @@
+prometheus:
+  ingress:
+    enabled: true
+    ingressClassName: traefik
+    hosts:
+      - prometheus.k8s.szp.io
+  prometheusSpec:
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: rook-ceph-block
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 50Gi
+grafana:
+  ingress:
+    enabled: true
+    ingressClassName: traefik
+    hosts:
+      - grafana.k8s.szp.io
+  grafana.ini:
+    server:
+      root_url: https://grafana.k8s.szp.io/
+    auth:
+      disable_login_form: true
+      signout_redirect_url: "https://login.szp15.com/oidc/v1/end_session"
+    auth.generic_oauth:
+      enabled: true
+      name: SSO (login.szp15.com)
+      auth_url: https://login.szp15.com/oauth/v2/authorize
+      token_url: https://login.szp15.com/oauth/v2/token
+      api_url: https://login.szp15.com/oidc/v1/userinfo
+      client_id: $__file{/etc/secrets/auth_generic_oauth/client_id}
+      client_secret: $__file{/etc/secrets/auth_generic_oauth/client_secret}
+      scopes: openid email profile
+      use_kce: true
+      email_attribute_name: email
+      login_attribute_path: preferred_username
+      name_attribute_path: name
+      role_attribute_path: contains(groups[*], 'admin') && 'GrafanaAdmin' || contains(groups[*], 'editor') && 'Editor' || 'Viewer'
+      allow_assign_grafana_admin: true
+  extraObjects:
+    - apiVersion: bitnami.com/v1alpha1
+      kind: SealedSecret
+      metadata:
+        name: grafana-oauth-credentials
+        namespace: monitoring
+      spec:
+        encryptedData:
+          client_id: AgBetLfEBcJ1qNOicFZb4tw0eBgUWSUovVINmPdZaB+C7hBA/9fJW2N3hFo4cOaPvqDPRgR61EH4xt/apAZGgXSM+N7WUbxnqoSGR+/nV4YHHdqTvCLQIObycbXVoDr+lTrG4g3I4xI38adFz+NyQauPjPGZTLyQ6+3i2YsxhpNaKpUITB4PpX9vBRjTs722UwTV4ZsGiChTCrUYf3sWQpLXVkbNyVWjMBE9ej0rheVgHzoydoYnrXG7LJXtQ/i7+S7z3pnTS0t6im5wDv/MNYeJFVdtgVry5G2p7CIKZU7pRuoWy192EGGg286cT9/1N/OkeKXcKKBnU5jGo0f8DM4DHMHCP4kSmj8oNzrLB+uFJR4XBi58pbZIKbJbtGAl4C3Jc5yXj2dJiDBVRoefWpW5JPilcxPl0ZypOvrb0now8cUJIBcd68aUu4cmVd7PFPqwBh8Fa/B76ZsgtvbcOfruo/EMqQet++dahcqTRKgTZX5N7immUr1FfR6fO3SMYxUvF4Z/vCHo1x7kgLcLL0LqwBNg9px87JDvX8mLqZChIZkIlMCtH3OLK6pvOivwe0sv0fMY/utNIrZfYOyqaxQdRJULLwxZRaUwkwnwUFz9KF/Tf6BrKp4nf/8xqjUNbYJIdJanvgeYFVxC87fShuOdBRQXqO7NT8c2WML/KfEnPu9mvCIqxuFY6KlFUaw9TrdU7Xy65IAkNwA05MNjEsoLzs0=
+          client_secret: AgArv4UMZ0cIvzXvsrp0MLhoUUv+BxHiXw8HQCmzKtklz+nfp6qtmkSbhZhcQDEq6Xl8vswA5YxPwlOKm2nm3FtNfujfWYn3j7PbT7PeXIc1ZRY+6iXGf5WXIbb46of4yyuFJJPcNthonvh1F5IMPz2GyeIOJQG1iEE+oEFQtxxH2OrSlYDP7TTpx5Een2duaUTm0I5JFFoibgD5ZD6Quj8FVIEdgI9yXgryC4g8dkkQCcBk7J6v49/quwjD06+j7C2Ojc5H3XuYbAMTZvYTScJZacxb0NxdGET5446NilO9q3z99AWB2eSWA11orsat+lXweL17fTbdgKa9P9BTg9Pyq/8WME+V8pPJA8ul+VzHbf9rl8pfrnfcvXVvT8rUxL3f8hX3EphG/Ca6jtBiXTsl1MbQK9avHyFLloUv3yG7ljcTZwb18cfDDMK8rYlKjBrU0lxWmhKdGTmGyn3j3Ij2TO3F73GsEzvU2hCj9iGSMhi5Lva5XSprc+p8TNV8xv8+hKKjWDe/fJkB/VYHF/jqK6SokqYE3NUkme/PB+H3pIPpldJEmQrJME2QeEkpP0qe/WutxIO714K2G8Ef3DO9FhxWHlpEnll+gtSWGb4rZySnHJa92vLwV0mz92hqRNUqvMz7kFhY2IOP6Hycor2/RQFbB976MgKJZS2zsr9gGYQhAWec4rpK00caLgoY+p8U4Pm5eUaQR4GX9Rcbp8Tjf3DGqBV/x7dkKfZVy1K3ho7sJ64jjRWdNqfAnZpQqKYecuNdux+5jZL4tXLsiwJZ
+  extraSecretMounts:
+    - name: auth-generic-oauth-secret-mount
+      secretName: grafana-oauth-credentials
+      defaultMode: 0440
+      mountPath: /etc/secrets/auth_generic_oauth
+      readOnly: true
+
+# kubeProxyReplacement is turned on in cilium
+kubeProxy:
+  enabled: false

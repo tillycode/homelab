@@ -12,6 +12,7 @@ metadata:
   name: argocd-cm
 data:
   url: https://argocd.k8s.szp.io
+  admin.enabled: "false"
   oidc.config: |
     name: login.szp15.com
     issuer: https://login.szp15.com

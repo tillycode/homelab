@@ -133,6 +133,11 @@ in
             server = "223.5.5.5";
           }
           {
+            tag = "local-router";
+            type = "udp";
+            server = "192.168.22.1";
+          }
+          {
             tag = "proxy";
             type = "fakeip";
             inet4_range = "198.18.0.0/15";

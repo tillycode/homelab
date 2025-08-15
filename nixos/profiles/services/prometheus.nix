@@ -38,20 +38,6 @@ in
         ];
       }
       {
-        job_name = "minio-job";
-        scrape_interval = "15s";
-        static_configs = [
-          {
-            targets = [
-              "hasee01:9000"
-              "hasee02:9000"
-              "hasee03:9000"
-            ];
-          }
-        ];
-        metrics_path = "/minio/v2/metrics/cluster";
-      }
-      {
         job_name = "coredns";
         static_configs = [
           {
