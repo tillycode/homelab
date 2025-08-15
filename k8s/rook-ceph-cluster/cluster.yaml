@@ -23,7 +23,9 @@ spec:
         enabled: true
   dashboard:
     enabled: true
-    ssl: false
+    ssl: true
+    # ceph dashboard sso setup saml2 https://ceph.k8s.szp.io https://login.szp15.com/saml/v2/metadata UserName
+    # ceph dashboard ac-user-create ziping-sun -i password-file administrator
   monitoring:
     enabled: false
     metricsDisabled: false
