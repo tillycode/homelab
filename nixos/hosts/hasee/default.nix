@@ -4,6 +4,7 @@
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
+  boot.kernelParams = [ "intel_iommu=on" ];
   boot.initrd.availableKernelModules = [
     "xhci_pci"
     "ahci"

@@ -9,3 +9,4 @@ resources:
   - security.yaml
   - storage.yaml
   - monitoring.yaml
+  - virtualization.yaml
