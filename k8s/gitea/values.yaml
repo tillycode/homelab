@@ -22,6 +22,8 @@ postgresql:
 
 gitea:
   config:
+    server:
+      SSH_DOMAIN: git.k8s.szp.io
     database:
       DB_TYPE: postgres
     indexer:
@@ -32,10 +34,12 @@ ingress:
   enabled: true
   className: traefik
   hosts:
-    - host: git.k8s.szp.io
+    - host: gitea.k8s.szp.io
 
 service:
   ssh:
     type: LoadBalancer
+    externalTrafficPolicy: Local
     annotations:
-      metallb.io/allow-shared-ip: "ingress"
+      coredns.io/hostname: git.k8s.szp.io
+    clusterIP: ""

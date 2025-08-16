@@ -50,8 +50,6 @@ ports:
     port: 443
 service:
   type: LoadBalancer
-  annotations:
-    metallb.io/allow-shared-ip: "ingress"
   spec:
     externalTrafficPolicy: Local
 securityContext:

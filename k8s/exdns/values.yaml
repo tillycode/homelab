@@ -1,5 +1,5 @@
 domain: k8s.szp.io
-watchedResources: ["HTTPRoute", "TLSRoute", "GRPCRoute", "Ingress"]
+watchedResources: ["HTTPRoute", "TLSRoute", "GRPCRoute", "Ingress", "Service"]
 
 service:
   annotations:
