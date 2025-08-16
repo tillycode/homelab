@@ -20,6 +20,14 @@ postgresql-ha:
 postgresql:
   enabled: true
 
+gitea:
+  config:
+    database:
+      DB_TYPE: postgres
+    indexer:
+      ISSUE_INDEXER_TYPE: bleve
+      REPO_INDEXER_ENABLED: true
+
 ingress:
   enabled: true
   className: traefik
