@@ -46,6 +46,15 @@ spec:
           - $values/k8s/gitea/values.yaml
     - repoURL: https://github.com/tillycode/homelab.git
       targetRevision: feat/gitea
-      path: k8s/gitea
+      ref: values
   destination:
     server: https://kubernetes.default.svc
+    namespace: gitea
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+  ignoreDifferences:
+    - kind: Secret
+      name: gitea-postgresql
+      jsonPointers:
+        - /data/postgres-password

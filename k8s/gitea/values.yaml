@@ -1,0 +1,21 @@
+global:
+  storageClass: rook-ceph-block
+
+podSecurityContext:
+  runAsNonRoot: true
+  seccompProfile:
+    type: RuntimeDefault
+containerSecurityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop: [ALL]
+
+valkey-cluster:
+  enabled: false
+valkey:
+  enabled: true
+
+postgresql-ha:
+  enabled: false
+postgresql:
+  enabled: true
