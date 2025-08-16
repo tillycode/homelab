@@ -33,3 +33,9 @@ ingress:
   className: traefik
   hosts:
     - host: git.k8s.szp.io
+
+service:
+  ssh:
+    type: LoadBalancer
+    annotations:
+      metallb.io/allow-shared-ip: "ingress"
