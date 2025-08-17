@@ -10,6 +10,9 @@ containerSecurityContext:
   capabilities:
     drop: [ALL]
 
+persistence:
+  size: 50Gi
+
 valkey-cluster:
   enabled: false
 valkey:
