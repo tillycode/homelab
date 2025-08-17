@@ -1,3 +1,6 @@
+## -----------------------------------------------------------------------------
+## ARGOCD
+## -----------------------------------------------------------------------------
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -24,3 +27,34 @@ spec:
     path: k8s/applications
   destination:
     server: https://kubernetes.default.svc
+## -----------------------------------------------------------------------------
+## GITEA
+## -----------------------------------------------------------------------------
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: gitea
+spec:
+  project: default
+  sources:
+    - chart: gitea
+      repoURL: https://dl.gitea.io/charts
+      targetRevision: 12.1.3
+      helm:
+        valueFiles:
+          - $values/k8s/gitea/values.yaml
+    - repoURL: https://github.com/tillycode/homelab.git
+      targetRevision: master
+      ref: values
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: gitea
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+  ignoreDifferences:
+    - kind: Secret
+      name: gitea-postgresql
+      jsonPointers:
+        - /data/postgres-password
