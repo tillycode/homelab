@@ -45,7 +45,7 @@ spec:
         valueFiles:
           - $values/k8s/gitea/values.yaml
     - repoURL: https://github.com/tillycode/homelab.git
-      targetRevision: feat/gitea
+      targetRevision: master
       ref: values
   destination:
     server: https://kubernetes.default.svc

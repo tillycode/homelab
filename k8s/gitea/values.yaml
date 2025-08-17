@@ -45,7 +45,6 @@ gitea:
       scopes: "openid,email,profile"
       groupTeamMap: |-
         {}
-      #   {"core": "core"}
       # FIXME go-gitea/gitea#31669: bug + bug = feature
       skipLocal2fa: "--group-team-map-removal"
 
