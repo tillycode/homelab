@@ -22,6 +22,7 @@
           github-runner-patched
           attic-client_patched
           cloudreve
+          cloudreve-pro
           rke2_1_32
           rke2_1_33
           ;
@@ -65,6 +66,7 @@
         cloudreve = pkgs.callPackage (import ./cloudreve) {
           source = sources.cloudreve;
         };
+        cloudreve-pro = pkgs.callPackage (import ./cloudreve-pro) { };
         inherit
           (pkgs.callPackage (import ./rke2) {
             inherit (inputs) nixpkgs;
