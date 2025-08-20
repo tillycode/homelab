@@ -8,7 +8,7 @@ let
   ## ---------------------------------------------------------------------------
   ## SETTINGS
   ## ---------------------------------------------------------------------------
-  package = pkgs.cloudreve;
+  package = pkgs.cloudreve-pro;
   stateDir = "/var/lib/cloudreve";
   settings = lib.generators.toINI { } {
     System = {
@@ -42,6 +42,7 @@ in
       Restart = "on-abnormal";
       RestartSec = "5s";
       KillMode = "mixed";
+      EnvironmentFile = config.sops.templates."cloudreve.env".path;
     };
   };
 
@@ -58,9 +59,15 @@ in
   ## ---------------------------------------------------------------------------
   sops.secrets."cloudreve/sessionSecret" = { };
   sops.secrets."cloudreve/hashIdSalt" = { };
+  sops.secrets."cloudreve/licenseKey" = { };
   sops.templates."cloudreve.ini" = {
     content = settings;
     owner = "cloudreve";
+  };
+  sops.templates."cloudreve.env" = {
+    content = ''
+      CR_LICENSE_KEY=${config.sops.placeholder."cloudreve/licenseKey"}
+    '';
   };
 
   ## ---------------------------------------------------------------------------
