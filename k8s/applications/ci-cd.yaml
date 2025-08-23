@@ -58,3 +58,24 @@ spec:
       name: gitea-postgresql
       jsonPointers:
         - /data/postgres-password
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: gitea-actions
+spec:
+  project: default
+  sources:
+    - chart: actions
+      # based on https://gitea.com/gitea/helm-actions
+      repoURL: https://gitea.k8s.szp.io/api/packages/tillycode/helm
+      targetRevision: 0.0.0
+      helm:
+        valueFiles:
+          - $values/k8s/gitea/actions/values.yaml
+    - repoURL: https://gitea.k8s.szp.io/tillycode/homelab.git
+      targetRevision: feat/gitea-actions
+      ref: values
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: gitea

@@ -8,5 +8,12 @@ resources:
   - ingress.yaml
   - secrets.yaml
 
+configMapGenerator:
+  - name: argocd-tls-certs-cm
+    behavior: merge
+    files:
+      - gitea.k8s.szp.io=../../certs/roots.pem
+    options:
+      disableNameSuffixHash: true
 patches:
   - path: configmaps.yaml

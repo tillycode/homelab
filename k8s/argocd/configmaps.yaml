@@ -23,6 +23,7 @@ data:
     skipAudienceCheckWhenTokenHasNoAudience: false
     requestedScopes: ["openid", "profile", "email"]
     logoutURL: https://login.szp15.com/oidc/v1/end_session?id_token_hint={{token}}&post_logout_redirect_uri={{logoutRedirectURL}}
+  kustomize.buildOptions: --load-restrictor LoadRestrictionsNone
 ---
 apiVersion: v1
 kind: ConfigMap
