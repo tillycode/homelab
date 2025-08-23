@@ -72,7 +72,7 @@ spec:
       targetRevision: 0.0.0
       helm:
         valueFiles:
-          - $values/k8s/gitea/actions/values.yaml
+          - $values/k8s/gitea-actions/values.yaml
     - repoURL: https://gitea.k8s.szp.io/tillycode/homelab.git
       targetRevision: feat/gitea-actions
       ref: values
