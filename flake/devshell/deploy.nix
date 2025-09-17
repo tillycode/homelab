@@ -1,4 +1,8 @@
-{ pkgs, config, ... }:
+{
+  pkgs,
+  config,
+  ...
+}:
 {
   devshells.deploy = {
     devshell.motd = "Welcome to CI/CD shell";
@@ -31,6 +35,34 @@
         value = "bootstrap,github-action,tencent";
       }
     ];
+  };
+  packages.woodpeckerci-plugin-git-image = pkgs.dockerTools.buildLayeredImage {
+    name = "gitea.k8s.szp.io/tillycode/woodpeckerci-plugin-git";
+    tag = "latest";
+    contents = with pkgs; [
+      bash
+      coreutils
+      gitMinimal
+      git-lfs
+      curl
+      openssh
+      (dockerTools.override {
+        cacert = pkgs.cacert.override {
+          extraCertificateFiles = [ ../../certs/roots.pem ];
+        };
+      }).caCertificates
+      woodpecker-plugin-git
+    ];
+    extraCommands = ''
+      mkdir -p app
+    '';
+    config = {
+      Entrypoint = [ "/bin/plugin-git" ];
+      Env = [
+        "GODEBUG=netdns=go"
+        "PLUGIN_HOME=/app"
+      ];
+    };
   };
 
   checks."devshell/deploy" = config.devShells.deploy;

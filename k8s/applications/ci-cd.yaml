@@ -9,7 +9,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/tillycode/homelab.git
+    repoURL: https://gitea.k8s.szp.io/tillycode/homelab.git
     targetRevision: master
     path: k8s/argocd
   destination:
@@ -22,7 +22,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/tillycode/homelab.git
+    repoURL: https://gitea.k8s.szp.io/tillycode/homelab.git
     targetRevision: master
     path: k8s/applications
   destination:
@@ -44,7 +44,7 @@ spec:
       helm:
         valueFiles:
           - $values/k8s/gitea/values.yaml
-    - repoURL: https://github.com/tillycode/homelab.git
+    - repoURL: https://gitea.k8s.szp.io/tillycode/homelab.git
       targetRevision: master
       ref: values
   destination:
@@ -58,3 +58,52 @@ spec:
       name: gitea-postgresql
       jsonPointers:
         - /data/postgres-password
+## -----------------------------------------------------------------------------
+## WOODPECKER
+## -----------------------------------------------------------------------------
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: woodpecker
+spec:
+  project: default
+  sources:
+    - chart: woodpecker
+      repoURL: ghcr.io/woodpecker-ci/helm
+      targetRevision: 3.3.0
+      helm:
+        valueFiles:
+          - $values/k8s/woodpecker/values.yaml
+    - repoURL: https://gitea.k8s.szp.io/tillycode/homelab.git
+      targetRevision: master
+      ref: values
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: woodpecker
+  syncPolicy:
+    managedNamespaceMetadata:
+      labels:
+        pod-security.kubernetes.io/enforce: privileged
+    syncOptions:
+      - CreateNamespace=true
+      - RespectIgnoreDifferences=true
+  ignoreDifferences:
+    - kind: Secret
+      name: woodpecker-default-agent-secret
+      jsonPointers:
+        - /data/WOODPECKER_AGENT_SECRET
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: woodpecker-addons
+spec:
+  project: default
+  source:
+    repoURL: https://gitea.k8s.szp.io/tillycode/homelab.git
+    targetRevision: master
+    path: k8s/woodpecker
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: woodpecker

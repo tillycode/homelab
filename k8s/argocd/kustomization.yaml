@@ -4,9 +4,17 @@ kind: Kustomization
 namespace: argocd
 
 resources:
-  - https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+  - https://raw.githubusercontent.com/argoproj/argo-cd/v3.0.13/manifests/install.yaml
   - ingress.yaml
   - secrets.yaml
+
+configMapGenerator:
+  - name: argocd-tls-certs-cm
+    behavior: merge
+    files:
+      - gitea.k8s.szp.io=../../certs/roots.pem
+    options:
+      disableNameSuffixHash: true
 
 patches:
   - path: configmaps.yaml

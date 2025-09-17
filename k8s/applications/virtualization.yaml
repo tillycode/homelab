@@ -9,7 +9,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/tillycode/homelab.git
+    repoURL: https://gitea.k8s.szp.io/tillycode/homelab.git
     targetRevision: master
     path: k8s/kubevirt
   destination:

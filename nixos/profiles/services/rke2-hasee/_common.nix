@@ -49,4 +49,47 @@ lib.mkMerge [
       ];
     };
   })
+  # nix image
+  {
+    systemd.services.rke2-update-nix-image =
+      let
+        image = pkgs.dockerTools.streamLayeredImage {
+          name = "nix";
+          tag = "pinned";
+          contents = with pkgs; [
+            nix
+            bashInteractive
+            coreutils-full
+            gnutar
+            gzip
+            gnugrep
+            which
+            curl
+            less
+            (dockerTools.override {
+              cacert = pkgs.cacert.override {
+                extraCertificateFiles = [ ../../../../certs/roots.pem ];
+              };
+            }).caCertificates
+            findutils
+            iana-etc
+            gitMinimal
+            openssh
+          ];
+          includeStorePaths = false;
+        };
+      in
+      {
+        script = ''
+          ${image} | /var/lib/rancher/rke2/bin/ctr images import --label io.cri-containerd.pinned=pinned -
+        '';
+        environment = {
+          CONTAINERD_ADDRESS = "/run/k3s/containerd/containerd.sock";
+          CONTAINERD_NAMESPACE = "k8s.io";
+        };
+        after = [ "rke2-${cfg.role}.service" ];
+        requires = [ "rke2-${cfg.role}.service" ];
+        wantedBy = [ "multi-user.target" ];
+      };
+  }
 ]

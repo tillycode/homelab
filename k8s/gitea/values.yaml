@@ -36,6 +36,8 @@ gitea:
     service:
       ENABLE_BASIC_AUTHENTICATION: false
       ENABLE_PASSWORD_SIGNIN_FORM: false
+    webhook:
+      ALLOWED_HOST_LIST: "*.svc.cluster.local,*.szp.io"
   oauth:
     - name: "login.szp15.com"
       provider: "openidConnect"
@@ -75,3 +77,14 @@ extraDeploy:
       encryptedData:
         key: AgATpjzqwhCcd75ahIDv136nchcj52iEq/pjeeckVLn29YiE6M8zvw1qkYq4rZxryK30/NO8BC6poox1mCOuUCiryEuh+uqp+kpGW/ApXSyV9ziMjgd6/QNeD4VMXNBZ2sf+YB3L0iv8gsVHg+P+I9gr3XbWVeDNOLzPgY0ko3T5pEd/6cVwgEG71FUhvqlzJZ58cC8YBXVX2XdeYbbOvR4Sim/dPg+5+dD4ZhXJziQ4Ndj/QMWbhG+QXTLboNI4XbBBrHGeCLMqTNYfNrXE5+Sr/q4CV8zKE4UeYIk4LsqtBLf4mkb+0PftHnz0SCg+P0gpWwqa17Nzk/YY8VREmP5A87AXW0cs8xKA2PQTJLrcxO32NGbtqYvxDjPiOpgUSJfKojx7xK7KHKWBRNsILljze6HfzEPXJalpuHnwVzhsmvmIzATenYmj10yuyXhqU79GGZ9hFZHlkJPdPYxkoT/awGHA4DIPkSXgUcwWNpwrj5LtYRDbkCXElCkNXiog/9lGWNWwK8Nt+M7gM0v6bEXfv2c0PVJkvRa++dxBjd2/0TsDu3DSfymyqzSlkQgSPyoMLORU4XzpuL7w3Y9ExJph21aizBUJHjlUEfNqSSql6ueyH7nk41T9kUaU8JLoaFX0jV5fHvGoIQhUrvt++n35ScZVDl/WlCL9mjkVQa3oqvXlalOLvukbs3yHDhicKf9uE9AGcfxHV16oY/uJpNgZ5V0=
         secret: AgBUcP5uBUTe/Xr27NCVwalRyd6bFJ2lWtfLBt4ha95mlAg/buALJb/FPClqkrnvGvrFDXV3O2FP1CGLykaw4sroK88gfK+ZeV6+ucTVodZUXaZOXhz27J5m3FPKSnVQiURj7RLHNZARHRa1tLWDalZKFuDBBOlcGpSLgq4uwD+c3AlBiAHm4BaDzr5+2VxhCV7OIV86aowwUFCKC7m4TpvnuLndvUOKRErEvD0A0uC97iLpRmYryD29nbs4ibvB1GcfAsoWQ46eNtqaW0f5EsNfwJif4L8qSAkjO0ywFbr6p50C3cx6JzQufs4KpGSI1u+9FvZfJNeppPDh70LSNNF2RQcRX2Uh9r7Y3ZjiYYhNTIHVK7zeisgkLK7dQdtA6gerpFQyg69c2aHNMkCxrpeq7Ui28/zyRAYn3Z2jmVdtPxv/wwt/B2BdhULAUeh89jfDMSyH3K2BQrURwofaFB9dtXuSB3Hu5gn0LmpZTXp3e3Jy41rN/8AMOkxqvM+q01QOYv9+xtfGljZ1zEK9LfruD3qaLbJaGAy9nEChFSGolVJdNUIZsJRyNcL4UIC1awxUgP61S5jS/XrSG0gfhD6BHigGXK+sExSwyrOQfvRAHA9jKp/0ErhvlMINFpzZUiXpuU9vtWTBz5rUupOx5THojlqHrX1DYDq+3RnqQuw8SYzc2nGjRMRk6F8dgGPtOOhreumiddPktXq6rQVwFLSkMf8ZV0aAQswMrgLN5F7uymZckkCApqNciDn4A1s3Q9xURQGHQlWDar4aMzWjVYY+
+
+# kubectl -n gitea create configmap ca-certificates --from-file=ca-certificates.crt=/etc/ssl/certs/ca-certificates.crt
+extraVolumes:
+  - name: ca-certificates
+    configMap:
+      name: ca-certificates
+
+extraContainerVolumeMounts:
+  - name: ca-certificates
+    mountPath: /etc/ssl/certs
+    readOnly: true

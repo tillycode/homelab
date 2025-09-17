@@ -15,7 +15,7 @@ spec:
       helm:
         valueFiles:
           - $values/k8s/sealed-secrets/values.yaml
-    - repoURL: https://github.com/tillycode/homelab.git
+    - repoURL: https://gitea.k8s.szp.io/tillycode/homelab.git
       targetRevision: master
       ref: values
   destination:
@@ -24,3 +24,24 @@ spec:
   syncPolicy:
     syncOptions:
       - CreateNamespace=true
+## -----------------------------------------------------------------------------
+## GATEKEEPER
+## -----------------------------------------------------------------------------
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: gatekeeper
+spec:
+  project: default
+  sources:
+    - repoURL: https://gitea.k8s.szp.io/tillycode/homelab.git
+      targetRevision: master
+      path: k8s/gatekeeper
+  destination:
+    server: https://kubernetes.default.svc
+  ignoreDifferences:
+    - group: apiextensions.k8s.io
+      kind: CustomResourceDefinition
+      jsonPointers:
+        - /spec/preserveUnknownFields

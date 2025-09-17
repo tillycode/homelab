@@ -104,3 +104,8 @@ tasks:
     desc: "Login to the AWS account"
     cmds:
       - aws sso login
+
+  image:woodpeckerci-plugin-git:
+    desc: "Build and push tillycode/woodpeckerci-plugin-git"
+    cmds:
+      - scripts/build-push-image.sh woodpeckerci-plugin-git-image

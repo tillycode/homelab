@@ -20,6 +20,8 @@
       nix-fast-build
       step-cli
       kubeseal
+      terraform
+      skopeo
     ];
     devshell.startup = {
       nixago.text = config.nixago.shellHook;

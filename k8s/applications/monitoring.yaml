@@ -15,7 +15,7 @@ spec:
       helm:
         valueFiles:
           - $values/k8s/kube-prometheus-stack/values.yaml
-    - repoURL: https://github.com/tillycode/homelab.git
+    - repoURL: https://gitea.k8s.szp.io/tillycode/homelab.git
       targetRevision: master
       ref: values
   destination:

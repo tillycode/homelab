@@ -32,6 +32,8 @@ in
         aaaaaaaqie = "fc50c689-79e1-46d1-87b0-63b7234eacb7";
         Forev3rNAlway5 = "cc64d967-bf1f-43a8-bbee-2eaaf4b332e5";
         list17 = "270bac35-7951-4830-8640-5b7fac19e9f5";
+        MSRLancern = "6b5d43a7-cddd-4f03-8daf-75f10b8106f2";
+        ClSlaid = "e29ceca5-cd6a-4efe-b047-49e7e5b4ffdf";
       };
       symlinks = {
         "mods" = "${modpack}/mods";

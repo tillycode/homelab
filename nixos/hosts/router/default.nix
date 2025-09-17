@@ -96,6 +96,11 @@
           Address = "192.168.22.3";
         }
         {
+          # printer
+          MACAddress = "90:31:4B:98:9B:5B";
+          Address = "192.168.22.4";
+        }
+        {
           # hasee01
           MACAddress = "68:1d:ef:52:68:b7";
           Address = "192.168.22.11";
