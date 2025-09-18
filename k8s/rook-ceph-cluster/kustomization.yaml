@@ -7,5 +7,6 @@ resources:
   - cluster.yaml
   - pool.yaml
   - filesystem.yaml
+  - objectstore.yaml
   - toolbox.yaml
   - ingress.yaml
