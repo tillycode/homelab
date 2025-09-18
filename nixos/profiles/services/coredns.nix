@@ -29,7 +29,7 @@ let
     grafana               IN CNAME hgh0.ts.szp.io.
     loki                  IN CNAME hgh0.ts.szp.io.
     mc                    IN CNAME desktop.ts.szp.io.
-    k8s                   IN CNAME desktop.ts.szp.io.
+    k8s                   IN A     192.168.22.10
   '';
 in
 {
@@ -63,6 +63,11 @@ in
       svc.szp.io:53 {
         import snip
         file ${zone}
+        cache 60
+      }
+      k8s.szp.io:53 {
+        import snip
+        forward . 10.41.0.10
         cache 60
       }
       acme-challenge.svc.szp.io:53 {

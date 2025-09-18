@@ -22,7 +22,7 @@
        exit-address-family
       exit
       !
-      ip prefix-list metallb-ipv4 permit 192.168.23.0/24 le 32
+      ip prefix-list metallb-ipv4 permit 10.41.0.0/16 le 32
       !
       route-map metalb-in permit 1
        match ip address prefix-list metallb-ipv4
@@ -37,4 +37,9 @@
   };
 
   networking.firewall.allowedTCPPorts = [ 179 ];
+
+  services.tailscale.extraSetFlags = [
+    "--advertise-routes"
+    "10.41.0.0/16,192.168.22.10/32"
+  ];
 }

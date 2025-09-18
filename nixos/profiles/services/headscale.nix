@@ -15,6 +15,7 @@
       base-tailnet-global
       base-incus
       base-service
+      base-k8s
     ];
 
     routes = with config.CIDRs; [

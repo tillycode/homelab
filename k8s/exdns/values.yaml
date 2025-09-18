@@ -3,7 +3,7 @@ watchedResources: ["HTTPRoute", "TLSRoute", "GRPCRoute", "Ingress", "Service"]
 
 service:
   annotations:
-    metallb.io/loadBalancerIPs: 192.168.23.10
+    metallb.io/loadBalancerIPs: 10.41.0.10
   externalTrafficPolicy: Local
 affinity:
   podAntiAffinity:

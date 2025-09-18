@@ -39,6 +39,7 @@
       base-tailnet-global = "tsg.szp.io";
       base-incus = "vm.szp.io";
       base-service = "svc.szp.io";
+      base-k8s = "k8s.szp.io";
 
       # service domains
       homepage-dashboard = "home.svc.szp.io";

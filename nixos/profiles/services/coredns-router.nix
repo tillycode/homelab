@@ -22,7 +22,7 @@ in
       }
       k8s.szp.io {
         import snip
-        forward . 192.168.23.10
+        forward . 10.41.0.10
       }
     '';
   };
