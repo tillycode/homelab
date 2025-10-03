@@ -71,7 +71,7 @@ jobs:
           issue-number: ${{ github.event.pull_request.number }}
           comment-author: "github-actions[bot]"
           body-includes: "### Terragrunt Plan"
-      - uses: peter-evans/create-or-update-comment@v4
+      - uses: peter-evans/create-or-update-comment@v5
         with:
           comment-id: ${{ steps.find-comment.outputs.comment-id }}
           issue-number: ${{ github.event.pull_request.number }}
@@ -147,7 +147,7 @@ jobs:
           issue-number: ${{ github.event.pull_request.number }}
           comment-author: "github-actions[bot]"
           body-includes: "### Changes for Host ${{ matrix.host }}"
-      - uses: peter-evans/create-or-update-comment@v4
+      - uses: peter-evans/create-or-update-comment@v5
         with:
           comment-id: ${{ steps.find-comment.outputs.comment-id }}
           issue-number: ${{ github.event.pull_request.number }}
