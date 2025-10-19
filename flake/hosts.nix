@@ -201,6 +201,87 @@ let
         }
       )
     ];
+    hkg1 = mkHost [
+      {
+        users.users.root.openssh.authorizedKeys.keys = [
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAamaMcCAc7DhTJjDqBwXTWhewX0OI8vAuXLvc17yqK/"
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBIO4wL3BzfaMDOpbT/U/99MVQERjtzH2YxA6KAs7lwM"
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHNlekmLqIMn8zTkjU2sU4StemRV+wQvoMMvqmIIJxT6"
+        ];
+        profiles.disko = {
+          device = "/dev/vda";
+          swapSize = "1G";
+        };
+        networking.hostName = "hkg1";
+        nixpkgs.system = "x86_64-linux";
+        system.stateVersion = "24.11";
+        sops.defaultSopsFile = ../secrets/nodes/hkg1.yaml;
+      }
+      (
+        { profiles, suites, ... }:
+        {
+          imports =
+            suites.base
+            ++ (with profiles; [
+              config.no-nixos-doc
+              services.nginx
+              services.node-exporter
+              services.sing-box-global
+              services.tailscale-global
+              services.xray-global
+              system.kernel.qemu-guest
+              system.disko
+            ]);
+        }
+      )
+    ];
+    sjc0 = mkHost [
+      {
+        users.users.root.openssh.authorizedKeys.keys = [
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAamaMcCAc7DhTJjDqBwXTWhewX0OI8vAuXLvc17yqK/"
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBIO4wL3BzfaMDOpbT/U/99MVQERjtzH2YxA6KAs7lwM"
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHNlekmLqIMn8zTkjU2sU4StemRV+wQvoMMvqmIIJxT6"
+        ];
+        profiles.disko = {
+          device = "/dev/sda";
+          swapSize = "1G";
+        };
+        networking.hostName = "sjc0";
+        nixpkgs.system = "x86_64-linux";
+        system.stateVersion = "24.11";
+        sops.defaultSopsFile = ../secrets/nodes/sjc0.yaml;
+        systemd.network.links."10-eth0" = {
+          matchConfig.Path = "pci-0000:00:03.0";
+          linkConfig.Name = "eth0";
+        };
+        systemd.network.networks."10-eth0" = {
+          name = "eth0";
+          address = [ "185.218.6.162/24" ];
+          dns = [
+            "8.8.8.8"
+            "1.1.1.1"
+          ];
+          gateway = [ "185.218.6.1" ];
+        };
+      }
+      (
+        { profiles, suites, ... }:
+        {
+          imports =
+            suites.base
+            ++ (with profiles; [
+              config.no-nixos-doc
+              services.nginx
+              services.node-exporter
+              services.sing-box-global
+              services.tailscale-global
+              services.xray-global
+              system.kernel.qemu-guest
+              system.disko
+            ]);
+        }
+      )
+    ];
     desktop = mkHost [
       {
         time.timeZone = "Asia/Shanghai";
@@ -467,9 +548,9 @@ let
   ## DEPLOY
   ## ---------------------------------------------------------------------------
   nodeDeployOverrides = {
-    hkg0 = {
-      ssh_host = "hkg0.eh578599.xyz";
-    };
+    hkg0.ssh_host = "hkg0.eh578599.xyz";
+    hkg1.ssh_host = "hkg1.eh578599.xyz";
+    sjc0.ssh_host = "sjc0.eh578599.xyz";
   };
   mkNode =
     name: cfg:

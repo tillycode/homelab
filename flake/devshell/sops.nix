@@ -20,6 +20,8 @@ let
   node-keys = {
     hgh0 = "age1q93v8zc62mczmz30wy04n8erlfhhhjc3k7a3vspccjqpvehxadyqgrzrue";
     hkg0 = "age1luasnwh2kjtck7c25msmhy2k4dxw966609kt3r3sfj3yxlwgrdlqcgmmxn";
+    hkg1 = "age1hk93mkunsnmhs87hehn42cmd52vmn3rc0duvv3cjzuepecwv4d7qnrp6ht";
+    sjc0 = "age1sqhzufs4tkue4hha503w68aqu9nk6zpsgzh3h0wesq293pdzju8s6hcg43";
     desktop = "age1v6lnkm7prm0dpmcdpvn44v50rpfkzsed5uv3znxt4grsd5y6sv5qjru9qq";
     laptop = "age1kgcxdnuy9fxtcf6fp7camk6tqm0fset0jvvh9760rqmrkmx99v0q2c7w8e";
     r2s = "age1qfp5p3h97anl95lal6c23zp38lp03ltdd7jnkmw6qtgu89e59vsq9t8z83";

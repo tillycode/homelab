@@ -9,6 +9,7 @@
     chromium
     telegram-desktop
     remmina
+    qbittorrent
 
     # games
     prismlauncher

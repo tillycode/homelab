@@ -33,6 +33,8 @@ in
               "hasee02.ts.szp.io:${toString config.ports.node-exporter}"
               "hasee03.ts.szp.io:${toString config.ports.node-exporter}"
               "hkg0.tsg.szp.io:${toString config.ports.node-exporter}"
+              "hkg1.tsg.szp.io:${toString config.ports.node-exporter}"
+              "sjc0.tsg.szp.io:${toString config.ports.node-exporter}"
             ];
           }
         ];
