@@ -81,6 +81,9 @@
     awscli2
     minio-client
     code-cursor
+    zed-editor
+    nil
+    netease-cloud-music-gtk4
   ];
 
   home.stateVersion = "23.11";

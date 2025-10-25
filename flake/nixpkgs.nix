@@ -12,8 +12,8 @@
           (final: prev: {
             fetchLocalPackwizModpack =
               { root, ... }@args:
-              (pkgs.fetchPackwizModpack ({ url = ""; } // args)).overrideAttrs (old: {
-                buildInputs = with pkgs; [
+              (final.fetchPackwizModpack ({ url = ""; } // args)).overrideAttrs (old: {
+                buildInputs = with final; [
                   jre_headless
                   jq
                   moreutils

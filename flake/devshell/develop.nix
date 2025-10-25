@@ -3,7 +3,6 @@
   devshells.default = {
     devshell.packages = with pkgs; [
       opentofu
-      cachix
       aws-vault
       awscli2
       terragrunt

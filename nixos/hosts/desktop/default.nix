@@ -8,7 +8,7 @@
   };
 
   services.xserver.videoDrivers = [ "nvidia" ];
-  hardware.nvidia.open = false;
+  hardware.nvidia.open = true;
 
   boot.loader.systemd-boot.memtest86.enable = true;
   boot.kernelPackages = pkgs.linuxPackages_latest;

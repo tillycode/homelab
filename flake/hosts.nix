@@ -304,12 +304,10 @@ let
             services.gha-cache-server
             services.github-runner
             services.minecraft
-            services.minio
             services.nginx
             services.node-exporter
+            services.ollama
             services.restic
-            services.rke2.bootstrap
-            services.rke2.ingress
             services.tailscale
             system.systemd-boot
             users.sun
