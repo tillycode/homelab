@@ -1,0 +1,9 @@
+---
+apiVersion: objectbucket.io/v1alpha1
+kind: ObjectBucketClaim
+metadata:
+  name: terraform-state
+spec:
+  bucketName: terraform-state
+  storageClassName: rook-ceph-bucket
+# s5cmd --endpoint-url https://rgw.k8s.szp.io --profile rgw bucket-version --set Enabled s3://terraform-state

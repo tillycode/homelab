@@ -6,3 +6,4 @@ namespace: woodpecker
 resources:
   - secrets.yaml
   - assigns.yaml
+  - bucket.yaml

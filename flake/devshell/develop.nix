@@ -3,8 +3,6 @@
   devshells.default = {
     devshell.packages = with pkgs; [
       opentofu
-      aws-vault
-      awscli2
       terragrunt
       terraform-ls
       gh
@@ -21,6 +19,7 @@
       kubeseal
       terraform
       skopeo
+      s5cmd
     ];
     devshell.startup = {
       nixago.text = config.nixago.shellHook;
