@@ -55,6 +55,7 @@
       loki = "loki.svc.szp.io";
       mc-internal = "mc.svc.szp.io";
       k8s = "k8s.svc.szp.io";
+      hydra = "hydra.svc.szp.io";
 
       # well-known private domains
       acme = config.domains.step-ca;

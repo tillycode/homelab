@@ -303,10 +303,12 @@ let
             config.nix-cache
             services.gha-cache-server
             services.github-runner
+            services.hydra
             services.minecraft
             services.nginx
             services.node-exporter
             services.ollama
+            services.postgresql
             services.restic
             services.tailscale
             system.systemd-boot

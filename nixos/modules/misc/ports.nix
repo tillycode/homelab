@@ -74,6 +74,8 @@ in
 
       rke2-ingress-http = 40220;
       rke2-ingress-https = 40221;
+
+      hydra = 40230;
     };
   };
 }

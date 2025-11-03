@@ -29,6 +29,7 @@ let
     grafana               IN CNAME hgh0.ts.szp.io.
     loki                  IN CNAME hgh0.ts.szp.io.
     mc                    IN CNAME desktop.ts.szp.io.
+    hydra                 IN CNAME desktop.ts.szp.io.
     k8s                   IN A     192.168.22.10
   '';
 in
