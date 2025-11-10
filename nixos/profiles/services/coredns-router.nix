@@ -16,7 +16,7 @@ in
       }
       . {
         import snip
-        forward . 172.18.0.2 /run/pppd/resolv.conf {
+        forward . 192.168.1.1 {
           policy sequential
         }
       }

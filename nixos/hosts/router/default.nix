@@ -49,7 +49,8 @@
   systemd.network.networks = {
     "40-wan0" = {
       matchConfig.Name = "wan0";
-      linkConfig.Unmanaged = true;
+      DHCP = "yes";
+      # linkConfig.Unmanaged = true;
     };
     "40-wlan0" = {
       matchConfig.Name = "wlan0";
@@ -68,19 +69,19 @@
         DHCPServer = true;
         # IPv6
         IPv6AcceptRA = false;
-        DHCPPrefixDelegation = true;
-        IPv6SendRA = true;
+        DHCPPrefixDelegation = false;
+        IPv6SendRA = false;
       };
-      dhcpPrefixDelegationConfig = {
-        UplinkInterface = "ppp0";
-        Announce = true;
-        Assign = true;
-        Token = "static:::1";
-        SubnetId = "auto";
-      };
+      # dhcpPrefixDelegationConfig = {
+      #   UplinkInterface = "ppp0";
+      #   Announce = true;
+      #   Assign = true;
+      #   Token = "static:::1";
+      #   SubnetId = "auto";
+      # };
       dhcpServerConfig = {
         ServerAddress = "192.168.22.1/24";
-        DNS = [ "192.168.22.1" ];
+        # DNS = [ "192.168.22.1" ];
         PoolOffset = 100;
         PoolSize = 100;
       };
@@ -122,14 +123,14 @@
   networking.nat = {
     enable = true;
     internalInterfaces = [ "lan0" ];
-    externalInterface = "ppp0";
+    externalInterface = "wan0";
   };
   networking.nftables.tables.clamp-mss = {
     family = "inet";
     content = ''
       	chain forward {
       		type filter hook forward priority mangle; policy accept;
-      		iifname "lan0" oifname "ppp0" tcp flags & (syn | rst) == syn tcp option maxseg size set rt mtu
+      		iifname "lan0" oifname "wan0" tcp flags & (syn | rst) == syn tcp option maxseg size set rt mtu
       	}
     '';
   };

@@ -310,6 +310,7 @@ let
             services.ollama
             services.postgresql
             services.restic
+            services.sing-box
             services.tailscale
             system.systemd-boot
             users.sun
@@ -409,7 +410,7 @@ let
             services.daed
             services.frr-router
             services.node-exporter
-            services.pppd
+            # services.pppd
             services.tailscale
             system.disko
             system.systemd-boot
