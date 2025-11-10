@@ -83,7 +83,7 @@
     code-cursor
     zed-editor
     nil
-    netease-cloud-music-gtk4
+    netease-cloud-music-gtk
   ];
 
   home.stateVersion = "23.11";

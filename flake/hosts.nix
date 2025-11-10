@@ -403,12 +403,12 @@ let
           ++ suites.base
           ++ (with profiles; [
             config.no-nixos-doc
-            services.coredns-router
-            services.daed
-            services.frr-router
+            # services.coredns-router
+            # services.daed
+            # services.frr-router
             services.node-exporter
-            services.pppd
-            services.tailscale
+            # services.pppd
+            # services.tailscale
             system.disko
             system.systemd-boot
           ]);
