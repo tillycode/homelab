@@ -69,14 +69,16 @@ NIX_SSHOPTS="-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" nix-fa
   --no-link --eval-workers 4 -j 4 --copy-to "ssh://$destination" \
   -f ".#nixosConfigurations.$node.config.system.build.toplevel"
 
+ssh_cmd=(ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=ERROR "${ssh_opts[@]}" "$destination" --)
+
 echo "========================================================================="
 echo "DIFF CLOSURES"
 echo "========================================================================="
-ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null "${ssh_opts[@]}" "$destination" -- \
-  nix store diff-closures /run/current-system "$new_system"
+echo "-$("${ssh_cmd[@]}" realpath /run/current-system)"
+echo "+$new_system"
+"${ssh_cmd[@]}" nix store diff-closures /run/current-system "$new_system"
 
 echo "========================================================================="
 echo "DRY ACTIVATE"
 echo "========================================================================="
-ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null "${ssh_opts[@]}" "$destination" -- \
-  sudo "$new_system/bin/switch-to-configuration" dry-activate
+"${ssh_cmd[@]}" sudo "$new_system/bin/switch-to-configuration" dry-activate

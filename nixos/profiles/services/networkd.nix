@@ -1,3 +1,4 @@
+{ lib, ... }:
 # Use systemd-networkd as network manager
 {
   networking.useNetworkd = true;
@@ -15,5 +16,5 @@
       DHCP = "yes";
     };
   };
-  systemd.network.wait-online.anyInterface = true;
+  systemd.network.wait-online.anyInterface = lib.mkDefault true;
 }

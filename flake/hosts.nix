@@ -407,7 +407,6 @@ let
             # services.daed
             # services.frr-router
             services.node-exporter
-            # services.pppd
             # services.tailscale
             system.disko
             system.systemd-boot
