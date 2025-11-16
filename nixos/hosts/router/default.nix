@@ -7,6 +7,7 @@
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
     ./pppd.nix
+    ./sing-box.nix
   ];
   config = lib.mkMerge [
     ## ---------------------------------------------------------------------------

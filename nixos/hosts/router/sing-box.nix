@@ -2,15 +2,13 @@
 let
   mkGeoipRuleSet = name: {
     tag = name;
-    type = "remote";
-    format = "binary";
-    url = "https://raw.githubusercontent.com/SagerNet/sing-geoip/rule-set/${name}.srs";
+    type = "local";
+    path = "${pkgs.sing-geoip}/share/sing-box/rule-set/${name}.srs";
   };
   mkGeositeRuleSet = name: {
     tag = name;
-    type = "remote";
-    format = "binary";
-    url = "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/${name}.srs";
+    type = "local";
+    path = "${pkgs.sing-geosite}/share/sing-box/rule-set/${name}.srs";
   };
 in
 {
@@ -24,8 +22,9 @@ in
       log.level = "warn";
       experimental = {
         clash_api = {
-          external_controller = "192.168.22.1:9090";
+          external_controller = "0.0.0.0:9090";
           external_ui = pkgs.metacubexd;
+          # secret via sops
         };
         cache_file = {
           enabled = true;
@@ -41,7 +40,8 @@ in
         servers = [
           {
             tag = "local";
-            type = "local";
+            type = "udp";
+            server = "223.5.5.5";
           }
           {
             tag = "fakeip";
@@ -63,19 +63,17 @@ in
           }
           {
             clash_mode = "Global";
-            server = "fakeip";
             query_type = [
               "A"
               "AAAA"
             ];
+            server = "fakeip";
           }
           {
             clash_mode = "Global";
             server = "remote";
           }
           {
-            action = "predefined";
-            rcode = "NXDOMAIN";
             query_type = [
               "PTR"
             ];
@@ -87,27 +85,27 @@ in
               "2.0.0.c.f.ip6.arpa"
               "3.0.0.c.f.ip6.arpa"
             ];
+            action = "predefined";
+            rcode = "NXDOMAIN";
           }
           # DOMAIN rules
           {
-            server = "fakeip";
-            domain_suffix = [
-              "byr.pt"
-              "githubusercontent.com"
-              "github.com"
-            ];
             query_type = [
               "A"
               "AAAA"
             ];
+            domain_suffix = [
+              "byr.pt"
+            ];
+            server = "fakeip";
           }
           {
-            server = "local";
             type = "logical";
             mode = "or";
             rules = [
               {
                 domain_suffix = [
+                  "cn"
                   "steamcontent.com"
                   "steamcontent.akadns.net"
                   "steamserver.net"
@@ -124,10 +122,10 @@ in
                 ];
               }
             ];
+            server = "local";
           }
           # IP rules
           {
-            server = "local";
             type = "logical";
             mode = "or";
             rules = [
@@ -144,6 +142,7 @@ in
                 ];
               }
             ];
+            server = "local";
           }
           # FALLBACK rules
           {
@@ -168,7 +167,8 @@ in
             # fakeip
             "198.18.0.0/15"
             "fc00::/18"
-            # telegram (https://core.telegram.org/resources/cidr.txt)
+            # telegram according to https://core.telegram.org/resources/cidr.txt
+            # FIXME: https://github.com/SagerNet/sing-box/issues/3520
             "91.108.56.0/22"
             "91.108.4.0/22"
             "91.108.8.0/22"
@@ -193,9 +193,11 @@ in
           tag = "direct";
           type = "direct";
         }
+        # more outbounds via sops
       ];
       route = {
         default_domain_resolver = "local";
+        # sing-box can tolerate missing interface
         default_interface = "ppp0";
         final = "Proxy";
         rules = [
@@ -208,8 +210,12 @@ in
           }
           {
             action = "route";
-            rule_set = "geosite-openai";
-            outbound = "OpenAI";
+            rule_set = [
+              "geosite-openai"
+              "geosite-anthropic"
+              "geosite-google-gemini"
+            ];
+            outbound = "US";
           }
         ];
         rule_set = [
@@ -217,6 +223,33 @@ in
           (mkGeositeRuleSet "geosite-cn")
           (mkGeositeRuleSet "geosite-geolocation-cn")
           (mkGeositeRuleSet "geosite-openai")
+          (mkGeositeRuleSet "geosite-anthropic")
+          (mkGeositeRuleSet "geosite-google-gemini")
+          # {
+          #   tag = "geoip-telegram";
+          #   type = "inline";
+          #   # according to https://core.telegram.org/resources/cidr.txt
+          #   rules = [
+          #     {
+          #       ip_cidr = [
+          #         "91.105.192.0/23"
+          #         "91.108.4.0/22"
+          #         "91.108.8.0/22"
+          #         "91.108.12.0/22"
+          #         "91.108.16.0/22"
+          #         "91.108.20.0/22"
+          #         "91.108.56.0/22"
+          #         "149.154.160.0/20"
+          #         "185.76.151.0/24"
+          #         "2001:67c:4e8::/48"
+          #         "2001:b28:f23c::/48"
+          #         "2001:b28:f23d::/48"
+          #         "2001:b28:f23f::/48"
+          #         "2a0a:f280::/32"
+          #       ];
+          #     }
+          #   ];
+          # }
         ];
       };
     };
@@ -226,11 +259,46 @@ in
       ln -sf "$CREDENTIALS_DIRECTORY/config.json" /run/sing-box/zconfig.json
     '';
     serviceConfig = {
+      LockPersonality = true;
+      MemoryDenyWriteExecute = true;
       DynamicUser = true;
+      PrivateDevices = true;
+      DeviceAllow = [ "/dev/net/tun" ];
+      BindReadOnlyPaths = [ "/dev/net/tun" ];
+      ProtectControlGroups = true;
+      ProtectClock = true;
+      ProtectHome = true;
+      ProtectHostname = true;
+      ProtectKernelLogs = true;
+      ProtectKernelModules = true;
+      ProtectKernelTunables = true;
+      ProtectProc = "invisible";
+      RestrictNamespaces = true;
+      RestrictRealtime = true;
+      RestrictSUIDSGID = true;
+      CapabilityBoundingSet = [
+        "~CAP_SYS_PTRACE"
+        "~CAP_DAC_READ_SEARCH"
+      ];
       LoadCredential = "config.json:${config.sops.secrets."sing-box-router/config.json".path}";
+      RestrictAddressFamilies = [
+        "AF_NETLINK"
+        "AF_INET"
+        "AF_INET6"
+      ];
+      SystemCallFilter = "@system-service";
+      SystemCallArchitectures = "native";
     };
-    requires = [ "sys-subsystem-net-devices-ppp0.device" ];
-    after = [ "sys-subsystem-net-devices-ppp0.device" ];
+  };
+
+  systemd.network.networks."40-sing0" = {
+    name = "sing0";
+    linkConfig.ActivationPolicy = "manual";
+    networkConfig = {
+      DNS = "172.18.0.2";
+      Domains = "~.";
+      KeepConfiguration = "static";
+    };
   };
 
   ## ---------------------------------------------------------------------------

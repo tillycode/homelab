@@ -2,34 +2,25 @@
 src.github = "gurucomputing/headscale-ui"
 fetch.github = "gurucomputing/headscale-ui"
 [headscale-ui.passthru]
-npmDepsHash = "sha256-r8MuY7yhjek2SZyJCv5Xhk9dJE2VgKx7RTdOBr0Bji4="
-
-[terraboard]
-src.github = "camptocamp/terraboard"
-fetch.github = "camptocamp/terraboard"
-[terraboard.passthru]
-yarnDepsHash = "sha256-KbetB8S8MBJyvzl4Dl87uxRrOLEa6padD5LLHAUz/SI="
-vendorHash = "sha256-GarFrn/0x26KTxrUQwXtNYb/rttzT3f94iiWm6/dsHA="
+npmDepsHash = "sha256-vtMRi81GCaZDnfyZG5Eth/kPKQeIAsxhqKcc74ij7lg="
 
 # fetch alpha release
 [sing-box]
-src.github_tag = "SagerNet/sing-box"
-fetch.url = "https://github.com/SagerNet/sing-box/archive/v$ver.tar.gz"
-src.include_regex = "v.*"
-src.prefix = "v"
+src.github = "SagerNet/sing-box"
+fetch.github = "SagerNet/sing-box"
 [sing-box.passthru]
-vendorHash = "sha256-BNRAAfXUFV0CwRXvVu0Ix1yX9ISALsdrfJ0neM+ML9M="
+vendorHash = "sha256-R9dN2/MmuAeYB9UkNDbhc48SelBMR80nMnptNKD0y9c="
 
 [github-actions-cache-server]
 src.github = "falcondev-oss/github-actions-cache-server"
 fetch.github = "falcondev-oss/github-actions-cache-server"
 [github-actions-cache-server.passthru]
-pnpmDepsHash = "sha256-wDGFau1ZdgsjEbaDPBgTwDMYLvkXbyO7VCnZYf4xdsc="
+pnpmDepsHash = "sha256-SNC9q5p+dTjFm9UaGvdARWD69+1iKgsK12WtdOAjiGU="
 
 [cloudreve]
 src.github_tag = "cloudreve/Cloudreve"
 fetch.github = "cloudreve/Cloudreve"
 git.fetchSubmodules = true
 [cloudreve.passthru]
-yarnDepsHash = "sha256-HxXG72TzyzMY/swpydkfPD/h5NHO5ty5NdtDXV9WrFY="
-vendorHash = "sha256-InbI0Tx6tRn8lN+UlC/yM305aLdf9/3xALhNChExlhQ="
+yarnDepsHash = "sha256-9TzmSyKpKqx3eSybfZyWL4LYfUkHVYE+x7shfV54Whc="
+vendorHash = "sha256-IcbmPNSCp3tZqXrW4FMAP/aDOF6sr+3bABUaGeq6eHY="

@@ -10,9 +10,9 @@
 
   programs.git = {
     enable = true;
-    userName = "Ziping Sun";
-    userEmail = "me@szp.io";
-    extraConfig = {
+    settings = {
+      user.name = "Ziping Sun";
+      user.email = "me@szp.io";
       commit.gpgSign = true;
       init.defaultBranch = "master";
     };

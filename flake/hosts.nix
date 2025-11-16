@@ -308,6 +308,7 @@ let
             services.node-exporter
             services.ollama
             services.restic
+            services.sing-box
             services.tailscale
             system.systemd-boot
             users.sun

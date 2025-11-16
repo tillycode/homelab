@@ -45,7 +45,7 @@
       homepage-dashboard = "home.svc.szp.io";
       incus = "incus.svc.szp.io";
       step-ca = "acme.svc.szp.io";
-      terraboard = "terraboard.svc.szp.io"; # unused
+      # terraboard = "terraboard.svc.szp.io"; # unused
       oauth2-proxy = "auth.svc.szp.io"; # unused
       gha-cache-server = "gha-cache.svc.szp.io";
       minio = "minio.svc.szp.io";

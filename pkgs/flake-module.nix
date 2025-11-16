@@ -16,7 +16,6 @@
           tailscale-patched
           headscale-ui
           hschip
-          terraboard
           sing-box_1_12
           github-actions-cache-server
           github-runner-patched
@@ -41,9 +40,6 @@
           source = sources.headscale-ui;
         };
         hschip = pkgs.callPackage (import ./hschip) { };
-        terraboard = pkgs.callPackage (import ./terraboard) {
-          source = sources.terraboard;
-        };
         sing-box_1_12 = pkgs.sing-box.overrideAttrs (oldAttrs: rec {
           inherit (sources.sing-box)
             pname
@@ -51,9 +47,6 @@
             src
             vendorHash
             ;
-          tags = (pkgs.lib.filter (x: x != "with_ech" && x != "with_reality_server") oldAttrs.tags) ++ [
-            "with_tailscale"
-          ];
           ldflags = "-X=github.com/sagernet/sing-box/constant.Version=${version}";
         });
         github-actions-cache-server = pkgs.callPackage (import ./github-actions-cache-server.nix) {

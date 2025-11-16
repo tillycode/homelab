@@ -38,8 +38,8 @@ in
 
       atticd = 40060;
 
-      terraboard = 40070;
-      terraboard-swagger = 40071;
+      # terraboard = 40070;
+      # terraboard-swagger = 40071;
 
       oauth2-proxy = 40080;
 

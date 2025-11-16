@@ -46,6 +46,7 @@ in
         mru 1492
         mtu 1492
         usepeerdns
+        name ad87182800
         pap-secrets ${config.sops.secrets."ppp/pap-secrets".path}
         ip-up-script ${ip-up-script}
         ip-down-script ${ip-down-script}

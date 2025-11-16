@@ -13,7 +13,7 @@
       wqy_microhei
 
       corefonts
-      vistafonts
+      vista-fonts
 
       sarasa-gothic
       nerd-fonts.jetbrains-mono

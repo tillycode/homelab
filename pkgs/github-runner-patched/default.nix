@@ -1,4 +1,4 @@
-{ github-runner }:
+{ github-runner, ... }:
 github-runner.overrideAttrs (oldAttrs: {
   patches = oldAttrs.patches ++ [
     ./external-caching.patch

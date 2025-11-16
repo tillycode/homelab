@@ -49,6 +49,7 @@
           # My Websites
           "szp15.com"
           "eh578599.xyz"
+          "cn"
         ];
         server = "local";
       }
