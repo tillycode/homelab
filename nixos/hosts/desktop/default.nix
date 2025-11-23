@@ -33,4 +33,31 @@
   #       echo none > "/sys/bus/pci/devices/0000:$DEV/driver_override"
   #   done
   # '';
+  #
+  services.bird.enable = true;
+  services.bird.config = ''
+    log syslog all;
+    debug protocols all;
+    debug channels all;
+    debug tables all;
+    debug commands 1;
+
+    protocol device {
+    }
+
+    protocol kernel {
+      ipv4 {
+        export all;
+      };
+    }
+
+    protocol bgp {
+      local 192.168.23.111 as 65000;
+      neighbor 192.168.23.1 as 65001;
+      ipv4 {
+        import all;
+        export all;
+      };
+    }
+  '';
 }

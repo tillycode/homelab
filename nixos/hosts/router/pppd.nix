@@ -103,4 +103,8 @@ in
   sops.secrets."ppp/pap-secrets" = {
     restartUnits = [ "pppd-dialer.service" ];
   };
+
+  systemd.network.config.networkConfig = {
+    ManageForeignRoutes = false;
+  };
 }

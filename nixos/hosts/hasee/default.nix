@@ -44,4 +44,39 @@
       linkConfig.Unmanaged = true;
     };
   };
+
+  users.users.root.hashedPassword = "$y$j9T$5H0k9lXNhiB/RWu34ZqmR/$tS3OgHLomQFWEeP515WYo8AFKYjIw0gG.BZurM6FMR8";
+  systemd.network.netdevs = {
+    "40-bond0" = {
+      netdevConfig = {
+        Name = "bond0";
+        Kind = "bond";
+      };
+      bondConfig = {
+        Mode = "active-backup";
+        MIIMonitorSec = "100ms";
+      };
+    };
+  };
+  systemd.network.networks = {
+    "50-bond-slave" = {
+      matchConfig.Path = "pci-0000:00:14.0-usb-0:*:1.0";
+      linkConfig.MTUBytes = 9000;
+      networkConfig = {
+        Bond = "bond0";
+        DHCP = "no";
+        IPv6PrivacyExtensions = "kernel";
+      };
+    };
+    "40-bond0" = {
+      matchConfig.Name = "bond0";
+      linkConfig.MTUBytes = 9000;
+      gateway = [ "10.9.0.1" ];
+      dns = [ "10.9.0.1" ];
+      networkConfig = {
+        DHCP = "no";
+        IPv6AcceptRA = false;
+      };
+    };
+  };
 }

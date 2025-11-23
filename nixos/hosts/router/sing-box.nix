@@ -1,4 +1,8 @@
-{ pkgs, config, ... }:
+{
+  pkgs,
+  config,
+  ...
+}:
 let
   mkGeoipRuleSet = name: {
     tag = name;
@@ -17,11 +21,17 @@ in
   ## ---------------------------------------------------------------------------
   services.sing-box = {
     enable = true;
-    package = pkgs.sing-box_1_12;
+    package = pkgs.sing-box_1_12.overrideAttrs (oldAttrs: {
+      patches = [
+        # add disable_dns_hijack option
+        ./sing-box-disable-dns-hijack.patch
+      ];
+    });
     settings = {
-      log.level = "warn";
+      log.level = "debug";
       experimental = {
         clash_api = {
+          default_mode = "Enhanced";
           external_controller = "0.0.0.0:9090";
           external_ui = pkgs.metacubexd;
           # secret via sops
@@ -29,25 +39,17 @@ in
         cache_file = {
           enabled = true;
           path = "/var/lib/sing-box/cache.db";
-          store_fakeip = true;
           store_rdrc = true;
         };
       };
       dns = {
         reverse_mapping = true;
-        independent_cache = true;
         final = "remote";
         servers = [
           {
             tag = "local";
             type = "udp";
             server = "223.5.5.5";
-          }
-          {
-            tag = "fakeip";
-            type = "fakeip";
-            inet4_range = "198.18.0.0/15";
-            inet6_range = "fc00::/18";
           }
           {
             tag = "remote";
@@ -58,132 +60,70 @@ in
         ];
         rules = [
           {
-            clash_mode = "Direct";
+            rule_set = "geosite-geolocation-cn";
             server = "local";
           }
           {
-            clash_mode = "Global";
-            query_type = [
-              "A"
-              "AAAA"
-            ];
-            server = "fakeip";
-          }
-          {
-            clash_mode = "Global";
-            server = "remote";
-          }
-          {
-            query_type = [
-              "PTR"
-            ];
-            domain_suffix = [
-              "18.198.in-addr.arpa"
-              "19.198.in-addr.arpa"
-              "0.0.0.c.f.ip6.arpa"
-              "1.0.0.c.f.ip6.arpa"
-              "2.0.0.c.f.ip6.arpa"
-              "3.0.0.c.f.ip6.arpa"
-            ];
-            action = "predefined";
-            rcode = "NXDOMAIN";
-          }
-          # DOMAIN rules
-          {
-            query_type = [
-              "A"
-              "AAAA"
-            ];
-            domain_suffix = [
-              "byr.pt"
-            ];
-            server = "fakeip";
-          }
-          {
             type = "logical";
-            mode = "or";
+            mode = "and";
             rules = [
               {
-                domain_suffix = [
-                  "cn"
-                  "steamcontent.com"
-                  "steamcontent.akadns.net"
-                  "steamserver.net"
-                  "aliyuncs.com"
-                  "keys.openpgp.org"
-                  "szp15.com"
-                  "eh578599.xyz"
-                ];
-              }
-              {
-                rule_set = [
-                  "geosite-cn"
-                  "geosite-geolocation-cn"
-                ];
-              }
-            ];
-            server = "local";
-          }
-          # IP rules
-          {
-            type = "logical";
-            mode = "or";
-            rules = [
-              {
-                ip_accept_any = true;
+                rule_set = "geosite-geolocation-!cn";
                 invert = true;
               }
               {
-                ip_is_private = true;
-              }
-              {
-                rule_set = [
-                  "geoip-cn"
-                ];
+                rule_set = "geoip-cn";
               }
             ];
             server = "local";
-          }
-          # FALLBACK rules
-          {
-            server = "fakeip";
-            query_type = [
-              "A"
-              "AAAA"
-            ];
           }
         ];
       };
       inbounds = [
         {
-          tag = "tun";
           type = "tun";
           interface_name = "sing0";
           address = [
-            "172.18.0.1/30"
+            "172.19.0.1/30"
             "fdfe:dcba:9876::1/126"
           ];
-          route_address = [
-            # fakeip
-            "198.18.0.0/15"
-            "fc00::/18"
-            # telegram according to https://core.telegram.org/resources/cidr.txt
-            # FIXME: https://github.com/SagerNet/sing-box/issues/3520
-            "91.108.56.0/22"
-            "91.108.4.0/22"
-            "91.108.8.0/22"
-            "91.108.16.0/22"
-            "91.108.12.0/22"
-            "149.154.160.0/20"
-            "91.105.192.0/23"
-            "91.108.20.0/22"
-            "185.76.151.0/24"
-            "2001:b28:f23d::/48"
-            "2001:b28:f23f::/48"
-            "2001:67c:4e8::/48"
-            "2001:b28:f23c::/48"
-            "2a0a:f280::/32"
+          route_exclude_address_set = [
+            "geoip-cn"
+            "geoip-private"
+            "geoip-special"
           ];
+          # sing-box 1.12.12 will add following route policy rules:
+          #
+          #   9000:	from all fwmark 0x2024 goto 9002
+          #   9001:	from all fwmark 0x2023 lookup 2022
+          #   9002:	from all nop
+          #
+          # The route table "2022" is
+          #
+          #   default via 172.19.0.2 dev sing0
+          #   default via fdfe:dcba:9876::2 dev sing0 metric 1024 pref medium
+          #
+          # and an nft table "sing-box", it
+          # 1. don't touch the packet if
+          #    a. its nfmark or ctmark is 0x2024
+          #    b. or, its destination matches `!route_address || local_address || route_exclude_address`
+          # 2. redirect TCP traffic by destination NAT to a port
+          # 3. reroute UDP or ICMP traffic by setting its nfmark and ctmark to 0x2023.
+          # It also marks its outbound traffic with 0x2024.
+          #
+          # To make the stateful firewall happy, we need to
+          # 1. add an input rule for TCP traffic
+          # 2. add a forward rule for UDP and ICMP traffic
+          # 3. add a reverse path rule for inbound UDP and ICMP traffic
+          #
+          # Here're some related options, we use their default values.
+          #
+          # iproute2_rule_index = 9000;
+          # iproute2_table_index = 2022;
+          # auto_redirect_input_mark = "0x2023";
+          # auto_redirect_output_mark = "0x2024";
+          disable_dns_hijack = true;
+
           auto_route = true;
           auto_redirect = true;
         }
@@ -197,7 +137,7 @@ in
       ];
       route = {
         default_domain_resolver = "local";
-        # sing-box can tolerate missing interface
+        # Note missing interface won't cause crash loop.
         default_interface = "ppp0";
         final = "Proxy";
         rules = [
@@ -207,6 +147,32 @@ in
           {
             action = "hijack-dns";
             protocol = "dns";
+            ip_cidr = [
+              "172.19.0.2/32"
+              "fdfe:dcba:9876::2/128"
+            ];
+          }
+          {
+            ip_is_private = true;
+            outbound = "direct";
+          }
+          {
+            rule_set = "geosite-geolocation-cn";
+            outbound = "direct";
+          }
+          {
+            type = "logical";
+            mode = "and";
+            rules = [
+              {
+                rule_set = "geoip-cn";
+              }
+              {
+                rule_set = "geosite-geolocation-!cn";
+                invert = true;
+              }
+            ];
+            outbound = "direct";
           }
           {
             action = "route";
@@ -222,34 +188,54 @@ in
           (mkGeoipRuleSet "geoip-cn")
           (mkGeositeRuleSet "geosite-cn")
           (mkGeositeRuleSet "geosite-geolocation-cn")
+          (mkGeositeRuleSet "geosite-geolocation-!cn")
           (mkGeositeRuleSet "geosite-openai")
           (mkGeositeRuleSet "geosite-anthropic")
           (mkGeositeRuleSet "geosite-google-gemini")
-          # {
-          #   tag = "geoip-telegram";
-          #   type = "inline";
-          #   # according to https://core.telegram.org/resources/cidr.txt
-          #   rules = [
-          #     {
-          #       ip_cidr = [
-          #         "91.105.192.0/23"
-          #         "91.108.4.0/22"
-          #         "91.108.8.0/22"
-          #         "91.108.12.0/22"
-          #         "91.108.16.0/22"
-          #         "91.108.20.0/22"
-          #         "91.108.56.0/22"
-          #         "149.154.160.0/20"
-          #         "185.76.151.0/24"
-          #         "2001:67c:4e8::/48"
-          #         "2001:b28:f23c::/48"
-          #         "2001:b28:f23d::/48"
-          #         "2001:b28:f23f::/48"
-          #         "2a0a:f280::/32"
-          #       ];
-          #     }
-          #   ];
-          # }
+          {
+            tag = "geoip-private";
+            type = "inline";
+            rules = [
+              {
+                ip_cidr = [
+                  "0.0.0.0/8"
+                  "10.0.0.0/8"
+                  "100.64.0.0/10"
+                  "127.0.0.0/8"
+                  "169.254.0.0/16"
+                  "172.16.0.0/12"
+                  "192.0.0.0/24"
+                  "192.0.2.0/24"
+                  "192.88.99.0/24"
+                  "192.168.0.0/16"
+                  "198.18.0.0/15"
+                  "198.51.100.0/24"
+                  "203.0.113.0/24"
+                  "224.0.0.0/4"
+                  # "240.0.0.0/4"
+                  # "255.255.255.255/32"
+                  "::/128"
+                  "::1/128"
+                  "fc00::/7"
+                  "fe80::/10"
+                  # "ff00::/8"
+                ];
+              }
+            ];
+          }
+          {
+            tag = "geoip-special";
+            type = "inline";
+            rules = [
+              {
+                ip_cidr = [
+                  "46.232.54.0/24"
+                  "194.104.147.128/26"
+                  "185.218.4.0/22"
+                ];
+              }
+            ];
+          }
         ];
       };
     };
@@ -295,10 +281,14 @@ in
     name = "sing0";
     linkConfig.ActivationPolicy = "manual";
     networkConfig = {
-      DNS = "172.18.0.2";
+      DNS = "172.19.0.2";
       Domains = "~.";
       KeepConfiguration = "static";
+      IPv6AcceptRA = false;
     };
+  };
+  systemd.network.config.networkConfig = {
+    ManageForeignRoutingPolicyRules = false;
   };
 
   ## ---------------------------------------------------------------------------
@@ -317,4 +307,17 @@ in
   sops.secrets."sing-box-router/config.json" = {
     restartUnits = [ "sing-box.service" ];
   };
+
+  ## ---------------------------------------------------------------------------
+  ## FIREWALL
+  ## ---------------------------------------------------------------------------
+  networking.firewall.extraInputRules = ''
+    iifname { "svc", "lan" } ct status & dnat == dnat accept
+  '';
+  networking.firewall.extraForwardRules = ''
+    iifname { "svc", "lan" } oifname sing0 accept
+  '';
+  networking.firewall.extraReversePathFilterRules = ''
+    iifname "sing0" ct state { established, related } accept
+  '';
 }

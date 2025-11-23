@@ -407,7 +407,7 @@ let
             # services.coredns-router
             # services.daed
             # services.frr-router
-            services.node-exporter
+            # services.node-exporter
             # services.tailscale
             system.disko
             system.systemd-boot
@@ -507,8 +507,9 @@ let
           swapSize = "32G";
         };
         sops.defaultSopsFile = ../secrets/nodes/hasee03.yaml;
-        systemd.network.networks."40-eth0".address = [ "192.168.22.13/24" ];
-        services.rke2.extraFlags = [ "--node-ip=192.168.22.13" ];
+        # 10.9.0.13/24
+        systemd.network.networks."40-bond0".address = [ "10.9.0.13/24" ];
+        # services.rke2.extraFlags = [ "--node-ip=192.168.22.13" ];
       }
       (
         { profiles, suites, ... }:
@@ -520,9 +521,9 @@ let
           ++ (with profiles; [
             config.nix-cache
             config.no-nixos-doc
-            services.node-exporter
-            services.rke2-hasee.server
-            services.tailscale
+            # services.node-exporter
+            # services.rke2-hasee.server
+            # services.tailscale
             system.disko
             system.systemd-boot
           ]);

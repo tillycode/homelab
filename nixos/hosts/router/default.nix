@@ -1,6 +1,7 @@
 {
   modulesPath,
   lib,
+  config,
   ...
 }:
 {
@@ -8,6 +9,7 @@
     (modulesPath + "/installer/scan/not-detected.nix")
     ./pppd.nix
     ./sing-box.nix
+    ./bird.nix
   ];
   config = lib.mkMerge [
     ## ---------------------------------------------------------------------------
@@ -80,12 +82,19 @@
         };
       };
 
+      systemd.network.networks."40-eth0" = {
+        linkConfig.MTUBytes = 9000;
+      };
+      systemd.network.networks."40-eth1" = {
+        linkConfig.MTUBytes = 9000;
+      };
       systemd.network.networks."40-wlan0" = {
         matchConfig.Name = "wlan0";
         linkConfig.Unmanaged = true;
       };
       systemd.network.networks."40-bond0" = {
         matchConfig.Name = "bond0";
+        linkConfig.MTUBytes = 9000;
         networkConfig.IPv6AcceptRA = false;
       };
     }
@@ -96,12 +105,10 @@
         addresses = [
           {
             Address = "192.168.23.1/24";
-            DuplicateAddressDetection = "none";
           }
         ];
-        linkConfig.RequiredForOnline = "no-carrier";
+        linkConfig.MTUBytes = 1500;
         networkConfig = {
-          ConfigureWithoutCarrier = true;
           # IPv4
           DHCPServer = true;
           # IPv6
@@ -140,26 +147,68 @@
         meta nfproto ipv4 iifname lan udp sport 68 udp dport 67 accept comment "DHCPv4 client"
       '';
     }
-
-    # boot.kernel.sysctl = {
-    #   "net.ipv6.conf.all.forwarding" = true;
-    #   "net.ipv6.conf.default.forwarding" = true;
-    # };
-
-    # networking.nat = {
-    #   enable = true;
-    #   internalInterfaces = [ "lan0" ];
-    #   externalInterface = "ppp0";
-    # };
-    # networking.nftables.tables.clamp-mss = {
-    #   family = "inet";
-    #   content = ''
-    #     	chain forward {
-    #     		type filter hook forward priority mangle; policy accept;
-    #     		iifname "lan0" oifname "ppp0" tcp flags & (syn | rst) == syn tcp option maxseg size set rt mtu
-    #     	}
-    #   '';
-    # };
-    # networking.firewall.trustedInterfaces = [ "lan0" ];
+    {
+      # svc interface
+      systemd.network.networks."40-svc" = {
+        matchConfig.Name = "svc";
+        linkConfig.MTUBytes = 9000;
+        address = [ "10.9.0.1/24" ];
+        networkConfig.IPv6AcceptRA = false;
+      };
+    }
+    {
+      # NAT and firewall
+      boot.kernel.sysctl = {
+        "net.ipv6.conf.all.forwarding" = true;
+        "net.ipv6.conf.default.forwarding" = true;
+      };
+      networking.nat = {
+        enable = true;
+        externalInterface = "ppp0";
+        internalInterfaces = [
+          "lan"
+          "svc"
+        ];
+      };
+      networking.firewall = {
+        filterForward = true;
+        # temporary allow all traffic from lan to svc
+        extraForwardRules = ''
+          iifname "lan" oifname "svc" accept
+        '';
+      };
+      networking.nftables.tables.clamp-mss = {
+        family = "inet";
+        content = ''
+          	chain forward {
+          		type filter hook forward priority mangle; policy accept;
+          		tcp flags & (syn | rst) == syn tcp option maxseg size set rt mtu
+          	}
+        '';
+      };
+      networking.firewall.interfaces =
+        let
+          cfg = {
+            inherit (config.networking.firewall)
+              allowedTCPPorts
+              allowedTCPPortRanges
+              allowedUDPPorts
+              allowedUDPPortRanges
+              ;
+          };
+        in
+        {
+          default = lib.mapAttrs (name: value: [ ]) cfg;
+          lan = cfg;
+          svc = cfg;
+        };
+    }
+    {
+      # DNS
+      services.resolved.extraConfig = ''
+        DNSStubListenerExtra=10.9.0.1
+      '';
+      networking.firewall.allowedUDPPorts = [ 53 ];
+    }
   ];
 }

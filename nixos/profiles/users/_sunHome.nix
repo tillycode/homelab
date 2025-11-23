@@ -22,6 +22,9 @@
     enable = true;
     interactiveShellInit = ''
       set fish_greeting # Disable greeting
+      if [ $TERM = "xterm-kitty" ]
+        alias ssh="kitty +kitten ssh"
+      end
     '';
     plugins = with pkgs.fishPlugins; [
       {
@@ -84,6 +87,7 @@
     zed-editor
     nil
     netease-cloud-music-gtk
+    kitty
   ];
 
   home.stateVersion = "23.11";
