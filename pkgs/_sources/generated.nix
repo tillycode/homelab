@@ -50,4 +50,16 @@
     };
     vendorHash = "sha256-R9dN2/MmuAeYB9UkNDbhc48SelBMR80nMnptNKD0y9c=";
   };
+  zteonu = {
+    pname = "zteonu";
+    version = "v0.0.7";
+    src = fetchFromGitHub {
+      owner = "Septrum101";
+      repo = "zteOnu";
+      rev = "v0.0.7";
+      fetchSubmodules = false;
+      sha256 = "sha256-irw7q64MO9xdL0RXWnWN3ULkHqCGBWuYlsMl7avgfQI=";
+    };
+    vendorHash = "sha256-tecWPrGGCFmWGjeMA7ct3Vvm85A41dskjx2ntv5cIl8=";
+  };
 }

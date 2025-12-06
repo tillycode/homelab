@@ -91,5 +91,28 @@
             "type": "github"
         },
         "version": "v1.12.12"
+    },
+    "zteonu": {
+        "cargoLocks": null,
+        "date": null,
+        "extract": null,
+        "name": "zteonu",
+        "passthru": {
+            "vendorHash": "sha256-tecWPrGGCFmWGjeMA7ct3Vvm85A41dskjx2ntv5cIl8="
+        },
+        "pinned": false,
+        "src": {
+            "deepClone": false,
+            "fetchSubmodules": false,
+            "leaveDotGit": false,
+            "name": null,
+            "owner": "Septrum101",
+            "repo": "zteOnu",
+            "rev": "v0.0.7",
+            "sha256": "sha256-irw7q64MO9xdL0RXWnWN3ULkHqCGBWuYlsMl7avgfQI=",
+            "sparseCheckout": [],
+            "type": "github"
+        },
+        "version": "v0.0.7"
     }
 }

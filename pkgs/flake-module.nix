@@ -25,6 +25,7 @@
           rke2_1_32
           rke2_1_33
           rke2_1_34
+          zteonu
           ;
       }
       // (
@@ -69,6 +70,9 @@
           rke2_1_33
           rke2_1_34
           ;
+        zteonu = pkgs.callPackage (import ./zteonu) {
+          source = sources.zteonu;
+        };
       }
       // (
         if system == "aarch64-linux" then

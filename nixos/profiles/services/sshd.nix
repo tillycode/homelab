@@ -1,6 +1,7 @@
 # Enable sshd.service
 {
   services.openssh.enable = true;
+  services.openssh.settings.X11Forwarding = true;
   services.openssh.extraConfig = ''
     ClientAliveInterval 60
     ClientAliveCountMax 2

@@ -1,5 +1,6 @@
 {
   modulesPath,
+  pkgs,
   lib,
   config,
   ...
@@ -99,6 +100,24 @@
       };
     }
     {
+      # wan interface
+      systemd.network.networks."40-wan" = {
+        matchConfig.Name = "wan";
+        linkConfig = {
+          MACAddress = "00:07:29:55:35:57";
+          MTUBytes = 1500;
+        };
+        addresses = [
+          {
+            Address = "192.168.1.2/24";
+          }
+        ];
+        networkConfig = {
+          IPv6AcceptRA = false;
+        };
+      };
+    }
+    {
       # lan interface
       systemd.network.networks."40-lan" = {
         matchConfig.Name = "lan";
@@ -125,8 +144,8 @@
         };
         dhcpServerConfig = {
           ServerAddress = "192.168.23.1/24";
-          # DNS = [ "192.168.23.1" ];
-          EmitRouter = false; # TODO: testing
+          DNS = [ "10.9.0.1" ];
+          EmitRouter = true;
           PoolOffset = 100;
           PoolSize = 100;
         };
@@ -174,7 +193,16 @@
         filterForward = true;
         # temporary allow all traffic from lan to svc
         extraForwardRules = ''
-          iifname "lan" oifname "svc" accept
+          iifname "lan" oifname { "svc", "wan" } accept
+        '';
+      };
+      networking.nftables.tables.nixos-nat = {
+        family = "ip";
+        content = ''
+           chain lan-to-wan {
+          		type nat hook postrouting priority srcnat; policy accept;
+          		iifname "lan" oifname "wan" masquerade
+          	}
         '';
       };
       networking.nftables.tables.clamp-mss = {
@@ -209,6 +237,31 @@
         DNSStubListenerExtra=10.9.0.1
       '';
       networking.firewall.allowedUDPPorts = [ 53 ];
+    }
+    {
+      environment.systemPackages = with pkgs; [
+        zteonu
+        inetutils
+      ];
+    }
+    {
+      # avoid spamming logs
+      networking.firewall.extraInputRules = ''
+        meta pkttype host ip saddr 192.168.23.2 tcp dport 784 drop comment "drop unknown packet from AP"
+        meta pkttype broadcast ip saddr 192.168.23.2 udp dport { 53535, 54321 } drop comment "drop unknown packet from AP"
+      '';
+      networking.nftables.tables.nixos-fw = {
+        family = "inet";
+        content = ''
+          chain predefrag {
+            type filter hook prerouting priority -450;
+            ip frag-off & 0x1fff != 0 jump {
+              limit rate 1/second log prefix "fragmented packet: " level info
+              counter drop
+            }
+          }
+        '';
+      };
     }
   ];
 }

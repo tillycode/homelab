@@ -24,3 +24,10 @@ git.fetchSubmodules = true
 [cloudreve.passthru]
 yarnDepsHash = "sha256-9TzmSyKpKqx3eSybfZyWL4LYfUkHVYE+x7shfV54Whc="
 vendorHash = "sha256-IcbmPNSCp3tZqXrW4FMAP/aDOF6sr+3bABUaGeq6eHY="
+
+
+[zteonu]
+src.github = "Septrum101/zteOnu"
+fetch.github = "Septrum101/zteOnu"
+[zteonu.passthru]
+vendorHash = "sha256-tecWPrGGCFmWGjeMA7ct3Vvm85A41dskjx2ntv5cIl8="

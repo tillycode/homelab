@@ -88,6 +88,7 @@
     nil
     netease-cloud-music-gtk
     kitty
+    minikube
   ];
 
   home.stateVersion = "23.11";

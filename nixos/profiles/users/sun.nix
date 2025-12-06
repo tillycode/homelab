@@ -10,6 +10,7 @@
     extraGroups = [
       "wheel"
       "incus-admin"
+      "libvirtd"
     ];
     hashedPasswordFile = config.sops.secrets."user-password/sun".path;
     shell = pkgs.fish;
@@ -28,6 +29,7 @@
       ".kube"
       ".local"
       ".npm"
+      ".minikube"
       ".mc"
       ".vscode-server"
       ".vscode"

@@ -28,7 +28,7 @@ in
       ];
     });
     settings = {
-      log.level = "debug";
+      log.level = "warn";
       experimental = {
         clash_api = {
           default_mode = "Enhanced";
@@ -76,6 +76,18 @@ in
               }
             ];
             server = "local";
+          }
+          {
+            rule_set = [
+              "geosite-openai"
+              "geosite-anthropic"
+              "geosite-google-gemini"
+            ];
+            query_type = [
+              "AAAA"
+            ];
+            # reply empty NOERROR for AAAA queries
+            action = "predefined";
           }
         ];
       };

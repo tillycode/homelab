@@ -37,10 +37,6 @@
   services.bird.enable = true;
   services.bird.config = ''
     log syslog all;
-    debug protocols all;
-    debug channels all;
-    debug tables all;
-    debug commands 1;
 
     protocol device {
     }
@@ -60,4 +56,11 @@
       };
     }
   '';
+
+  networking.hosts = {
+    "192.168.23.1" = [ "router" ];
+    "10.9.0.11" = [ "hasee01" ];
+    "10.9.0.12" = [ "hasee02" ];
+    "10.9.0.13" = [ "hasee03" ];
+  };
 }

@@ -304,11 +304,12 @@ let
             services.gha-cache-server
             services.github-runner
             services.minecraft
+            services.libvirtd
             services.nginx
             services.node-exporter
             services.ollama
             services.restic
-            services.sing-box
+            # services.sing-box
             services.tailscale
             system.systemd-boot
             users.sun
@@ -411,6 +412,7 @@ let
             # services.tailscale
             system.disko
             system.systemd-boot
+            virtualization.podman
           ]);
         }
       )
@@ -431,8 +433,7 @@ let
           swapSize = "32G";
         };
         sops.defaultSopsFile = ../secrets/nodes/hasee01.yaml;
-        systemd.network.networks."40-eth0".address = [ "192.168.22.11/24" ];
-        services.rke2.extraFlags = [ "--node-ip=192.168.22.11" ];
+        systemd.network.networks."40-bond0".address = [ "10.9.0.11/24" ];
       }
       (
         { profiles, suites, ... }:
@@ -444,9 +445,7 @@ let
           ++ (with profiles; [
             config.nix-cache
             config.no-nixos-doc
-            services.node-exporter
-            services.rke2-hasee.bootstrap
-            services.tailscale
+            services.incus-xinxi.server
             system.disko
             system.systemd-boot
           ]);
@@ -469,8 +468,7 @@ let
           swapSize = "32G";
         };
         sops.defaultSopsFile = ../secrets/nodes/hasee02.yaml;
-        systemd.network.networks."40-eth0".address = [ "192.168.22.12/24" ];
-        services.rke2.extraFlags = [ "--node-ip=192.168.22.12" ];
+        systemd.network.networks."40-bond0".address = [ "10.9.0.12/24" ];
       }
       (
         { profiles, suites, ... }:
@@ -482,9 +480,7 @@ let
           ++ (with profiles; [
             config.nix-cache
             config.no-nixos-doc
-            services.node-exporter
-            services.rke2-hasee.server
-            services.tailscale
+            services.incus-xinxi.server
             system.disko
             system.systemd-boot
           ]);
@@ -507,9 +503,7 @@ let
           swapSize = "32G";
         };
         sops.defaultSopsFile = ../secrets/nodes/hasee03.yaml;
-        # 10.9.0.13/24
         systemd.network.networks."40-bond0".address = [ "10.9.0.13/24" ];
-        # services.rke2.extraFlags = [ "--node-ip=192.168.22.13" ];
       }
       (
         { profiles, suites, ... }:
@@ -521,9 +515,7 @@ let
           ++ (with profiles; [
             config.nix-cache
             config.no-nixos-doc
-            # services.node-exporter
-            # services.rke2-hasee.server
-            # services.tailscale
+            services.incus-xinxi.server
             system.disko
             system.systemd-boot
           ]);
