@@ -14,6 +14,30 @@ let
     type = "local";
     path = "${pkgs.sing-geosite}/share/sing-box/rule-set/${name}.srs";
   };
+  geoip-modified =
+    {
+      sing-geoip,
+      runCommand,
+      sing-box_1_12,
+      python3,
+      name ? "geoip-cn",
+      excludeIPAddresses ? [ ],
+      lib,
+    }:
+    runCommand "${name}-modified.srs"
+      {
+        src = "${sing-geoip}/share/sing-box/rule-set/${name}.srs";
+        nativeBuildInputs = [
+          sing-box_1_12
+          python3
+        ];
+      }
+      ''
+        sing-box rule-set decompile $src -o /dev/stdout |
+          python ${./geoip_subtract.py} ${lib.escapeShellArgs excludeIPAddresses} |
+          sing-box rule-set compile /dev/stdin -o $out
+      '';
+
 in
 {
   ## ---------------------------------------------------------------------------
@@ -78,11 +102,11 @@ in
             server = "local";
           }
           {
-            rule_set = [
-              "geosite-openai"
-              "geosite-anthropic"
-              "geosite-google-gemini"
-            ];
+            # rule_set = [
+            #   "geosite-openai"
+            #   "geosite-anthropic"
+            #   "geosite-google-gemini"
+            # ];
             query_type = [
               "AAAA"
             ];
@@ -100,7 +124,7 @@ in
             "fdfe:dcba:9876::1/126"
           ];
           route_exclude_address_set = [
-            "geoip-cn"
+            "geoip-cn-modified"
             "geoip-private"
             "geoip-special"
           ];
@@ -167,6 +191,12 @@ in
           {
             ip_is_private = true;
             outbound = "direct";
+          }
+          {
+            domain_suffix = [
+              "byr.pt"
+            ];
+            outbound = "Proxy";
           }
           {
             rule_set = "geosite-geolocation-cn";
@@ -247,6 +277,16 @@ in
                 ];
               }
             ];
+          }
+          {
+            tag = "geoip-cn-modified";
+            type = "local";
+            path = (pkgs.callPackage geoip-modified { }).override {
+              excludeIPAddresses = [
+                # byr.pt
+                "2001:da8:215:4078:250:56ff:fe97:654d"
+              ];
+            };
           }
         ];
       };
